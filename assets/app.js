@@ -8,16 +8,23 @@ const questions = [
   ['implementationConfidence','Implementation confidence','Can you turn AI knowledge into a real daily process?']
 ];
 
-const choices = [
-  [1,'Not yet'],
-  [2,'A little, but I need structure'],
-  [3,'Yes, with some guidance'],
-  [4,'Yes, confidently']
-];
-
+const choices = [[1,'Not yet'],[2,'A little, but I need structure'],[3,'Yes, with some guidance'],[4,'Yes, confidently']];
 let current = 0;
 const answers = {};
 const $ = (s) => document.querySelector(s);
+const setField = (name,value) => { const field = document.querySelector(`[name="${name}"]`); if(field) field.value = value || ''; };
+
+function hydrateCaptureFields(){
+  const params = new URLSearchParams(window.location.search);
+  setField('landing_page', window.location.href);
+  setField('referrer', document.referrer || 'direct');
+  setField('utm_source', params.get('utm_source') || '');
+  setField('utm_medium', params.get('utm_medium') || '');
+  setField('utm_campaign', params.get('utm_campaign') || '');
+  setField('utm_term', params.get('utm_term') || '');
+  setField('utm_content', params.get('utm_content') || '');
+  setField('lead_source', params.get('utm_source') || document.referrer || 'direct');
+}
 
 function render(){
   const q = questions[current];
@@ -32,12 +39,7 @@ function render(){
   next.disabled = !answers[q[0]];
   next.textContent = current === questions.length - 1 ? 'See my score' : 'Next';
   box.innerHTML = `<p class='eyebrow'>${q[1]}</p><h3>${q[2]}</h3><div class='options'>${choices.map(c => `<button class='option' type='button' data-value='${c[0]}' aria-pressed='${answers[q[0]] === c[0]}'>${c[1]}</button>`).join('')}</div>`;
-  box.querySelectorAll('.option').forEach(button => {
-    button.addEventListener('click', () => {
-      answers[q[0]] = Number(button.dataset.value);
-      render();
-    });
-  });
+  box.querySelectorAll('.option').forEach(button => button.addEventListener('click', () => { answers[q[0]] = Number(button.dataset.value); render(); }));
 }
 
 function chooseRecommendation(score){
@@ -48,6 +50,13 @@ function chooseRecommendation(score){
   return ['AI Starter Pass','Get practical training, safe-use habits, and a clearer implementation path.'];
 }
 
+function leadTier(score){
+  if(score >= 80) return 'Hot implementation lead';
+  if(score >= 62) return 'Audit-ready lead';
+  if(score >= 42) return 'Training lead';
+  return 'Foundation lead';
+}
+
 function showResult(){
   const total = Object.values(answers).reduce((sum,value) => sum + value, 0);
   const score = Math.round((total / (questions.length * 4)) * 100);
@@ -56,31 +65,18 @@ function showResult(){
   const sorted = [...questions].sort((a,b) => (answers[a[0]] || 0) - (answers[b[0]] || 0));
   const strongest = sorted[sorted.length - 1][1];
   const weakest = sorted[0][1];
-  $('#result').innerHTML = `<p class='eyebrow'>Your AI readiness profile</p><h3>${tier}</h3><div class='score'><b>${score}</b><span>/100</span></div><p><strong>Recommended path:</strong> ${path}</p><p>${message}</p><p><strong>Strongest area:</strong> ${strongest}<br><strong>Riskiest gap:</strong> ${weakest}</p><a class='btn primary' href='#book' style='margin-top:1.2rem'>Request human review</a>`;
-  const scoreField = document.querySelector('input[name=score_summary]');
-  if(scoreField) scoreField.value = `Score ${score}/100 | ${tier} | Path: ${path} | Strongest: ${strongest} | Gap: ${weakest}`;
+  const crmTier = leadTier(score);
+  $('#result').innerHTML = `<p class='eyebrow'>Your AI readiness profile</p><h3>${tier}</h3><div class='score'><b>${score}</b><span>/100</span></div><p><strong>Recommended path:</strong> ${path}</p><p>${message}</p><p><strong>Lead tier:</strong> ${crmTier}<br><strong>Strongest area:</strong> ${strongest}<br><strong>Riskiest gap:</strong> ${weakest}</p><a class='btn primary' href='#book' style='margin-top:1.2rem'>Request human review</a>`;
+  setField('score_summary', `Score ${score}/100 | ${tier} | Lead tier: ${crmTier} | Path: ${path} | Strongest: ${strongest} | Gap: ${weakest}`);
+  setField('recommended_path', path);
+  setField('lead_tier', crmTier);
+  setField('readiness_score', String(score));
 }
 
-$('[data-prev]').addEventListener('click', () => {
-  if(current > 0){ current -= 1; render(); }
-});
-
-$('[data-next]').addEventListener('click', () => {
-  if(!answers[questions[current][0]]) return;
-  if(current < questions.length - 1){ current += 1; render(); } else { showResult(); }
-});
-
-$('[data-menu]')?.addEventListener('click', () => {
-  const links = $('[data-links]');
-  const open = links.classList.toggle('open');
-  $('[data-menu]').setAttribute('aria-expanded', String(open));
-});
-
-document.querySelectorAll('[data-plan]').forEach(link => {
-  link.addEventListener('click', () => {
-    const select = document.querySelector('select[name=path]');
-    if(select) select.value = link.dataset.plan;
-  });
-});
-
+$('[data-prev]').addEventListener('click', () => { if(current > 0){ current -= 1; render(); } });
+$('[data-next]').addEventListener('click', () => { if(!answers[questions[current][0]]) return; if(current < questions.length - 1){ current += 1; render(); } else { showResult(); } });
+$('[data-menu]')?.addEventListener('click', () => { const links = $('[data-links]'); const open = links.classList.toggle('open'); $('[data-menu]').setAttribute('aria-expanded', String(open)); });
+document.querySelectorAll('[data-plan]').forEach(link => link.addEventListener('click', () => { const select = document.querySelector('select[name=path]'); if(select) select.value = link.dataset.plan; }));
+$('#lead-form')?.addEventListener('submit', hydrateCaptureFields);
+hydrateCaptureFields();
 render();
