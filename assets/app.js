@@ -105,5 +105,5 @@ if(hasQuiz()){
 
 $('[data-menu]')?.addEventListener('click', () => { const links = $('[data-links]'); if(!links) return; const open = links.classList.toggle('open'); $('[data-menu]').setAttribute('aria-expanded', String(open)); });
 document.querySelectorAll('[data-plan]').forEach(link => link.addEventListener('click', () => { const select = document.querySelector('select[name=path]'); if(select) select.value = link.dataset.plan; }));
-document.querySelectorAll('form').forEach(form => form.addEventListener('submit', submitLead));
+document.querySelectorAll('form[name]:not(#quiz)').forEach(form => form.addEventListener('submit', submitLead));
 hydrateCaptureFields();
