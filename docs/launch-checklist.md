@@ -11,18 +11,29 @@
 
 ## Form and lead capture
 
+- [ ] Deploy the branch on Netlify.
+- [ ] Enable Netlify Forms for `ai-readiness-lead`.
+- [ ] Add form notification email to the temporary inbox in `docs/temporary-lead-inbox.md`.
 - [ ] Submit the form once after deployment.
-- [ ] Confirm the first FormSubmit confirmation email from `fifynow@fifynowllc.com`.
-- [ ] Verify the lead email includes name, email, path, message, and score summary.
-- [ ] Replace FormSubmit with Netlify Forms or Resend if deliverability is weak.
+- [ ] Verify the lead includes name, email, path, message, and score summary.
+- [ ] Replace temporary notification routing with domain email or Resend when verified.
 
-## Payment setup
+## Fast payment setup
+
+- [ ] Create PayPal Payment Link: AI Starter Pass — $59.
+- [ ] Create PayPal Payment Link: AI Job & Productivity Pass — $197.
+- [ ] Create PayPal Payment Link: Business AI Readiness Audit — $497.
+- [ ] Or create the same links in Square Payment Links.
+- [ ] Add refund/credit policy before taking paid orders.
+- [ ] Replace request buttons with verified pay links only after test purchase works.
+
+## Stripe setup
 
 - [ ] Create Stripe product: AI Starter Pass — $59.
 - [ ] Create Stripe product: AI Job & Productivity Pass — $197.
 - [ ] Create Stripe product: Business AI Readiness Audit — $497.
 - [ ] Create Stripe payment links or checkout session backend.
-- [ ] Add refund/credit policy before taking paid orders.
+- [ ] Keep Stripe as the clean long-term setup for subscriptions and automation.
 
 ## Booking and CRM
 
