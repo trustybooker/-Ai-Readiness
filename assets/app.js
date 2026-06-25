@@ -73,10 +73,27 @@ function showResult(){
   setField('readiness_score', String(score));
 }
 
+async function submitLead(event){
+  const form = event.currentTarget;
+  hydrateCaptureFields();
+  if(form.dataset.useFirstParty !== 'true') return;
+  event.preventDefault();
+  const note = $('[data-note]');
+  try {
+    const response = await fetch('/.netlify/functions/capture-lead', { method:'POST', body:new FormData(form) });
+    if(!response.ok) throw new Error('first party capture unavailable');
+    window.location.href = form.dataset.success || 'thanks.html';
+  } catch (error) {
+    if(note) note.textContent = 'First-party tracker is not configured yet, so this is being sent through email fallback.';
+    form.dataset.useFirstParty = 'false';
+    form.submit();
+  }
+}
+
 $('[data-prev]').addEventListener('click', () => { if(current > 0){ current -= 1; render(); } });
 $('[data-next]').addEventListener('click', () => { if(!answers[questions[current][0]]) return; if(current < questions.length - 1){ current += 1; render(); } else { showResult(); } });
 $('[data-menu]')?.addEventListener('click', () => { const links = $('[data-links]'); const open = links.classList.toggle('open'); $('[data-menu]').setAttribute('aria-expanded', String(open)); });
 document.querySelectorAll('[data-plan]').forEach(link => link.addEventListener('click', () => { const select = document.querySelector('select[name=path]'); if(select) select.value = link.dataset.plan; }));
-$('#lead-form')?.addEventListener('submit', hydrateCaptureFields);
+$('#lead-form')?.addEventListener('submit', submitLead);
 hydrateCaptureFields();
 render();
