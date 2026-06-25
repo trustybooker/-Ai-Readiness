@@ -5,17 +5,30 @@ const requiredFiles = [
   'assets/styles.css',
   'assets/impact.css',
   'assets/app.js',
+  'assets/og-ai-readiness-pass.svg',
+  'robots.txt',
+  'sitemap.xml',
+  'thanks.html',
   'docs/media-prompts/google-flow-video-prompts.md',
-  'docs/fast-payment-plan.md'
+  'docs/fast-payment-plan.md',
+  'docs/imagery-system.md',
+  'docs/crm-capture-system.md'
 ];
 
 const requiredIndexSnippets = [
   'Know if you are AI-ready before the market exposes you.',
+  'fifynow@fifynowllc.com',
   'fifynow@gmail.com',
+  '_cc',
   'data-question',
   'score_summary',
-  'https://formsubmit.co/fifynow@gmail.com',
+  'recommended_path',
+  'lead_tier',
+  'utm_source',
+  'https://formsubmit.co/fifynow@fifynowllc.com',
   'application/ld+json',
+  'FAQPage',
+  'OfferCatalog',
   'No fake testimonials',
   'Fast payment path',
   'No. This is educational readiness, training, and implementation support.'
@@ -27,6 +40,8 @@ const requiredScriptSnippets = [
   'Workflow readiness',
   'score_summary',
   'chooseRecommendation',
+  'hydrateCaptureFields',
+  'lead_tier',
   'Request human review'
 ];
 
