@@ -9,10 +9,22 @@ const requiredFiles = [
   'robots.txt',
   'sitemap.xml',
   'thanks.html',
+  'answers.html',
+  'netlify/functions/capture-lead.mjs',
   'docs/media-prompts/google-flow-video-prompts.md',
   'docs/fast-payment-plan.md',
   'docs/imagery-system.md',
-  'docs/crm-capture-system.md'
+  'docs/crm-capture-system.md',
+  'docs/first-party-lead-system.md',
+  'docs/response-system.md',
+  'docs/business-operating-system.md',
+  'docs/onboarding-offboarding-refunds.md',
+  'docs/implementation-playbook.md',
+  'docs/certification-standards.md',
+  'course/level-1-ai-readiness-foundations.md',
+  'course/level-2-ai-job-productivity-pass.md',
+  'course/level-3-business-ai-readiness.md',
+  'course/level-4-implementation-partner-track.md'
 ];
 
 const requiredIndexSnippets = [
@@ -41,8 +53,19 @@ const requiredScriptSnippets = [
   'score_summary',
   'chooseRecommendation',
   'hydrateCaptureFields',
+  'capture-lead',
+  'email fallback',
   'lead_tier',
   'Request human review'
+];
+
+const requiredFunctionSnippets = [
+  'LEADS_SECRET',
+  'LEADS_REPO',
+  'api.github.com',
+  'issues',
+  'ai-readiness-pass',
+  'priority-hot'
 ];
 
 const failures = [];
@@ -62,6 +85,13 @@ if (fs.existsSync('assets/app.js')) {
   const js = fs.readFileSync('assets/app.js', 'utf8');
   for (const snippet of requiredScriptSnippets) {
     if (!js.includes(snippet)) failures.push(`assets/app.js missing: ${snippet}`);
+  }
+}
+
+if (fs.existsSync('netlify/functions/capture-lead.mjs')) {
+  const fn = fs.readFileSync('netlify/functions/capture-lead.mjs', 'utf8');
+  for (const snippet of requiredFunctionSnippets) {
+    if (!fn.includes(snippet)) failures.push(`capture function missing: ${snippet}`);
   }
 }
 
