@@ -40,26 +40,40 @@ Prices are placeholders until payment links, fulfillment terms, refund policy, a
 - Static landing page.
 - Responsive design.
 - Interactive 7-question readiness quiz.
-- Score summary hidden field for the lead form.
-- Lead form routed to `fifynow@gmail.com` through FormSubmit.
-- SEO metadata and structured data.
-- Google Flow / Veo video prompts for realistic hero and ad videos.
+- Score summary, recommended path, and lead tier hidden fields.
+- Lead form routed to `fifynow@fifynowllc.com` with fallback CC to `fifynow@gmail.com` through FormSubmit.
+- First-party capture fields: audience type, timeline, budget range, referrer, landing page, and UTM fields.
+- SEO metadata, Open Graph image, Twitter card, robots.txt, sitemap.xml, and JSON-LD schema.
+- Schema graph includes Organization, WebSite, ProfessionalService, WebPage, OfferCatalog, and FAQPage.
+- Thank-you page after submission.
+- Google Flow / Veo video prompts and imagery quality standards.
 - Netlify deployment config.
 - Validation script and GitHub Actions workflow.
 - Fast payment plan in `docs/fast-payment-plan.md`.
+- CRM capture plan in `docs/crm-capture-system.md`.
 
 ## What still needs external setup
 
 The repo cannot truly complete these steps without service access and credentials:
 
 - Deploy on Netlify or another host.
-- Confirm the first FormSubmit email at `fifynow@gmail.com`.
+- Confirm the first FormSubmit email at `fifynow@fifynowllc.com`; Gmail should receive fallback copies after primary confirmation.
 - Create Square Payment Links for immediate sales.
 - Create Stripe products and replace request buttons with verified checkout links.
 - Add booking link, such as Calendly, Google Calendar appointment scheduling, or TidyCal.
-- Add CRM destination, such as Google Sheets, HubSpot, Airtable, or GoHighLevel.
+- Add CRM destination, such as Google Sheets, Airtable, HubSpot, or GoHighLevel.
 - Add analytics, such as Google Analytics, Meta Pixel, or Plausible.
 - Add real hero video asset after generation and manual quality review.
+
+## CRM direction
+
+The fastest reliable capture stack is:
+
+1. Site form + dual email now.
+2. Google Sheets or Airtable as the first lead database.
+3. Make or Zapier to copy form submissions into the database.
+4. HubSpot free CRM when follow-up volume increases.
+5. GoHighLevel only if SMS, booking, funnels, pipelines, and client automation are needed in one place.
 
 ## Validation
 
@@ -69,7 +83,7 @@ Run:
 npm run validate
 ```
 
-The validator checks required files, conversion copy, score/form wiring, safety disclaimers, and removal of temporary test files.
+The validator checks required files, conversion copy, score/form wiring, schema, sitemap, imagery setup, CRM capture docs, safety disclaimers, and removal of temporary test files.
 
 ## Truth standard
 
