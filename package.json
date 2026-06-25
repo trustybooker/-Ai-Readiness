@@ -1,0 +1,1 @@
+{"scripts":{"validate":"node scripts/validate-site.mjs"},"devDependencies":{},"engines":{"node":">=18"}}
