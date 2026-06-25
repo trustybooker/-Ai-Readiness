@@ -5,7 +5,7 @@ const requiredFiles = [
   'answer/what-is-ai-readiness.html','answer/how-to-prove-ai-skills-on-resume.html','answer/why-train-before-ai-automation.html','answer/what-is-an-ai-readiness-audit.html','answer/what-not-to-put-into-ai-tools.html','answer/how-small-businesses-start-ai-safely.html',
   'assets/styles.css','assets/impact.css','assets/app.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg',
   'robots.txt','sitemap.xml','netlify/functions/capture-lead.mjs',
-  'docs/two-layer-growth-system.md','docs/media-prompts/google-flow-video-prompts.md','docs/fast-payment-plan.md','docs/imagery-system.md','docs/crm-capture-system.md','docs/first-party-lead-system.md','docs/response-system.md','docs/business-operating-system.md','docs/onboarding-offboarding-refunds.md','docs/implementation-playbook.md','docs/certification-standards.md','docs/production-readiness-audit-2026-06-25.md','docs/agent-command-center.md','docs/final-production-test-matrix.md','docs/live-launch-runbook.md',
+  'docs/master-platform-skill.md','docs/skill-registry.md','docs/two-layer-growth-system.md','docs/media-prompts/google-flow-video-prompts.md','docs/fast-payment-plan.md','docs/imagery-system.md','docs/crm-capture-system.md','docs/first-party-lead-system.md','docs/response-system.md','docs/business-operating-system.md','docs/onboarding-offboarding-refunds.md','docs/implementation-playbook.md','docs/certification-standards.md','docs/production-readiness-audit-2026-06-25.md','docs/agent-command-center.md','docs/final-production-test-matrix.md','docs/live-launch-runbook.md',
   'course/level-1-ai-readiness-foundations.md','course/level-2-ai-job-productivity-pass.md','course/level-3-business-ai-readiness.md','course/level-4-implementation-partner-track.md','course/ai-readiness-workbook.md'
 ];
 
@@ -19,6 +19,8 @@ const requiredBrandSnippets = ['fifynow-logo.svg','stop-color:#1e5bb5','stop-col
 const requiredWorkbookSnippets = ['Level 1 worksheet','Level 2 worksheet','Level 3 worksheet','Level 4 worksheet','Reviewer checklist','Completion badge wording'];
 const requiredLaunchSnippets = ['Deploy preview','Configure first-party tracker','Verify fallback email','Add payment links','Final QA'];
 const requiredMatrixSnippets = ['Public route smoke tests','Visual QA','Quiz QA','Lead capture QA','Truth and compliance QA','Launch decision'];
+const requiredMasterSkillSnippets = ['Audit first','Truth first','two-layer system','Daily session behavior','Done means'];
+const requiredRegistrySnippets = ['Production Architect','Frontend UX Engineer','Lead Systems Engineer','SEO AEO Strategist','Skill update protocol','Image and icon context'];
 
 const failures = [];
 for (const file of requiredFiles) if (!fs.existsSync(file)) failures.push(`Missing file: ${file}`);
@@ -43,6 +45,8 @@ requireSnippets('assets/completion-badge.svg', ['AI READINESS','COMPLETION BADGE
 requireSnippets('course/ai-readiness-workbook.md', requiredWorkbookSnippets, 'workbook');
 requireSnippets('docs/live-launch-runbook.md', requiredLaunchSnippets, 'launch runbook');
 requireSnippets('docs/final-production-test-matrix.md', requiredMatrixSnippets, 'test matrix');
+requireSnippets('docs/master-platform-skill.md', requiredMasterSkillSnippets, 'master platform skill');
+requireSnippets('docs/skill-registry.md', requiredRegistrySnippets, 'skill registry');
 
 if (fs.existsSync('test-multiline.txt') || fs.existsSync('test-raw.txt')) failures.push('Temporary test files must not be committed.');
 
