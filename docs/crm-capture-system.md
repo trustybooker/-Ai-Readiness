@@ -1,6 +1,6 @@
 # CRM Capture System
 
-Goal: make the site capture enough data to sell fast without adding so much friction that users quit.
+Goal: capture enough data to sell fast without adding so much friction that users quit.
 
 ## Current capture system
 
@@ -10,7 +10,7 @@ The form captures:
 - Email
 - Optional phone
 - Selected offer path
-- Audience type: individual, job seeker, small business, team/organization
+- Audience type
 - Timeline
 - Budget range
 - Message
@@ -21,10 +21,20 @@ The form captures:
 - Referrer
 - UTM source, medium, campaign, term, and content
 
-Submissions are sent to:
+## First-party tracker
 
-- Primary: `fifynow@fifynowllc.com`
-- Fallback copy: `fifynow@gmail.com`
+The preferred system is now first-party capture into GitHub Issues:
+
+1. The form posts to the Netlify function.
+2. The function validates the lead.
+3. The function creates a GitHub Issue in the private repo.
+4. The issue becomes the CRM record.
+5. Labels show priority, path, and audience.
+6. The issue body includes the follow-up checklist.
+
+Fallback:
+
+- If the function is not configured, the form submits through the email fallback.
 
 ## Lead tiers
 
@@ -37,24 +47,13 @@ The quiz assigns a selling priority:
 
 ## Best current CRM direction
 
-The better trend is not just a classic CRM. It is a lightweight revenue operations capture system:
+Do not pay for a CRM yet. Use this order:
 
-1. First-party lead data from the site.
-2. AI readiness score and intent data.
-3. Automatic routing by lead tier.
-4. Human review for trust.
-5. Payment links for immediate monetization.
-6. CRM record for follow-up and repeat offers.
-
-## Fastest practical stack
-
-Use this order:
-
-1. Site form + dual email now.
-2. Google Sheets or Airtable as the first lead database.
-3. Make or Zapier to copy form submissions into the database.
-4. HubSpot free CRM when follow-up volume increases.
-5. GoHighLevel only if Fify Now LLC wants SMS, funnels, calendar, pipelines, and client automation in one place.
+1. Site form and first-party GitHub Issue tracker.
+2. Email fallback for safety.
+3. Weekly manual review.
+4. Add Google Sheets or Airtable only if export/reporting becomes necessary.
+5. Add HubSpot or GoHighLevel only after lead volume justifies it.
 
 ## Why not start with a heavy CRM
 
@@ -68,13 +67,13 @@ When a lead arrives:
 2. Reply within 24 hours.
 3. Send the most relevant offer or booking link.
 4. If high-ticket, ask clarifying questions before payment.
-5. Log lead status: New, Contacted, Paid, Scheduled, Completed, Follow-up.
+5. Log lead status: new, contacted, paid, scheduled, completed, follow-up.
 
 ## Future automation
 
-When API keys and CRM access are available, automate:
+When API keys and service access are available, automate:
 
-- Add lead to Airtable or HubSpot.
+- Add lead to a spreadsheet or CRM.
 - Send AI readiness result email.
 - Create task for human review.
 - Send payment link based on selected path.
