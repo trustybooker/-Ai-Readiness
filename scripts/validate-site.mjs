@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 
 const requiredFiles = [
-  'index.html','answers.html','checklist.html','lab.html','thanks.html',
+  'index.html','answers.html','checklist.html','lab.html','thanks.html','favicon.svg','site.webmanifest',
   'answer/what-is-ai-readiness.html','answer/how-to-prove-ai-skills-on-resume.html','answer/why-train-before-ai-automation.html','answer/what-is-an-ai-readiness-audit.html','answer/what-not-to-put-into-ai-tools.html','answer/how-small-businesses-start-ai-safely.html',
-  'assets/styles.css','assets/impact.css','assets/app.js','assets/og-ai-readiness-pass.svg',
+  'assets/styles.css','assets/impact.css','assets/app.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg',
   'robots.txt','sitemap.xml','netlify/functions/capture-lead.mjs',
   'docs/two-layer-growth-system.md','docs/media-prompts/google-flow-video-prompts.md','docs/fast-payment-plan.md','docs/imagery-system.md','docs/crm-capture-system.md','docs/first-party-lead-system.md','docs/response-system.md','docs/business-operating-system.md','docs/onboarding-offboarding-refunds.md','docs/implementation-playbook.md','docs/certification-standards.md',
   'course/level-1-ai-readiness-foundations.md','course/level-2-ai-job-productivity-pass.md','course/level-3-business-ai-readiness.md','course/level-4-implementation-partner-track.md'
@@ -15,6 +15,7 @@ const requiredFunctionSnippets = ['LEADS_SECRET','LEADS_REPO','api.github.com','
 const requiredSitemapSnippets = ['checklist.html','lab.html','what-is-ai-readiness.html','how-to-prove-ai-skills-on-resume.html','why-train-before-ai-automation.html','what-is-an-ai-readiness-audit.html','what-not-to-put-into-ai-tools.html','how-small-businesses-start-ai-safely.html'];
 const requiredAnswersSnippets = ['Layer 2: answer hub','checklist.html','lab.html','answer/what-is-ai-readiness.html','answer/how-small-businesses-start-ai-safely.html'];
 const requiredLayerSnippets = ['Layer 1: Conversion Page','Layer 2: Answer Hub','checklist.html','lab.html'];
+const requiredBrandSnippets = ['fifynow-logo.svg','stop-color:#1e5bb5','stop-color:#2563eb','M14.7 6.3'];
 
 const failures = [];
 for (const file of requiredFiles) if (!fs.existsSync(file)) failures.push(`Missing file: ${file}`);
@@ -31,6 +32,10 @@ requireSnippets('netlify/functions/capture-lead.mjs', requiredFunctionSnippets, 
 requireSnippets('sitemap.xml', requiredSitemapSnippets, 'sitemap.xml');
 requireSnippets('answers.html', requiredAnswersSnippets, 'answers.html');
 requireSnippets('docs/two-layer-growth-system.md', requiredLayerSnippets, 'two-layer doc');
+requireSnippets('assets/styles.css', ['fifynow-logo.svg'], 'styles.css');
+requireSnippets('assets/fifynow-logo.svg', requiredBrandSnippets.slice(1), 'official logo');
+requireSnippets('assets/og-ai-readiness-pass.svg', ['FIFY NOW LLC','M14.7 6.3'], 'social preview');
+requireSnippets('site.webmanifest', ['assets/fifynow-logo.svg'], 'manifest');
 
 if (fs.existsSync('test-multiline.txt') || fs.existsSync('test-raw.txt')) failures.push('Temporary test files must not be committed.');
 
