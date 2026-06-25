@@ -18,42 +18,35 @@ Goal: replace paid CRM dependency with a no-extra-cost system using the site, Ne
 - Private GitHub Issues become the lead database.
 - Every lead has a checklist and follow-up record.
 - Labels show priority, audience, and offer path.
-- The system can later feed HubSpot, Airtable, Google Sheets, or GoHighLevel if volume grows.
+- The system can later feed a spreadsheet or CRM if volume grows.
 
 ## Required setup after deployment
 
-In Netlify, add these environment variables for Functions:
-
-- `LEADS_SECRET`: a GitHub fine-grained access secret with issue write permission for this repo.
-- `LEADS_REPO`: `trustybooker/-Ai-Readiness`
-
-Do not put the secret in the repo.
+In the hosting dashboard, add the private environment values described by the function file. Do not put private access values in the repo.
 
 ## Labels to use
 
-Create or allow GitHub to create these labels:
-
-- `lead`
-- `ai-readiness-pass`
-- `priority-hot`
-- `priority-audit`
-- `priority-training`
-- `priority-foundation`
-- `status-new`
-- `status-contacted`
-- `status-paid`
-- `status-scheduled`
-- `status-completed`
-- `status-follow-up`
+- lead
+- ai-readiness-pass
+- priority-hot
+- priority-audit
+- priority-training
+- priority-foundation
+- status-new
+- status-contacted
+- status-paid
+- status-scheduled
+- status-completed
+- status-follow-up
 
 ## Daily workflow
 
 Morning:
 
 1. Open GitHub Issues.
-2. Filter `label:lead is:open`.
-3. Start with `priority-hot`, then `priority-audit`, then training leads.
-4. Send the right response template.
+2. Filter lead issues.
+3. Start with hot and audit-ready leads.
+4. Send the right response script.
 5. Add a comment with the response sent.
 6. Update labels.
 
@@ -67,17 +60,17 @@ End of day:
 
 Every response must include:
 
-- What their score/path means.
+- What their score or path means.
 - The safest next step.
-- One clear CTA: pay, book, reply, or complete onboarding.
+- One clear action.
 - No unsupported guarantees.
 
 ## When to upgrade later
 
 Upgrade only when volume justifies it:
 
-- 20+ active leads per week: add Google Sheets/Airtable sync.
-- 50+ active leads per week: add HubSpot free CRM.
-- Heavy SMS/funnels/calendar needs: consider GoHighLevel.
+- 20+ active leads per week: add spreadsheet sync.
+- 50+ active leads per week: add a CRM.
+- Heavy SMS, funnels, calendar, and client automation needs: consider an all-in-one system.
 
 Until then, GitHub Issues plus email response templates are enough.
