@@ -12,20 +12,21 @@
 ## Form and lead capture
 
 - [ ] Deploy the branch on Netlify.
-- [ ] Enable Netlify Forms for `ai-readiness-lead`.
-- [ ] Add form notification email to the temporary inbox in `docs/temporary-lead-inbox.md`.
 - [ ] Submit the form once after deployment.
+- [ ] Confirm the first FormSubmit activation email at `fifynow@gmail.com`.
 - [ ] Verify the lead includes name, email, path, message, and score summary.
-- [ ] Replace temporary notification routing with domain email or Resend when verified.
+- [ ] Replace temporary FormSubmit routing with Netlify Forms, Resend, or domain email when verified.
 
 ## Fast payment setup
 
-- [ ] Create PayPal Payment Link: AI Starter Pass — $59.
-- [ ] Create PayPal Payment Link: AI Job & Productivity Pass — $197.
-- [ ] Create PayPal Payment Link: Business AI Readiness Audit — $497.
-- [ ] Or create the same links in Square Payment Links.
+- [ ] Create Square Payment Link: AI Starter Pass — $59.
+- [ ] Create Square Payment Link: AI Job & Productivity Pass — $197.
+- [ ] Create Square Payment Link: Business AI Readiness Audit — $497.
+- [ ] Create Square deposit link: Team Training Sprint deposit.
+- [ ] Create Square deposit link: AI Implementation Review deposit.
 - [ ] Add refund/credit policy before taking paid orders.
 - [ ] Replace request buttons with verified pay links only after test purchase works.
+- [ ] Use PayPal Payment Links as backup if Square setup is delayed.
 
 ## Stripe setup
 
