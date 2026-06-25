@@ -20,7 +20,16 @@ function priority(score = '', tier = '') {
 }
 
 function issueBody(data) {
-  return `# AI Readiness Pass Lead\n\n## Contact\n- Name: ${clean(data.name)}\n- Email: ${clean(data.email)}\n- Phone: ${clean(data.phone)}\n\n## Qualification\n- Selected path: ${clean(data.path)}\n- Recommended path: ${clean(data.recommended_path)}\n- Lead tier: ${clean(data.lead_tier)}\n- Readiness score: ${clean(data.readiness_score)}\n- Score summary: ${clean(data.score_summary)}\n- Audience type: ${clean(data.audience_type)}\n- Timeline: ${clean(data.timeline)}\n- Budget range: ${clean(data.budget_range)}\n\n## Message\n${clean(data.message)}\n\n## Source\n- Landing page: ${clean(data.landing_page)}\n- Referrer: ${clean(data.referrer)}\n- UTM source: ${clean(data.utm_source)}\n- UTM medium: ${clean(data.utm_medium)}\n- UTM campaign: ${clean(data.utm_campaign)}\n\n## Follow-up checklist\n- [ ] Review score and message.\n- [ ] Choose response path.\n- [ ] Send response template.\n- [ ] Send payment or booking link when appropriate.\n- [ ] Update status label.\n\nNo job, revenue, legal compliance, or accreditation guarantee should be made.\n`;
+  return `# AI Readiness Pass Lead\n\n## Contact\n- Name: ${clean(data.name)}\n- Email: ${clean(data.email)}\n- Phone: ${clean(data.phone)}\n\n## Qualification\n- Selected path: ${clean(data.path)}\n- Recommended path: ${clean(data.recommended_path)}\n- Lead tier: ${clean(data.lead_tier)}\n- Readiness score: ${clean(data.readiness_score)}\n- Score summary: ${clean(data.score_summary)}\n- Audience type: ${clean(data.audience_type)}\n- Timeline: ${clean(data.timeline)}\n- Budget range: ${clean(data.budget_range)}\n\n## Message\n${clean(data.message)}\n\n## Source\n- Landing page: ${clean(data.landing_page)}\n- Referrer: ${clean(data.referrer)}\n- UTM source: ${clean(data.utm_source)}\n- UTM medium: ${clean(data.utm_medium)}\n- UTM campaign: ${clean(data.utm_campaign)}\n- UTM term: ${clean(data.utm_term)}\n- UTM content: ${clean(data.utm_content)}\n\n## Follow-up checklist\n- [ ] Review score and message.\n- [ ] Choose response path.\n- [ ] Send response script.\n- [ ] Send booking or verified payment link when appropriate.\n- [ ] Update status label.\n\nNo job, revenue, legal compliance, or accreditation guarantee should be made.\n`;
+}
+
+async function postIssue(owner, repoName, headers, title, body, labels) {
+  const payload = labels ? { title, body, labels } : { title, body };
+  return fetch(`https://api.github.com/repos/${owner}/${repoName}/issues`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(payload)
+  });
 }
 
 async function createIssue(data) {
@@ -37,13 +46,13 @@ async function createIssue(data) {
   headers[['Author','ization'].join('')] = ['Bearer', secret].join(' ');
 
   const title = `[Lead] ${clean(data.name) || 'Unknown'} — ${clean(data.path || data.recommended_path) || 'AI Readiness'}`.slice(0, 250);
+  const body = issueBody(data);
   const labels = ['lead','ai-readiness-pass',priority(data.readiness_score, data.lead_tier),`path-${slug(data.path || data.recommended_path)}`,`audience-${slug(data.audience_type)}`];
 
-  const response = await fetch(`https://api.github.com/repos/${owner}/${repoName}/issues`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify({ title, body: issueBody(data), labels })
-  });
+  let response = await postIssue(owner, repoName, headers, title, body, labels);
+  if (!response.ok && [400, 422].includes(response.status)) {
+    response = await postIssue(owner, repoName, headers, title, body, null);
+  }
   if (!response.ok) return { ok: false, status: response.status, error: 'issue_create_failed' };
   const issue = await response.json();
   return { ok: true, issue_url: issue.html_url, issue_number: issue.number };
