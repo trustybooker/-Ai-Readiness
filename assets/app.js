@@ -12,21 +12,26 @@ const choices = [[1,'Not yet'],[2,'A little, but I need structure'],[3,'Yes, wit
 let current = 0;
 const answers = {};
 const $ = (s) => document.querySelector(s);
-const setField = (name,value) => { const field = document.querySelector(`[name="${name}"]`); if(field) field.value = value || ''; };
+const setField = (name,value,root=document) => { const field = root.querySelector(`[name="${name}"]`); if(field) field.value = value || ''; };
 
-function hydrateCaptureFields(){
+function hydrateCaptureFields(root=document){
   const params = new URLSearchParams(window.location.search);
-  setField('landing_page', window.location.href);
-  setField('referrer', document.referrer || 'direct');
-  setField('utm_source', params.get('utm_source') || '');
-  setField('utm_medium', params.get('utm_medium') || '');
-  setField('utm_campaign', params.get('utm_campaign') || '');
-  setField('utm_term', params.get('utm_term') || '');
-  setField('utm_content', params.get('utm_content') || '');
-  setField('lead_source', params.get('utm_source') || document.referrer || 'direct');
+  setField('landing_page', window.location.href, root);
+  setField('referrer', document.referrer || 'direct', root);
+  setField('utm_source', params.get('utm_source') || '', root);
+  setField('utm_medium', params.get('utm_medium') || '', root);
+  setField('utm_campaign', params.get('utm_campaign') || '', root);
+  setField('utm_term', params.get('utm_term') || '', root);
+  setField('utm_content', params.get('utm_content') || '', root);
+  setField('lead_source', params.get('utm_source') || document.referrer || 'direct', root);
+}
+
+function hasQuiz(){
+  return Boolean($('[data-question]') && $('[data-progress]') && $('[data-bar]') && $('[data-prev]') && $('[data-next]'));
 }
 
 function render(){
+  if(!hasQuiz()) return;
   const q = questions[current];
   const box = $('[data-question]');
   const progress = $('[data-progress]');
@@ -58,6 +63,8 @@ function leadTier(score){
 }
 
 function showResult(){
+  const resultBox = $('#result');
+  if(!resultBox) return;
   const total = Object.values(answers).reduce((sum,value) => sum + value, 0);
   const score = Math.round((total / (questions.length * 4)) * 100);
   const [path,message] = chooseRecommendation(score);
@@ -66,7 +73,7 @@ function showResult(){
   const strongest = sorted[sorted.length - 1][1];
   const weakest = sorted[0][1];
   const crmTier = leadTier(score);
-  $('#result').innerHTML = `<p class='eyebrow'>Your AI readiness profile</p><h3>${tier}</h3><div class='score'><b>${score}</b><span>/100</span></div><p><strong>Recommended path:</strong> ${path}</p><p>${message}</p><p><strong>Lead tier:</strong> ${crmTier}<br><strong>Strongest area:</strong> ${strongest}<br><strong>Riskiest gap:</strong> ${weakest}</p><a class='btn primary' href='#book' style='margin-top:1.2rem'>Request human review</a>`;
+  resultBox.innerHTML = `<p class='eyebrow'>Your AI readiness profile</p><h3>${tier}</h3><div class='score'><b>${score}</b><span>/100</span></div><p><strong>Recommended path:</strong> ${path}</p><p>${message}</p><p><strong>Lead tier:</strong> ${crmTier}<br><strong>Strongest area:</strong> ${strongest}<br><strong>Riskiest gap:</strong> ${weakest}</p><a class='btn primary' href='#book' style='margin-top:1.2rem'>Request human review</a>`;
   setField('score_summary', `Score ${score}/100 | ${tier} | Lead tier: ${crmTier} | Path: ${path} | Strongest: ${strongest} | Gap: ${weakest}`);
   setField('recommended_path', path);
   setField('lead_tier', crmTier);
@@ -75,10 +82,10 @@ function showResult(){
 
 async function submitLead(event){
   const form = event.currentTarget;
-  hydrateCaptureFields();
+  hydrateCaptureFields(form);
   if(form.dataset.disableFirstParty === 'true') return;
   event.preventDefault();
-  const note = $('[data-note]');
+  const note = form.querySelector('[data-note]') || $('[data-note]');
   try {
     const response = await fetch('/.netlify/functions/capture-lead', { method:'POST', body:new FormData(form) });
     if(!response.ok) throw new Error('first party capture unavailable');
@@ -90,10 +97,13 @@ async function submitLead(event){
   }
 }
 
-$('[data-prev]').addEventListener('click', () => { if(current > 0){ current -= 1; render(); } });
-$('[data-next]').addEventListener('click', () => { if(!answers[questions[current][0]]) return; if(current < questions.length - 1){ current += 1; render(); } else { showResult(); } });
-$('[data-menu]')?.addEventListener('click', () => { const links = $('[data-links]'); const open = links.classList.toggle('open'); $('[data-menu]').setAttribute('aria-expanded', String(open)); });
+if(hasQuiz()){
+  $('[data-prev]').addEventListener('click', () => { if(current > 0){ current -= 1; render(); } });
+  $('[data-next]').addEventListener('click', () => { if(!answers[questions[current][0]]) return; if(current < questions.length - 1){ current += 1; render(); } else { showResult(); } });
+  render();
+}
+
+$('[data-menu]')?.addEventListener('click', () => { const links = $('[data-links]'); if(!links) return; const open = links.classList.toggle('open'); $('[data-menu]').setAttribute('aria-expanded', String(open)); });
 document.querySelectorAll('[data-plan]').forEach(link => link.addEventListener('click', () => { const select = document.querySelector('select[name=path]'); if(select) select.value = link.dataset.plan; }));
-$('#lead-form')?.addEventListener('submit', submitLead);
+document.querySelectorAll('form').forEach(form => form.addEventListener('submit', submitLead));
 hydrateCaptureFields();
-render();
