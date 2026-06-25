@@ -14,3 +14,23 @@
   from = "/ai-readiness-pass"
   to = "/index.html"
   status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/answers"
+  to = "/answers.html"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/checklist"
+  to = "/checklist.html"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/lab"
+  to = "/lab.html"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/thanks"
+  to = "/thanks.html"
+  status = 200
