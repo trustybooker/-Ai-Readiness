@@ -1,3 +1,4 @@
+const config = window.FIFYNOW_SITE_CONFIG || {};
 const questions = [
   ['aiLiteracy','AI literacy','Can you explain what AI can and cannot safely do?'],
   ['jobReadiness','Job readiness','Can you prove practical AI skill for a resume, interview, or work sample?'],
@@ -13,6 +14,38 @@ let current = 0;
 const answers = {};
 const $ = (s) => document.querySelector(s);
 const setField = (name,value,root=document) => { const field = root.querySelector(`[name="${name}"]`); if(field) field.value = value || ''; };
+
+function safeUrl(value){
+  return typeof value === 'string' && /^https:\/\//.test(value) ? value : '';
+}
+
+function trackEvent(name, params = {}){
+  if(typeof window.gtag === 'function') window.gtag('event', name, params);
+  if(typeof window.plausible === 'function') window.plausible(name, { props: params });
+}
+
+function loadAnalytics(){
+  const analytics = config.analytics || {};
+  const gaId = analytics.googleAnalyticsId || '';
+  const plausibleDomain = analytics.plausibleDomain || '';
+  if(gaId.startsWith('G-')){
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
+    document.head.appendChild(script);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', gaId);
+  }
+  if(plausibleDomain){
+    const script = document.createElement('script');
+    script.defer = true;
+    script.setAttribute('data-domain', plausibleDomain);
+    script.src = 'https://plausible.io/js/script.js';
+    document.head.appendChild(script);
+  }
+}
 
 function hydrateCaptureFields(root=document){
   const params = new URLSearchParams(window.location.search);
@@ -78,24 +111,72 @@ function showResult(){
   setField('recommended_path', path);
   setField('lead_tier', crmTier);
   setField('readiness_score', String(score));
+  trackEvent('quiz_completed', { score, path, tier: crmTier });
+}
+
+function applyIntegrations(){
+  const payments = config.payments || {};
+  const paymentLinks = {
+    aiStarterPass: safeUrl(payments.aiStarterPass),
+    aiJobProductivityPass: safeUrl(payments.aiJobProductivityPass),
+    businessAiReadinessAudit: safeUrl(payments.businessAiReadinessAudit),
+    teamTrainingDeposit: safeUrl(payments.teamTrainingDeposit),
+    implementationReviewDeposit: safeUrl(payments.implementationReviewDeposit),
+    aiReadinessLab: safeUrl(payments.aiReadinessLab)
+  };
+  document.querySelectorAll('[data-payment-key]').forEach(link => {
+    const url = paymentLinks[link.dataset.paymentKey];
+    if(url){
+      link.href = url;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.dataset.checkoutReady = 'true';
+      if(link.dataset.readyText) link.textContent = link.dataset.readyText;
+    } else {
+      link.href = '#book';
+      link.dataset.checkoutReady = 'false';
+      if(link.dataset.pendingText) link.textContent = link.dataset.pendingText;
+    }
+  });
+
+  const bookingUrl = safeUrl(config.bookingUrl);
+  document.querySelectorAll('[data-booking-link]').forEach(link => {
+    if(bookingUrl){
+      link.href = bookingUrl;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.dataset.bookingReady = 'true';
+      if(link.dataset.readyText) link.textContent = link.dataset.readyText;
+    } else {
+      link.href = '#book';
+      link.dataset.bookingReady = 'false';
+      if(link.dataset.pendingText) link.textContent = link.dataset.pendingText;
+    }
+  });
 }
 
 async function submitLead(event){
   const form = event.currentTarget;
   hydrateCaptureFields(form);
+  trackEvent('lead_form_submit_attempt', { form: form.getAttribute('name') || 'unknown' });
   if(form.dataset.disableFirstParty === 'true') return;
   event.preventDefault();
   const note = form.querySelector('[data-note]') || $('[data-note]');
   try {
     const response = await fetch('/.netlify/functions/capture-lead', { method:'POST', body:new FormData(form) });
     if(!response.ok) throw new Error('first party capture unavailable');
+    trackEvent('lead_captured_first_party', { form: form.getAttribute('name') || 'unknown' });
     window.location.href = form.dataset.success || 'thanks.html';
   } catch (error) {
     if(note) note.textContent = 'First-party tracker is not configured yet, so this is being sent through email fallback.';
+    trackEvent('lead_email_fallback', { form: form.getAttribute('name') || 'unknown' });
     form.dataset.disableFirstParty = 'true';
     form.submit();
   }
 }
+
+loadAnalytics();
+applyIntegrations();
 
 if(hasQuiz()){
   $('[data-prev]').addEventListener('click', () => { if(current > 0){ current -= 1; render(); } });
