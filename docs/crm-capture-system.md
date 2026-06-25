@@ -52,8 +52,8 @@ Do not pay for a CRM yet. Use this order:
 1. Site form and first-party GitHub Issue tracker.
 2. Email fallback for safety.
 3. Weekly manual review.
-4. Add Google Sheets or Airtable only if export/reporting becomes necessary.
-5. Add HubSpot or GoHighLevel only after lead volume justifies it.
+4. Add spreadsheet sync only if export or reporting becomes necessary.
+5. Add a full CRM only after lead volume justifies it.
 
 ## Why not start with a heavy CRM
 
@@ -71,7 +71,7 @@ When a lead arrives:
 
 ## Future automation
 
-When API keys and service access are available, automate:
+When service access is available, automate:
 
 - Add lead to a spreadsheet or CRM.
 - Send AI readiness result email.
