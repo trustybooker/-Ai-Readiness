@@ -12,8 +12,7 @@
 ## First-party lead tracker
 
 - [ ] Deploy on Netlify.
-- [ ] Add `LEADS_SECRET` as a Netlify function environment variable.
-- [ ] Add `LEADS_REPO=trustybooker/-Ai-Readiness` as a Netlify function environment variable.
+- [ ] Add private lead tracker environment values in the hosting dashboard.
 - [ ] Submit a test lead.
 - [ ] Confirm the lead becomes a private GitHub Issue.
 - [ ] Confirm labels show priority and path.
@@ -22,7 +21,7 @@
 
 ## Form and email fallback
 
-- [ ] Confirm the first FormSubmit activation email at `fifynow@fifynowllc.com`.
+- [ ] Confirm the first FormSubmit activation email at the business inbox.
 - [ ] Confirm Gmail receives fallback copy.
 - [ ] Verify the lead includes name, email, phone, path, message, and score summary.
 
