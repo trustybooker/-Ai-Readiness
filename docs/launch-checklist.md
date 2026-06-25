@@ -7,41 +7,54 @@
 - [ ] No unsupported AI compliance claims.
 - [ ] No job guarantees.
 - [ ] No revenue guarantees.
-- [ ] Certificate language says completion proof only unless accreditation is obtained.
+- [ ] Completion badge language says proof-of-work completion only unless accreditation is obtained.
 
-## Form and lead capture
+## First-party lead tracker
 
-- [ ] Deploy the branch on Netlify.
-- [ ] Submit the form once after deployment.
-- [ ] Confirm the first FormSubmit activation email at `fifynow@gmail.com`.
-- [ ] Verify the lead includes name, email, path, message, and score summary.
-- [ ] Replace temporary FormSubmit routing with Netlify Forms, Resend, or domain email when verified.
+- [ ] Deploy on Netlify.
+- [ ] Add `LEADS_SECRET` as a Netlify function environment variable.
+- [ ] Add `LEADS_REPO=trustybooker/-Ai-Readiness` as a Netlify function environment variable.
+- [ ] Submit a test lead.
+- [ ] Confirm the lead becomes a private GitHub Issue.
+- [ ] Confirm labels show priority and path.
+- [ ] Confirm issue body includes score, path, tier, UTM/source, and checklist.
+- [ ] If tracker is not configured, confirm the fallback email form works.
+
+## Form and email fallback
+
+- [ ] Confirm the first FormSubmit activation email at `fifynow@fifynowllc.com`.
+- [ ] Confirm Gmail receives fallback copy.
+- [ ] Verify the lead includes name, email, phone, path, message, and score summary.
 
 ## Fast payment setup
 
-- [ ] Create Square Payment Link: AI Starter Pass — $59.
-- [ ] Create Square Payment Link: AI Job & Productivity Pass — $197.
-- [ ] Create Square Payment Link: Business AI Readiness Audit — $497.
+- [ ] Create Square Payment Link: AI Starter Pass.
+- [ ] Create Square Payment Link: AI Job and Productivity Pass.
+- [ ] Create Square Payment Link: Business AI Readiness Audit.
 - [ ] Create Square deposit link: Team Training Sprint deposit.
 - [ ] Create Square deposit link: AI Implementation Review deposit.
 - [ ] Add refund/credit policy before taking paid orders.
 - [ ] Replace request buttons with verified pay links only after test purchase works.
 - [ ] Use PayPal Payment Links as backup if Square setup is delayed.
 
-## Stripe setup
+## Course and delivery setup
 
-- [ ] Create Stripe product: AI Starter Pass — $59.
-- [ ] Create Stripe product: AI Job & Productivity Pass — $197.
-- [ ] Create Stripe product: Business AI Readiness Audit — $497.
-- [ ] Create Stripe payment links or checkout session backend.
-- [ ] Keep Stripe as the clean long-term setup for subscriptions and automation.
+- [ ] Review Level 1 course material.
+- [ ] Review Level 2 course material.
+- [ ] Review Level 3 course material.
+- [ ] Review Level 4 course material.
+- [ ] Create downloadable worksheets from the course files.
+- [ ] Create payment-to-onboarding instructions.
+- [ ] Create badge template only after final badge language is approved.
 
-## Booking and CRM
+## Booking and operations
 
 - [ ] Add booking link for human review.
-- [ ] Add CRM destination for leads.
-- [ ] Add email automation for score follow-up.
-- [ ] Add tracking: source, score tier, recommended path, and selected path.
+- [ ] Add analytics.
+- [ ] Test response scripts.
+- [ ] Test onboarding workflow.
+- [ ] Test offboarding workflow.
+- [ ] Test implementation playbook on one sample business workflow.
 
 ## Video and visual assets
 
@@ -64,5 +77,6 @@
 - [ ] `npm run validate` passes.
 - [ ] GitHub Actions validate workflow passes.
 - [ ] Netlify or Vercel preview loads.
-- [ ] Form submission works on deployed URL.
+- [ ] First-party tracker works on deployed URL.
+- [ ] Email fallback works on deployed URL.
 - [ ] No temporary files committed.
