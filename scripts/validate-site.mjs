@@ -5,17 +5,19 @@ const requiredFiles = [
   'assets/styles.css',
   'assets/impact.css',
   'assets/app.js',
-  'docs/media-prompts/google-flow-video-prompts.md'
+  'docs/media-prompts/google-flow-video-prompts.md',
+  'docs/fast-payment-plan.md'
 ];
 
 const requiredIndexSnippets = [
   'Know if you are AI-ready before the market exposes you.',
-  'fifynow@fifynowllc.com',
+  'fifynow@gmail.com',
   'data-question',
   'score_summary',
-  'https://formsubmit.co/fifynow@fifynowllc.com',
+  'https://formsubmit.co/fifynow@gmail.com',
   'application/ld+json',
   'No fake testimonials',
+  'Fast payment path',
   'No. This is educational readiness, training, and implementation support.'
 ];
 
