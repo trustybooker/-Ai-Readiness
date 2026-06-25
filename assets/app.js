@@ -76,7 +76,7 @@ function showResult(){
 async function submitLead(event){
   const form = event.currentTarget;
   hydrateCaptureFields();
-  if(form.dataset.useFirstParty !== 'true') return;
+  if(form.dataset.disableFirstParty === 'true') return;
   event.preventDefault();
   const note = $('[data-note]');
   try {
@@ -85,7 +85,7 @@ async function submitLead(event){
     window.location.href = form.dataset.success || 'thanks.html';
   } catch (error) {
     if(note) note.textContent = 'First-party tracker is not configured yet, so this is being sent through email fallback.';
-    form.dataset.useFirstParty = 'false';
+    form.dataset.disableFirstParty = 'true';
     form.submit();
   }
 }
