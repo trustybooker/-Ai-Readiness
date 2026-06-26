@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 
 const requiredFiles = [
-  'index.html','answers.html','checklist.html','lab.html','thanks.html','favicon.svg','site.webmanifest',
+  'index.html','booking.html','answers.html','checklist.html','lab.html','thanks.html','favicon.svg','site.webmanifest',
   'answer/what-is-ai-readiness.html','answer/how-to-prove-ai-skills-on-resume.html','answer/why-train-before-ai-automation.html','answer/what-is-an-ai-readiness-audit.html','answer/what-not-to-put-into-ai-tools.html','answer/how-small-businesses-start-ai-safely.html',
   'assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg',
   'robots.txt','sitemap.xml','netlify/functions/capture-lead.mjs',
@@ -10,10 +10,11 @@ const requiredFiles = [
 ];
 
 const requiredIndexSnippets = ['Know if you are AI-ready before the market exposes you.','fifynow@fifynowllc.com','fifynow@gmail.com','_cc','data-question','score_summary','recommended_path','lead_tier','utm_source','https://formsubmit.co/fifynow@fifynowllc.com','application/ld+json','FAQPage','OfferCatalog','No fake testimonials','Fast payment path','data-payment-key','data-booking-link','assets/site-config.js','No. This is educational readiness, training, and implementation support.'];
+const requiredBookingSnippets = ['Internal booking request system','Request a real AI Readiness Review time','ai-readiness-booking','preferred_time_1','preferred_time_2','preferred_time_3','Google Calendar invite','No fake availability'];
 const requiredScriptSnippets = ['AI literacy','Job readiness','Workflow readiness','score_summary','chooseRecommendation','hydrateCaptureFields','capture-lead','email fallback','lead_tier','hasQuiz','form[name]:not(#quiz)','Request human review','loadAnalytics','data-payment-key','data-booking-link','googleAnalyticsId','plausibleDomain'];
 const requiredConfigSnippets = ['bookingUrl','googleAnalyticsId','plausibleDomain','aiStarterPass','businessAiReadinessAudit','implementationReviewDeposit'];
 const requiredFunctionSnippets = ['LEADS_SECRET','LEADS_REPO','api.github.com','issues','ai-readiness-pass','priority-hot','postIssue'];
-const requiredSitemapSnippets = ['checklist.html','lab.html','what-is-ai-readiness.html','how-to-prove-ai-skills-on-resume.html','why-train-before-ai-automation.html','what-is-an-ai-readiness-audit.html','what-not-to-put-into-ai-tools.html','how-small-businesses-start-ai-safely.html'];
+const requiredSitemapSnippets = ['booking.html','checklist.html','lab.html','what-is-ai-readiness.html','how-to-prove-ai-skills-on-resume.html','why-train-before-ai-automation.html','what-is-an-ai-readiness-audit.html','what-not-to-put-into-ai-tools.html','how-small-businesses-start-ai-safely.html'];
 const requiredAnswersSnippets = ['Layer 2: answer hub','checklist.html','lab.html','answer/what-is-ai-readiness.html','answer/how-small-businesses-start-ai-safely.html'];
 const requiredLayerSnippets = ['Layer 1: Conversion Page','Layer 2: Answer Hub','checklist.html','lab.html'];
 const requiredBrandSnippets = ['fifynow-logo.svg','stop-color:#1e5bb5','stop-color:#2563eb','M14.7 6.3'];
@@ -35,6 +36,7 @@ function requireSnippets(file, snippets, label){
 }
 
 requireSnippets('index.html', requiredIndexSnippets, 'index.html');
+requireSnippets('booking.html', requiredBookingSnippets, 'booking.html');
 requireSnippets('assets/app.js', requiredScriptSnippets, 'assets/app.js');
 requireSnippets('assets/site-config.js', requiredConfigSnippets, 'site config');
 requireSnippets('netlify/functions/capture-lead.mjs', requiredFunctionSnippets, 'capture function');
