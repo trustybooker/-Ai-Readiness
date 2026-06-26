@@ -16,6 +16,11 @@
   status = 200
 
 [[redirects]]
+  from = "/ai-readiness-pass/booking"
+  to = "/booking.html"
+  status = 200
+
+[[redirects]]
   from = "/ai-readiness-pass/answers"
   to = "/answers.html"
   status = 200
