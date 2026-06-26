@@ -63,6 +63,8 @@ When `bookingUrl` is present, booking buttons open the Google Calendar scheduler
 
 ## Truth standard
 
+No fake availability.
+
 - Do not show fake available times.
 - Do not say a meeting is confirmed until a real calendar invite or scheduler confirmation exists.
 - Do not accept payment-only bookings if human fit review is required first.
