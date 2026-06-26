@@ -5,15 +5,15 @@ const requiredFiles = [
   'answer/what-is-ai-readiness.html','answer/how-to-prove-ai-skills-on-resume.html','answer/why-train-before-ai-automation.html','answer/what-is-an-ai-readiness-audit.html','answer/what-not-to-put-into-ai-tools.html','answer/how-small-businesses-start-ai-safely.html',
   'assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg',
   'robots.txt','sitemap.xml','netlify/functions/capture-lead.mjs',
-  'docs/master-platform-skill.md','docs/skill-registry.md','docs/two-layer-growth-system.md','docs/media-prompts/google-flow-video-prompts.md','docs/fast-payment-plan.md','docs/imagery-system.md','docs/crm-capture-system.md','docs/first-party-lead-system.md','docs/response-system.md','docs/business-operating-system.md','docs/onboarding-offboarding-refunds.md','docs/implementation-playbook.md','docs/certification-standards.md','docs/production-readiness-audit-2026-06-25.md','docs/agent-command-center.md','docs/final-production-test-matrix.md','docs/live-launch-runbook.md','docs/visual-qa-report-2026-06-25.md','docs/payments-booking-analytics-setup.md',
+  'docs/master-platform-skill.md','docs/skill-registry.md','docs/two-layer-growth-system.md','docs/media-prompts/google-flow-video-prompts.md','docs/fast-payment-plan.md','docs/imagery-system.md','docs/crm-capture-system.md','docs/first-party-lead-system.md','docs/response-system.md','docs/business-operating-system.md','docs/onboarding-offboarding-refunds.md','docs/implementation-playbook.md','docs/certification-standards.md','docs/production-readiness-audit-2026-06-25.md','docs/agent-command-center.md','docs/final-production-test-matrix.md','docs/live-launch-runbook.md','docs/visual-qa-report-2026-06-25.md','docs/payments-booking-analytics-setup.md','docs/internal-booking-system.md',
   'course/level-1-ai-readiness-foundations.md','course/level-2-ai-job-productivity-pass.md','course/level-3-business-ai-readiness.md','course/level-4-implementation-partner-track.md','course/ai-readiness-workbook.md'
 ];
 
 const requiredIndexSnippets = ['Know if you are AI-ready before the market exposes you.','fifynow@fifynowllc.com','fifynow@gmail.com','_cc','data-question','score_summary','recommended_path','lead_tier','utm_source','https://formsubmit.co/fifynow@fifynowllc.com','application/ld+json','FAQPage','OfferCatalog','No fake testimonials','Fast payment path','data-payment-key','data-booking-link','assets/site-config.js','No. This is educational readiness, training, and implementation support.'];
-const requiredBookingSnippets = ['Internal booking request system','Request a real AI Readiness Review time','ai-readiness-booking','preferred_time_1','preferred_time_2','preferred_time_3','Google Calendar invite','No fake availability'];
+const requiredBookingSnippets = ['Internal booking request system','Request a real AI readiness review time','ai-readiness-booking','preferred_time_1','preferred_time_2','preferred_time_3','Google Calendar invite','No fake availability'];
 const requiredScriptSnippets = ['AI literacy','Job readiness','Workflow readiness','score_summary','chooseRecommendation','hydrateCaptureFields','capture-lead','email fallback','lead_tier','hasQuiz','form[name]:not(#quiz)','Request human review','loadAnalytics','data-payment-key','data-booking-link','googleAnalyticsId','plausibleDomain'];
 const requiredConfigSnippets = ['bookingUrl','googleAnalyticsId','plausibleDomain','aiStarterPass','businessAiReadinessAudit','implementationReviewDeposit'];
-const requiredFunctionSnippets = ['LEADS_SECRET','LEADS_REPO','api.github.com','issues','ai-readiness-pass','priority-hot','postIssue'];
+const requiredFunctionSnippets = ['LEADS_SECRET','LEADS_REPO','api.github.com','issues','ai-readiness-pass','priority-hot','priority-booking','[Booking]','Preferred time 1','postIssue'];
 const requiredSitemapSnippets = ['booking.html','checklist.html','lab.html','what-is-ai-readiness.html','how-to-prove-ai-skills-on-resume.html','why-train-before-ai-automation.html','what-is-an-ai-readiness-audit.html','what-not-to-put-into-ai-tools.html','how-small-businesses-start-ai-safely.html'];
 const requiredAnswersSnippets = ['Layer 2: answer hub','checklist.html','lab.html','answer/what-is-ai-readiness.html','answer/how-small-businesses-start-ai-safely.html'];
 const requiredLayerSnippets = ['Layer 1: Conversion Page','Layer 2: Answer Hub','checklist.html','lab.html'];
@@ -25,6 +25,7 @@ const requiredMasterSkillSnippets = ['Audit first','Truth first','two-layer syst
 const requiredRegistrySnippets = ['Production Architect','Frontend UX Engineer','Lead Systems Engineer','SEO AEO Strategist','Skill update protocol','Image and icon context'];
 const requiredVisualQaSnippets = ['repo-side visual QA','Official Fify Now LLC logo','Payment links are controlled','Live visual QA'];
 const requiredSetupSnippets = ['Payment setup','Booking setup','Analytics setup','assets/site-config.js','Do not add a link until it has been tested'];
+const requiredInternalBookingSnippets = ['Internal Booking System','booking.html','ai-readiness-booking','Google Calendar integration','No fake availability','Confirmation workflow'];
 
 const failures = [];
 for (const file of requiredFiles) if (!fs.existsSync(file)) failures.push(`Missing file: ${file}`);
@@ -55,6 +56,7 @@ requireSnippets('docs/master-platform-skill.md', requiredMasterSkillSnippets, 'm
 requireSnippets('docs/skill-registry.md', requiredRegistrySnippets, 'skill registry');
 requireSnippets('docs/visual-qa-report-2026-06-25.md', requiredVisualQaSnippets, 'visual QA report');
 requireSnippets('docs/payments-booking-analytics-setup.md', requiredSetupSnippets, 'payment booking analytics setup');
+requireSnippets('docs/internal-booking-system.md', requiredInternalBookingSnippets, 'internal booking system');
 
 if (fs.existsSync('test-multiline.txt') || fs.existsSync('test-raw.txt')) failures.push('Temporary test files must not be committed.');
 
