@@ -14,13 +14,64 @@ function priority(score = '', tier = '') {
   const n = Number(score || 0);
   const t = String(tier).toLowerCase();
   if (t.includes('hot') || n >= 80) return 'priority-hot';
+  if (t.includes('booking')) return 'priority-booking';
   if (t.includes('audit') || n >= 62) return 'priority-audit';
   if (n >= 42) return 'priority-training';
   return 'priority-foundation';
 }
 
 function issueBody(data) {
-  return `# AI Readiness Pass Lead\n\n## Contact\n- Name: ${clean(data.name)}\n- Email: ${clean(data.email)}\n- Phone: ${clean(data.phone)}\n\n## Qualification\n- Selected path: ${clean(data.path)}\n- Recommended path: ${clean(data.recommended_path)}\n- Lead tier: ${clean(data.lead_tier)}\n- Readiness score: ${clean(data.readiness_score)}\n- Score summary: ${clean(data.score_summary)}\n- Audience type: ${clean(data.audience_type)}\n- Timeline: ${clean(data.timeline)}\n- Budget range: ${clean(data.budget_range)}\n\n## Message\n${clean(data.message)}\n\n## Source\n- Landing page: ${clean(data.landing_page)}\n- Referrer: ${clean(data.referrer)}\n- UTM source: ${clean(data.utm_source)}\n- UTM medium: ${clean(data.utm_medium)}\n- UTM campaign: ${clean(data.utm_campaign)}\n- UTM term: ${clean(data.utm_term)}\n- UTM content: ${clean(data.utm_content)}\n\n## Follow-up checklist\n- [ ] Review score and message.\n- [ ] Choose response path.\n- [ ] Send response script.\n- [ ] Send booking or verified payment link when appropriate.\n- [ ] Update status label.\n\nNo job, revenue, legal compliance, or accreditation guarantee should be made.\n`;
+  return `# AI Readiness Pass Lead
+
+## Request Type
+- Type: ${clean(data.request_type || 'Lead request')}
+
+## Contact
+- Name: ${clean(data.name)}
+- Email: ${clean(data.email)}
+- Phone: ${clean(data.phone)}
+
+## Qualification
+- Selected path: ${clean(data.path)}
+- Recommended path: ${clean(data.recommended_path)}
+- Lead tier: ${clean(data.lead_tier)}
+- Readiness score: ${clean(data.readiness_score)}
+- Score summary: ${clean(data.score_summary)}
+- Audience type: ${clean(data.audience_type)}
+- Timeline: ${clean(data.timeline)}
+- Budget range: ${clean(data.budget_range)}
+
+## Booking Request
+- Meeting length: ${clean(data.meeting_length || data.call_length)}
+- Meeting preference: ${clean(data.meeting_preference || data.meeting_type)}
+- Timezone: ${clean(data.timezone)}
+- Preferred time 1: ${clean(data.preferred_time_1 || [data.preferred_date_1, data.preferred_time_window_1].filter(Boolean).join(' '))}
+- Preferred time 2: ${clean(data.preferred_time_2 || [data.preferred_date_2, data.preferred_time_window_2].filter(Boolean).join(' '))}
+- Preferred time 3: ${clean(data.preferred_time_3)}
+- Calendar status: Needs human confirmation unless a real scheduler confirmation exists.
+
+## Message
+${clean(data.message)}
+
+## Source
+- Landing page: ${clean(data.landing_page)}
+- Referrer: ${clean(data.referrer)}
+- UTM source: ${clean(data.utm_source)}
+- UTM medium: ${clean(data.utm_medium)}
+- UTM campaign: ${clean(data.utm_campaign)}
+- UTM term: ${clean(data.utm_term)}
+- UTM content: ${clean(data.utm_content)}
+
+## Follow-up checklist
+- [ ] Review score and message.
+- [ ] Confirm requested service and fit.
+- [ ] Check calendar availability.
+- [ ] Send official Google Calendar invite or verified scheduler link.
+- [ ] Send verified payment link when appropriate.
+- [ ] Update status label.
+
+No job, revenue, legal compliance, or accreditation guarantee should be made.
+`;
 }
 
 async function postIssue(owner, repoName, headers, title, body, labels) {
@@ -45,9 +96,11 @@ async function createIssue(data) {
   };
   headers[['Author','ization'].join('')] = ['Bearer', secret].join(' ');
 
-  const title = `[Lead] ${clean(data.name) || 'Unknown'} — ${clean(data.path || data.recommended_path) || 'AI Readiness'}`.slice(0, 250);
+  const requestType = clean(data.request_type || 'Lead');
+  const titlePrefix = requestType.toLowerCase().includes('booking') ? '[Booking]' : '[Lead]';
+  const title = `${titlePrefix} ${clean(data.name) || 'Unknown'} — ${clean(data.path || data.recommended_path) || 'AI Readiness'}`.slice(0, 250);
   const body = issueBody(data);
-  const labels = ['lead','ai-readiness-pass',priority(data.readiness_score, data.lead_tier),`path-${slug(data.path || data.recommended_path)}`,`audience-${slug(data.audience_type)}`];
+  const labels = ['lead','ai-readiness-pass',priority(data.readiness_score, data.lead_tier),`path-${slug(data.path || data.recommended_path)}`,`audience-${slug(data.audience_type || data.request_type)}`];
 
   let response = await postIssue(owner, repoName, headers, title, body, labels);
   if (!response.ok && [400, 422].includes(response.status)) {
