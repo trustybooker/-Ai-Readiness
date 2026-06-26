@@ -1,5 +1,5 @@
 window.FIFYNOW_SITE_CONFIG = {
-  bookingUrl: '',
+  bookingUrl: 'https://calendar.app.google/wSVv9b3k5X5GiQqf6',
   analytics: {
     provider: 'none',
     googleAnalyticsId: '',
