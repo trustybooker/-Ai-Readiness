@@ -68,10 +68,12 @@ function checkSitemapTargets(){
 function checkConfiguredUrls(){
   if (!fs.existsSync('assets/site-config.js')) return;
   const text = fs.readFileSync('assets/site-config.js', 'utf8');
-  const stringRe = /:\s*'([^']*)'/g;
-  for (const match of text.matchAll(stringRe)) {
-    const value = match[1];
-    if (value && !value.startsWith('https://')) failures.push(`site-config URL must be https or empty: ${value}`);
+  const allowedKeys = ['bookingUrl','aiStarterPass','aiJobProductivityPass','businessAiReadinessAudit','teamTrainingDeposit','implementationReviewDeposit','aiReadinessLab'];
+  for (const key of allowedKeys) {
+    const match = text.match(new RegExp(`${key}:\\s*'([^']*)'`));
+    if (!match) failures.push(`site-config missing key: ${key}`);
+    const value = match?.[1] || '';
+    if (value && !value.startsWith('https://')) failures.push(`site-config ${key} must be https or empty`);
   }
 }
 
