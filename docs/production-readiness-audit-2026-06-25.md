@@ -1,20 +1,25 @@
-# Production Readiness Audit — 2026-06-25
+# Production Readiness Audit — 2026-06-26
 
-## Audit status
+## Final audit decision
 
-Status: **Production code package is close, but live production is not complete until external setup and live tests are done.**
+Status: **Not production-ready yet. Repo-side code package is strong and validation is passing, but the app cannot honestly be called production-ready until live deployment and external tests pass.**
 
 ## Current GitHub state
 
 - PR: #1, open and draft.
-- Mergeable: yes at audit time.
-- Latest validation workflow: passed at audit time.
+- Base branch: `main`.
+- Working branch: `build/ai-readiness-pass`.
+- Latest audited head: `93837a5e8d6c1297cfd05c51f89a1a0ebcbf306d`.
+- Mergeable at audit time: yes.
+- Latest validation workflow: passed.
+- Changed files at audit time: 60.
 - Temporary test files: removed.
 - Official Fify Now LLC logo: added and validated.
 
-## What is strong
+## What is production-code ready
 
 - Conversion landing page exists.
+- Booking page exists.
 - Answer hub exists.
 - Six AEO direct-answer pages exist.
 - Lead magnet page exists.
@@ -23,51 +28,60 @@ Status: **Production code package is close, but live production is not complete 
 - Lead tiering exists.
 - First-party tracker function exists.
 - Email fallback exists.
+- Google Calendar booking URL is connected in `assets/site-config.js`.
+- Internal booking request system exists.
 - Business operating system docs exist.
 - Course/certification docs exist.
+- Four-level course material exists.
+- Workbook exists.
+- Completion badge asset exists.
 - Onboarding/offboarding workflow exists.
 - Implementation playbook exists.
 - Validation workflow exists.
 - Official brand asset is used for app/logo/social preview.
 
-## Production blockers
+## What is still not live-production ready
 
 These cannot be honestly called complete from code alone:
 
 1. Site is not confirmed live on production hosting.
-2. First-party tracker environment values are not confirmed in the host.
-3. A real lead has not been submitted through the deployed URL.
-4. Email fallback has not been confirmed with a live deployed submission.
-5. Payment links are not yet created and tested.
-6. Booking link is not yet connected.
+2. Deployed preview URL has not been visually checked on desktop and mobile.
+3. First-party tracker environment values are not confirmed in the host.
+4. A real lead has not been submitted through the deployed URL.
+5. Email fallback has not been confirmed with a live deployed submission.
+6. Payment links are not yet created and tested.
 7. Analytics is not yet connected.
-8. Real hero video/photo assets are not yet generated and approved.
-9. Course worksheets and badge templates are not yet converted into final deliverable files.
-10. Structured data has not yet been tested on the deployed URL.
+8. Real hero video/photo assets are not yet generated, approved, or intentionally waived.
+9. Structured data has not yet been tested on deployed URLs.
+10. Google Calendar scheduler link is present in code, but it still needs live click testing after deployment.
 
 ## Risk rating
 
 - Code readiness: **High**
 - Business system readiness: **High**
-- Live operations readiness: **Medium until deployment and external tests pass**
-- Revenue readiness: **Medium until payment links and onboarding are verified**
-- SEO/AEO readiness: **Medium-high, improves after deployment, indexing, citations, and content expansion**
+- Booking readiness: **Medium-high** because the calendar link is connected, but live click testing still needs to pass after deployment.
+- Lead operations readiness: **Medium** until host settings, GitHub issue creation, and fallback email are verified from the deployed site.
+- Revenue readiness: **Medium-low** until payment links exist and paid fulfillment is tested.
+- SEO/AEO readiness: **Medium-high** after deployment, indexing, and live schema testing.
+- Production readiness: **Not ready** until the live-launch test matrix passes.
 
 ## Immediate production path
 
 1. Deploy preview.
-2. Test all pages.
-3. Configure lead tracker environment values.
-4. Submit test lead.
-5. Confirm GitHub Issue creation.
-6. Confirm fallback email.
-7. Add Square payment links.
-8. Add booking link.
-9. Add analytics.
-10. Validate schema on live URL.
-11. Approve final visual assets.
-12. Mark PR ready for review or merge after tests.
+2. Test all pages and routes.
+3. Test Google Calendar booking buttons from the deployed page.
+4. Configure lead tracker environment values.
+5. Submit test lead from main page.
+6. Submit test booking request from booking page.
+7. Confirm GitHub Issue creation.
+8. Confirm fallback email.
+9. Create and test payment links.
+10. Add payment links to `assets/site-config.js`.
+11. Add analytics if selected.
+12. Validate schema on live URL.
+13. Approve final visual assets or explicitly launch without hero media.
+14. Mark PR ready for review only after live tests pass.
 
 ## Decision rule
 
-Do not merge to main as production-ready until deployment, lead capture, fallback email, payment link, and booking tests are completed.
+Do not merge to main as production-ready until deployment, lead capture, fallback email, payment link, booking link, visual QA, schema, and truth-audit tests are completed.
