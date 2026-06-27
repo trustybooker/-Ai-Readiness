@@ -16,7 +16,17 @@
   status = 200
 
 [[redirects]]
+  from = "/ai-readiness-pass/index.html"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
   from = "/ai-readiness-pass/booking"
+  to = "/booking.html"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/booking.html"
   to = "/booking.html"
   status = 200
 
@@ -26,7 +36,17 @@
   status = 200
 
 [[redirects]]
+  from = "/ai-readiness-pass/answers.html"
+  to = "/answers.html"
+  status = 200
+
+[[redirects]]
   from = "/ai-readiness-pass/checklist"
+  to = "/checklist.html"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/checklist.html"
   to = "/checklist.html"
   status = 200
 
@@ -36,6 +56,46 @@
   status = 200
 
 [[redirects]]
+  from = "/ai-readiness-pass/lab.html"
+  to = "/lab.html"
+  status = 200
+
+[[redirects]]
   from = "/ai-readiness-pass/thanks"
   to = "/thanks.html"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/thanks.html"
+  to = "/thanks.html"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/answer/:slug"
+  to = "/answer/:slug"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/assets/:splat"
+  to = "/assets/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/sitemap.xml"
+  to = "/sitemap.xml"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/robots.txt"
+  to = "/robots.txt"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/favicon.svg"
+  to = "/favicon.svg"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/site.webmanifest"
+  to = "/site.webmanifest"
   status = 200
