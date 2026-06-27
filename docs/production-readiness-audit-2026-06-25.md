@@ -1,27 +1,29 @@
-# Production Readiness Audit — 2026-06-26
+# Production Readiness Audit — refreshed 2026-06-27
 
 ## Final audit decision
 
-Status: **Not production-ready yet. Repo-side code package is strong and validation is passing, but the app cannot honestly be called production-ready until live deployment and external tests pass.**
+Status: **Repo-side package is near complete and validation is passing. It is not live-production-ready until deployment and external service tests pass.**
 
-## Current GitHub state
+This audit separates two things:
+
+1. **Repo-side completeness:** files, routes, copy, lead logic, docs, validation, and launch gates.
+2. **Live-production completeness:** deployed URL, host secrets, form delivery, payment links, booking click, mobile QA, and schema validation.
+
+## Current GitHub state to verify
 
 - PR: #1, open and draft.
 - Base branch: `main`.
 - Working branch: `build/ai-readiness-pass`.
-- Latest audited head: `f7d920c216b41e0b4adebfa78fde388f7b279c7a`.
-- Mergeable at audit time: yes.
-- Latest validation workflow: passed.
-- Changed files at audit time: 60.
+- Validation workflow: must pass on the latest head before any launch decision.
 - Temporary test files: removed.
 - Official Fify Now LLC logo: added and validated.
 
-## What is production-code ready
+## Repo-side complete areas
 
 - Conversion landing page exists.
 - Booking page exists.
 - Answer hub exists.
-- Six AEO direct-answer pages exist.
+- Seven AEO direct-answer pages exist.
 - Lead magnet page exists.
 - AI Readiness Lab waitlist exists.
 - Quiz scoring exists.
@@ -30,8 +32,10 @@ Status: **Not production-ready yet. Repo-side code package is strong and validat
 - Email fallback exists.
 - Google Calendar booking URL is connected in `assets/site-config.js`.
 - Internal booking request system exists.
+- Human Value Standard exists.
+- Sales Conversion System exists.
 - Business operating system docs exist.
-- Course/certification docs exist.
+- Course and badge docs exist.
 - Four-level course material exists.
 - Workbook exists.
 - Completion badge asset exists.
@@ -39,6 +43,26 @@ Status: **Not production-ready yet. Repo-side code package is strong and validat
 - Implementation playbook exists.
 - Validation workflow exists.
 - Official brand asset is used for app/logo/social preview.
+- Contextual visual and icon assets exist.
+- Netlify subpath routing exists.
+- Lead tracker host setup guide exists.
+- Live preview guide exists.
+
+## Repo-side safeguards now checked by validation
+
+The validator checks:
+
+- required pages and assets,
+- answer pages and sitemap targets,
+- local HTML references,
+- lead tracker function markers,
+- booking and payment config keys,
+- config URL safety for external links,
+- visual asset presence,
+- course/workbook/badge artifacts,
+- human value and sales docs,
+- launch/test docs,
+- no temporary test files.
 
 ## What is still not live-production ready
 
@@ -51,14 +75,15 @@ These cannot be honestly called complete from code alone:
 5. Email fallback has not been confirmed with a live deployed submission.
 6. Payment links are not yet created and tested.
 7. Analytics is not yet connected.
-8. Real hero video/photo assets are not yet generated, approved, or intentionally waived.
-9. Structured data has not yet been tested on deployed URLs.
-10. Google Calendar scheduler link is present in code, but it still needs live click testing after deployment.
+8. Structured data has not yet been tested on deployed URLs.
+9. Google Calendar scheduler link is present in code, but it still needs live click testing after deployment.
 
 ## Risk rating
 
-- Code readiness: **High**
-- Business system readiness: **High**
+- Repo-side code readiness: **High**.
+- Business system readiness: **High**.
+- Human-first value readiness: **High**.
+- Sales/conversion readiness: **High repo-side, medium live until payment links exist**.
 - Booking readiness: **Medium-high** because the calendar link is connected, but live click testing still needs to pass after deployment.
 - Lead operations readiness: **Medium** until host settings, GitHub issue creation, and fallback email are verified from the deployed site.
 - Revenue readiness: **Medium-low** until payment links exist and paid fulfillment is tested.
@@ -79,7 +104,7 @@ These cannot be honestly called complete from code alone:
 10. Add payment links to `assets/site-config.js`.
 11. Add analytics if selected.
 12. Validate schema on live URL.
-13. Approve final visual assets or explicitly launch without hero media.
+13. Run mobile and desktop visual QA.
 14. Mark PR ready for review only after live tests pass.
 
 ## Decision rule
