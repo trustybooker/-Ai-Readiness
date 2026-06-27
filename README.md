@@ -8,26 +8,30 @@ Standalone AI readiness, training, assessment, job-prep, business-audit, impleme
 
 > Are we ready to use AI safely, productively, and credibly?
 
+The project is built to be human-first and sales-ready. Visitors should receive useful direction before buying, while serious leads have a clear path into training, audits, team work, implementation review, or recurring support.
+
 ## Conversion path
 
 1. Free AI readiness score.
-2. Recommended path.
-3. First-party lead capture and lead tiering.
-4. Human review request.
-5. Training, audit, sprint, or implementation offer.
+2. Useful checklist or direct answer page.
+3. Recommended path.
+4. First-party lead capture and lead tiering.
+5. Human review request or scheduler click.
+6. Training, audit, sprint, implementation review, or lab membership.
+7. Follow-up using one clear next step.
 
 ## First-party tracking system
 
-The site now includes a no-extra-cost lead system:
+The site includes a no-extra-cost lead system:
 
 - Lead form tries the first-party Netlify function first.
-- Function creates a private GitHub Issue for each lead when configured.
-- GitHub Issue includes contact details, score, lead tier, selected path, timeline, budget, source, and follow-up checklist.
+- Function creates a private GitHub Issue for each lead when host settings are configured.
+- GitHub Issue includes contact details, score, lead tier, selected path, timeline, budget, source, booking details, and follow-up checklist.
 - If the function is not configured yet, the form falls back to email routing.
 
-Setup details are in `docs/first-party-lead-system.md`.
+Setup details are in `docs/first-party-lead-system.md` and `docs/lead-tracker-host-setup.md`.
 
-## Course and certification system
+## Course and badge system
 
 The course is organized into four levels:
 
@@ -36,7 +40,7 @@ The course is organized into four levels:
 - Level 3: Business AI Readiness.
 - Level 4: Implementation Partner Track.
 
-Certification language is intentionally conservative:
+Badge language is intentionally conservative:
 
 - Use “Fify Now LLC Completion Badge.”
 - Use “proof-of-work artifacts.”
@@ -44,48 +48,41 @@ Certification language is intentionally conservative:
 
 ## Operating system
 
-The repo now includes:
-
-- Business operating system.
-- First-party lead tracking playbook.
-- Response scripts.
-- Onboarding, offboarding, refund, and handoff workflow.
-- Business implementation and integration playbook.
-- Certification standards.
-- Course materials.
-- CRM capture plan.
-- Fast payment plan.
-- SEO/AEO answer hub.
-- Imagery and video quality system.
+The repo includes business operations, lead tracking, host setup, human value standard, sales conversion system, response scripts, onboarding and handoff workflows, implementation playbooks, course materials, CRM capture plan, payment plan, SEO/AEO answer hub, visual assets, launch runbook, and live preview guide.
 
 ## What is currently wired
 
 - Static landing page.
 - Responsive design.
+- Contextual visual and icon assets.
 - Interactive readiness quiz.
 - Score summary, recommended path, and lead tier hidden fields.
 - First-party tracker function with email fallback.
 - Lead form routed to business email with Gmail fallback copy.
 - First-party capture fields: audience type, timeline, budget range, referrer, landing page, and UTM fields.
+- Google Calendar scheduler URL in `assets/site-config.js`.
+- Internal booking request page.
+- Payment-link placeholders controlled from `assets/site-config.js`.
 - SEO metadata, Open Graph image, Twitter card, robots.txt, sitemap.xml, and JSON-LD schema.
 - Schema graph includes Organization, WebSite, ProfessionalService, WebPage, OfferCatalog, and FAQPage.
+- Seven direct-answer pages plus answer hub.
 - Thank-you page after submission.
-- Google Flow / Veo video prompts and imagery quality standards.
-- Netlify deployment config.
+- Netlify deployment config with subpath redirects.
 - Validation script and GitHub Actions workflow.
 
 ## What still needs external setup
 
-The repo cannot truly complete these steps without service access and credentials:
+The repo cannot complete these steps without service access and credentials:
 
 - Deploy on Netlify or another host.
-- Configure the private lead tracker environment values in the host.
-- Confirm the email fallback sends correctly.
-- Create Square Payment Links for immediate sales.
-- Create Stripe products and replace request buttons with verified checkout links.
-- Add booking link.
-- Add analytics.
-- Add real hero video asset after generation and manual quality review.
+- Configure private lead tracker environment values in the host.
+- Submit a live test lead and confirm GitHub Issue creation.
+- Confirm the email fallback sends correctly from the deployed site.
+- Create and test payment links.
+- Add tested payment links to `assets/site-config.js`.
+- Add analytics if selected.
+- Test Google Calendar from the deployed preview.
+- Run live mobile, desktop, and schema QA.
 
 ## Validation
 
@@ -95,10 +92,10 @@ Run:
 npm run validate
 ```
 
-The validator checks required files, conversion copy, score/form wiring, first-party tracker, schema, sitemap, imagery setup, CRM capture docs, course materials, operating system, certification standards, safety disclaimers, and removal of temporary test files.
+The validator checks required files, conversion copy, score/form wiring, lead tracker, config safety, local HTML references, sitemap targets, schema-related pages, visual assets, course materials, operating system docs, sales docs, launch docs, and removal of temporary test files.
 
 ## Truth standard
 
-Do not add fake testimonials, fake client logos, fake certification/accreditation claims, legal compliance claims, job guarantees, income guarantees, or unsupported ROI claims.
+Do not add fake proof, fake client logos, unsupported credentials, unsupported legal claims, or unsupported outcome claims.
 
-The business should convert because the offer is clear, timely, practical, and human-reviewed — not because of fake proof.
+The business should convert because the offer is clear, timely, practical, human-reviewed, and useful.
