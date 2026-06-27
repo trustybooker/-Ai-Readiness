@@ -5,22 +5,37 @@ Run this after a deployment preview exists.
 ## Public route smoke tests
 
 - [ ] `/` loads.
+- [ ] `/index.html` loads.
 - [ ] `/ai-readiness-pass` loads if deployed under subpath.
+- [ ] `/ai-readiness-pass/index.html` loads.
+- [ ] `/booking.html` loads.
+- [ ] `/ai-readiness-pass/booking` loads.
+- [ ] `/ai-readiness-pass/booking.html` loads.
 - [ ] `/answers.html` loads.
+- [ ] `/ai-readiness-pass/answers` loads.
+- [ ] `/ai-readiness-pass/answers.html` loads.
 - [ ] `/checklist.html` loads.
+- [ ] `/ai-readiness-pass/checklist` loads.
 - [ ] `/lab.html` loads.
+- [ ] `/ai-readiness-pass/lab` loads.
 - [ ] `/thanks.html` loads.
+- [ ] `/ai-readiness-pass/thanks` loads.
 - [ ] All `/answer/` pages load.
+- [ ] All `/ai-readiness-pass/answer/` pages load.
 - [ ] `sitemap.xml` loads.
+- [ ] `/ai-readiness-pass/sitemap.xml` loads.
 - [ ] `robots.txt` loads.
+- [ ] `/ai-readiness-pass/robots.txt` loads.
 - [ ] `favicon.svg` loads.
 - [ ] `site.webmanifest` loads.
+- [ ] `/ai-readiness-pass/assets/styles.css` loads.
 
 ## Visual QA
 
 - [ ] Official Fify Now LLC logo is visible in header branding.
 - [ ] Favicon uses official Fify Now LLC logo.
 - [ ] Social preview image uses official Fify Now LLC logo.
+- [ ] Contextual AI readiness visual appears without distortion.
 - [ ] Mobile hero is readable.
 - [ ] Primary CTA is visible above the fold on mobile.
 - [ ] Cards and pricing do not feel crowded.
@@ -41,7 +56,9 @@ Run this after a deployment preview exists.
 - [ ] Main form submits through first-party tracker when configured.
 - [ ] Checklist form submits through first-party tracker when configured.
 - [ ] Lab form submits through first-party tracker when configured.
+- [ ] Booking form submits through first-party tracker when configured.
 - [ ] Lead issue includes name, email, path, score, tier, source, timeline, budget, and message.
+- [ ] Booking issue includes meeting length, meeting preference, timezone, and preferred times.
 - [ ] If tracker is disabled, email fallback works.
 - [ ] Honeypot/spam field does not break normal submissions.
 
@@ -53,6 +70,18 @@ Run this after a deployment preview exists.
 - [ ] Business audit CTA works.
 - [ ] Payment request buttons do not pretend checkout is live before payment links exist.
 - [ ] Booking link is added and tested before launch.
+- [ ] Google Calendar scheduler opens from deployed site.
+- [ ] Internal booking request remains available for custom/fit-review cases.
+
+## Course and certificate QA
+
+- [ ] Course levels have clear outcomes.
+- [ ] Workbook includes proof-of-work artifacts.
+- [ ] Workbook includes review rubric.
+- [ ] Badge language avoids accreditation claims.
+- [ ] Completion record fields are defined.
+- [ ] Public claim wording is truthful.
+- [ ] Refund/credit policy is finalized before paid launch.
 
 ## SEO/AEO QA
 
@@ -60,8 +89,10 @@ Run this after a deployment preview exists.
 - [ ] Sitemap includes indexable pages.
 - [ ] Robots file points to sitemap.
 - [ ] FAQ schema matches visible page content.
+- [ ] Offer schema matches visible offers.
 - [ ] Open Graph image path resolves.
 - [ ] Direct-answer pages answer the question near the top.
+- [ ] Rich Results Test or schema validator has no blocking errors on live URLs.
 
 ## Truth and compliance QA
 
@@ -71,7 +102,8 @@ Run this after a deployment preview exists.
 - [ ] No fake accreditation claim.
 - [ ] No fake testimonials.
 - [ ] No fake logos.
-- [ ] Refund/credit policy is finalized before paid launch.
+- [ ] No fake availability.
+- [ ] No fake checkout.
 
 ## Launch decision
 
@@ -84,3 +116,5 @@ Launch only when:
 - [ ] Payment links are tested.
 - [ ] Booking link is tested.
 - [ ] Visual QA passes.
+- [ ] Course/certificate truth QA passes.
+- [ ] SEO/AEO/schema live checks pass.
