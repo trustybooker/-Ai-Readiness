@@ -29,6 +29,17 @@ payments: {
 
 Do not add a link until it has been tested.
 
+## Payment-link sales order
+
+Use this order when creating links:
+
+1. AI Starter Pass — easiest first paid conversion.
+2. AI Job & Productivity Pass — strongest individual/job-seeker paid path.
+3. Business AI Readiness Audit — strongest small-business paid path.
+4. Team Training Deposit — qualifies teams before full sprint delivery.
+5. Implementation Review Deposit — qualifies higher-touch implementation.
+6. AI Readiness Lab — recurring value and retention.
+
 ## Booking setup
 
 Create a scheduler link for human review. Add it here:
@@ -44,6 +55,17 @@ Good scheduler options:
 - TidyCal
 - Square Appointments
 - Stripe payment link plus manual booking follow-up
+
+## Booking conversion rule
+
+A booking should move the person toward one clear next step:
+
+- unclear need → free score or checklist,
+- beginner → AI Starter Pass,
+- job/work need → AI Job & Productivity Pass,
+- business workflow need → Business AI Readiness Audit,
+- team need → Team Training Sprint,
+- clear implementation need → Implementation Review.
 
 ## Analytics setup
 
@@ -79,6 +101,22 @@ The site can track:
 - Lead form submit attempt
 - First-party lead capture
 - Email fallback event
+
+## Sales events to review manually until analytics is live
+
+Track these from GitHub Issues, email, scheduler, and payment records:
+
+- score starts,
+- score completions,
+- booking clicks,
+- payment-link requests,
+- starter purchases,
+- job pass purchases,
+- business audit purchases,
+- team sprint deposits,
+- implementation review deposits,
+- lab signups,
+- refunds or confused buyers.
 
 ## Safety rule
 
