@@ -20,11 +20,16 @@ function priority(score = '', tier = '') {
   return 'priority-foundation';
 }
 
+function requestKind(data = {}) {
+  return clean(data.request_type || data.form_name || data['form-name'] || 'Lead request');
+}
+
 function issueBody(data) {
   return `# AI Readiness Pass Lead
 
 ## Request Type
-- Type: ${clean(data.request_type || 'Lead request')}
+- Type: ${requestKind(data)}
+- Received: ${new Date().toISOString()}
 
 ## Contact
 - Name: ${clean(data.name)}
@@ -62,6 +67,12 @@ ${clean(data.message)}
 - UTM term: ${clean(data.utm_term)}
 - UTM content: ${clean(data.utm_content)}
 
+## Human-value follow-up standard
+- [ ] Help the person choose the safest useful next step.
+- [ ] Do not pressure them into the highest-priced offer if a free score, starter path, or checklist is enough.
+- [ ] Explain limits clearly.
+- [ ] Protect private, sensitive, financial, legal, health, employment, and business-confidential information.
+
 ## Follow-up checklist
 - [ ] Review score and message.
 - [ ] Confirm requested service and fit.
@@ -83,6 +94,12 @@ async function postIssue(owner, repoName, headers, title, body, labels) {
   });
 }
 
+async function readRequestData(req) {
+  const contentType = req.headers.get('content-type') || '';
+  if (contentType.includes('application/json')) return await req.json();
+  return Object.fromEntries((await req.formData()).entries());
+}
+
 async function createIssue(data) {
   const secret = process.env.LEADS_SECRET;
   const repo = process.env.LEADS_REPO || 'trustybooker/-Ai-Readiness';
@@ -96,11 +113,11 @@ async function createIssue(data) {
   };
   headers[['Author','ization'].join('')] = ['Bearer', secret].join(' ');
 
-  const requestType = clean(data.request_type || 'Lead');
-  const titlePrefix = requestType.toLowerCase().includes('booking') ? '[Booking]' : '[Lead]';
+  const kind = requestKind(data);
+  const titlePrefix = kind.toLowerCase().includes('booking') ? '[Booking]' : '[Lead]';
   const title = `${titlePrefix} ${clean(data.name) || 'Unknown'} — ${clean(data.path || data.recommended_path) || 'AI Readiness'}`.slice(0, 250);
   const body = issueBody(data);
-  const labels = ['lead','ai-readiness-pass',priority(data.readiness_score, data.lead_tier),`path-${slug(data.path || data.recommended_path)}`,`audience-${slug(data.audience_type || data.request_type)}`];
+  const labels = ['lead','ai-readiness-pass',priority(data.readiness_score, data.lead_tier),`path-${slug(data.path || data.recommended_path)}`,`audience-${slug(data.audience_type || kind)}`];
 
   let response = await postIssue(owner, repoName, headers, title, body, labels);
   if (!response.ok && [400, 422].includes(response.status)) {
@@ -113,12 +130,24 @@ async function createIssue(data) {
 
 export default async (req) => {
   if (req.method !== 'POST') return Response.json({ ok: false, error: 'method_not_allowed' }, { status: 405 });
-  const data = Object.fromEntries((await req.formData()).entries());
+
+  let data;
+  try {
+    data = await readRequestData(req);
+  } catch (error) {
+    return Response.json({ ok: false, error: 'invalid_request_body' }, { status: 400 });
+  }
+
   if (clean(data._gotcha)) return Response.json({ ok: true, ignored: true });
   if (!clean(data.name) || !isEmail(data.email)) return Response.json({ ok: false, error: 'name_and_email_required' }, { status: 400 });
-  const result = await createIssue(data);
-  if (!result.ok) return Response.json({ ok: false, fallback: 'email_form', error: result.error }, { status: result.status || 500 });
-  return Response.json({ ok: true, ...result });
+
+  try {
+    const result = await createIssue(data);
+    if (!result.ok) return Response.json({ ok: false, fallback: 'email_form', error: result.error }, { status: result.status || 500 });
+    return Response.json({ ok: true, ...result });
+  } catch (error) {
+    return Response.json({ ok: false, fallback: 'email_form', error: 'lead_tracker_failed' }, { status: 500 });
+  }
 };
 
 export const config = { path: '/.netlify/functions/capture-lead' };
