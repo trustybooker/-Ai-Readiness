@@ -155,6 +155,17 @@ function applyIntegrations(){
   });
 }
 
+async function postFirstPartyLead(form){
+  const body = new URLSearchParams(new FormData(form));
+  const endpoints = ['/.netlify/functions/capture-lead','/api/capture-lead'];
+  for(const endpoint of endpoints){
+    const response = await fetch(endpoint, { method:'POST', body });
+    if(response.ok) return { ok: true, endpoint };
+    if(response.status !== 404) throw new Error(`first party capture unavailable: ${endpoint}`);
+  }
+  throw new Error('first party capture unavailable');
+}
+
 async function submitLead(event){
   const form = event.currentTarget;
   hydrateCaptureFields(form);
@@ -163,9 +174,8 @@ async function submitLead(event){
   event.preventDefault();
   const note = form.querySelector('[data-note]') || $('[data-note]');
   try {
-    const response = await fetch('/.netlify/functions/capture-lead', { method:'POST', body:new FormData(form) });
-    if(!response.ok) throw new Error('first party capture unavailable');
-    trackEvent('lead_captured_first_party', { form: form.getAttribute('name') || 'unknown' });
+    const result = await postFirstPartyLead(form);
+    trackEvent('lead_captured_first_party', { form: form.getAttribute('name') || 'unknown', endpoint: result.endpoint });
     window.location.href = form.dataset.success || 'thanks.html';
   } catch (error) {
     if(note) note.textContent = 'First-party tracker is not configured yet, so this is being sent through email fallback.';
