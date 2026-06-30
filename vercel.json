@@ -1,0 +1,34 @@
+{
+  "buildCommand": "npm run validate",
+  "outputDirectory": ".",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ],
+  "rewrites": [
+    { "source": "/ai-readiness-pass", "destination": "/index.html" },
+    { "source": "/ai-readiness-pass/index.html", "destination": "/index.html" },
+    { "source": "/ai-readiness-pass/booking", "destination": "/booking.html" },
+    { "source": "/ai-readiness-pass/booking.html", "destination": "/booking.html" },
+    { "source": "/ai-readiness-pass/answers", "destination": "/answers.html" },
+    { "source": "/ai-readiness-pass/answers.html", "destination": "/answers.html" },
+    { "source": "/ai-readiness-pass/checklist", "destination": "/checklist.html" },
+    { "source": "/ai-readiness-pass/checklist.html", "destination": "/checklist.html" },
+    { "source": "/ai-readiness-pass/lab", "destination": "/lab.html" },
+    { "source": "/ai-readiness-pass/lab.html", "destination": "/lab.html" },
+    { "source": "/ai-readiness-pass/thanks", "destination": "/thanks.html" },
+    { "source": "/ai-readiness-pass/thanks.html", "destination": "/thanks.html" },
+    { "source": "/ai-readiness-pass/answer/:slug", "destination": "/answer/:slug" },
+    { "source": "/ai-readiness-pass/assets/:path*", "destination": "/assets/:path*" },
+    { "source": "/ai-readiness-pass/sitemap.xml", "destination": "/sitemap.xml" },
+    { "source": "/ai-readiness-pass/robots.txt", "destination": "/robots.txt" },
+    { "source": "/ai-readiness-pass/favicon.svg", "destination": "/favicon.svg" },
+    { "source": "/ai-readiness-pass/site.webmanifest", "destination": "/site.webmanifest" }
+  ]
+}
