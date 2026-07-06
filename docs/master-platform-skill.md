@@ -2,29 +2,33 @@
 
 ## Purpose
 
-Use this skill whenever working on AI Readiness Pass, Fify Now LLC training assets, the first-party lead system, the answer hub, the course/workbook, the business operating system, or launch readiness.
+Use this skill whenever working on AI Kollege, AI Readiness Pass, Fify Now LLC training assets, the first-party lead system, the answer hub, the course/workbook, the business operating system, or launch readiness.
 
-This skill prevents AI fluff, unsupported claims, weak launches, and scattered work.
+This skill prevents AI fluff, unsupported claims, weak launches, scattered work, and brand drift.
 
 ## Operating rules
 
 1. Audit first. Check current repo, PR, workflow status, and relevant files before deciding.
 2. Truth first. Do not call anything live, connected, verified, accredited, compliant, profitable, or production-ready unless it is verified.
-3. No fake proof. No fake testimonials, fake logos, fake clients, fake credentials, fake screenshots, fake results, job guarantees, revenue guarantees, or compliance guarantees.
-4. Keep the two-layer system intact. Layer 1 converts. Layer 2 answers and attracts.
-5. Protect the official brand. Use the original Fify Now LLC logo asset for branding, favicon, manifest, and social preview.
-6. Avoid the random dev shop trap. Train, audit, guide, implement scoped work, and hand off clearly.
-7. Keep human review in the loop for clients, money, sensitive information, business scope, and public claims.
-8. Keep external gates visible. Deployment, private host values, live lead capture, fallback delivery, payment links, booking, analytics, live schema, and visual QA must be verified outside the repo.
+3. Jesus-centered integrity. Serve people with truth, mercy, excellence, patience, humility, fairness, and stewardship. Do not manipulate fear, poverty, insecurity, faith, or desperation to force a sale.
+4. No fake proof. No fake testimonials, fake logos, fake clients, fake credentials, fake screenshots, fake results, job guarantees, revenue guarantees, or compliance guarantees.
+5. Keep the two-layer system intact. Layer 1 converts. Layer 2 answers and attracts.
+6. Protect the AI Kollege brand. AI Kollege is the public brand. Fify Now LLC is the operator/legal owner unless changed later.
+7. Avoid the random dev shop trap. Train, audit, guide, implement scoped work, and hand off clearly.
+8. Keep human review in the loop for clients, money, sensitive information, business scope, public claims, and faith-sensitive language.
+9. Keep external gates visible. Deployment, private host values, live lead capture, fallback delivery, payment links, booking, analytics, live schema, and visual QA must be verified outside the repo.
+10. Never use Jesus, faith, or love as a shortcut around proof, quality, consent, or customer value.
 
 ## Project context
 
-- Business: Fify Now LLC
-- Product: AI Readiness Pass
+- Public brand: AI Kollege
+- Core product: AI Readiness Pass
+- Operator/legal owner: Fify Now LLC
+- Future domain: aikollege.com
 - Repository: trustybooker/-Ai-Readiness
 - Main PR: #1
 - Working branch: build/ai-readiness-pass
-- Fast payment path: Square first, Stripe later, PayPal as backup.
+- Fast payment path: simple tested payment links first, Stripe later if needed, PayPal/Cash App/Zelle only when appropriate and documented.
 
 ## Two-layer growth system
 
@@ -67,9 +71,10 @@ Every answer page should answer directly near the top, give practical examples, 
 
 Use:
 
-- Fify Now LLC Completion Badge
+- AI Kollege Completion Badge
 - Proof-of-work artifacts
 - Human-reviewed completion where applicable
+- Operated by Fify Now LLC
 
 Do not use:
 
@@ -77,6 +82,7 @@ Do not use:
 - Official license
 - Guaranteed job credential
 - Legal compliance certification
+- College, university, or degree claims
 
 Unless those claims become factually true later.
 
@@ -90,6 +96,12 @@ Preferred path:
 4. Human reviews the lead and sends the correct response script.
 
 Lead record should include contact details, score, recommended path, lead tier, audience type, timeline, budget range, source data, message, and follow-up checklist.
+
+## World Skill integration
+
+Use the World Skill when the business decision touches money, reputation, loyalty, love, trust, spiritual alignment, customer transformation, or long-term brand destiny.
+
+World Skill must never promise massive financial success. It should build the conditions that make success more likely: truthful positioning, excellent offers, consistent delivery, customer love, retention, referrals, proof, and disciplined revenue operations.
 
 ## Daily session behavior
 
