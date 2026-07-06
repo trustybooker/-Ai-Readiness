@@ -4,7 +4,7 @@ This is the active skill list for the AI Kollege platform. Update this file when
 
 ## Daily reminder brief
 
-Audit first. Use the Boss Skill and World Skill together. Start with the problem, not the gold. No fake claims. Keep Jesus-centered integrity, Solomon-level wisdom, customer love, loyalty, truth, proof, delivery, and revenue discipline together. Do not call the project production-ready until live tests pass. Ask whether any new skills were added and update this registry before continuing.
+Audit first. Use the Winning Skill, Boss Skill, and World Skill together. Start with the real painful problem, not the gold. No fake claims. Keep Jesus-centered integrity, Solomon-level wisdom, customer love, loyalty, truth, proof, delivery, and revenue discipline together. Do not call the project production-ready until live tests pass. Ask whether any new skills were added and update this registry before continuing.
 
 ## Skill quality standard
 
@@ -24,6 +24,16 @@ Every skill must include:
 Weak skills only describe a role. Strong skills change decisions, prevent mistakes, and produce a usable output.
 
 ## Active skills
+
+## 🏆 The Winning Skill
+
+Turns wisdom into action by choosing the real painful problem, buyer, smallest useful paid solution, proof plan, outreach path, and next 72-hour move.
+
+Use before choosing a niche, creating an offer, building an app, changing a brand, adding a feature, pricing a service, launching content, or deciding whether to continue or stop.
+
+Protects against trend-chasing, gold-chasing, overbuilding, empire-before-cash, idea switching, overexplaining, and research replacing outreach.
+
+Output: problem, buyer, cost of ignoring, smallest useful solution, offer, proof to collect, outreach action, delivery action, what not to build yet, and next 72-hour move.
 
 ## 🌍 The World Skill
 
