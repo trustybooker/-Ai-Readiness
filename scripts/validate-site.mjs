@@ -17,11 +17,11 @@ const requiredText = {
   'sitemap.xml': ['https://aikollege.com/','booking.html','answer/what-is-ai-readiness.html'],
   'robots.txt': ['https://aikollege.com/sitemap.xml'],
   'docs/world-skill.md': ['The Jesus Pattern for business','Fruit','long-term mission'],
-  'docs/master-platform-skill.md': ['Winning first','The gold follows solved problems','Winning Skill output','First question before every build'],
+  'docs/master-platform-skill.md': ['Daily value first','Creator consistency engine','Winning Skill output','First question before every build'],
   'docs/skill-registry.md': ['The Winning Skill','Skill quality standard','problem-first filter','customer-fruit measure'],
   'docs/problem-first-jesus-solomon-operating-code.md': ['Stop looking for the gold','Gold is an effect','Jesus + Solomon synthesis'],
   'docs/skill-upgrade-protocol.md': ['A skill is not a slogan','The Boss Skill upgraded','The World Skill upgraded'],
-  'docs/winning-skill.md': ['The Winning Skill','Winning is not finding gold','14-day rule','Next 72-hour move'],
+  'docs/winning-skill.md': ['Audience is not vanity','Daily content rule','The audience signal rule','The three positioning questions','30-day content-to-cash loop','Next 72-hour move'],
   'docs/app-audit-summary.txt': ['Homepage now leads with the real problem','Public canonical URLs now point to the AI Kollege domain','Validation now checks the upgraded skill docs'],
   'netlify/functions/capture-lead.mjs': ['LEADS_SECRET','LEADS_REPO','issues','[Booking]'],
   'api/capture-lead.mjs': ['LEADS_SECRET','LEADS_REPO','issues','[Booking]']
