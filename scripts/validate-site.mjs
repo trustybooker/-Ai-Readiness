@@ -1,13 +1,13 @@
 import fs from 'node:fs';
 
-const requiredFiles = ['index.html','booking.html','answers.html','checklist.html','lab.html','thanks.html','favicon.svg','site.webmanifest','robots.txt','sitemap.xml','assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg','assets/ai-readiness-visual.svg','netlify/functions/capture-lead.mjs','api/capture-lead.mjs','vercel.json'];
+const requiredFiles = ['index.html','booking.html','answers.html','checklist.html','lab.html','thanks.html','favicon.svg','site.webmanifest','robots.txt','sitemap.xml','assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg','assets/ai-readiness-visual.svg','netlify/functions/capture-lead.mjs','api/capture-lead.mjs','vercel.json','docs/world-skill.md','docs/master-platform-skill.md','docs/skill-registry.md','docs/problem-first-jesus-solomon-operating-code.md','docs/skill-upgrade-protocol.md'];
 
 const requiredText = {
-  'index.html': ['AI Kollege','Know if you are AI-ready before the market exposes you.','data-question','score_summary','lead_tier','data-payment-key','data-booking-link'],
-  'booking.html': ['AI readiness review','ai-readiness-booking','preferred_time_1','preferred_time_2','preferred_time_3','No fake availability'],
-  'answers.html': ['AI readiness answer center','answer/what-is-ai-readiness.html'],
-  'checklist.html': ['Free checklist','AI Readiness Checklist'],
-  'lab.html': ['AI Readiness Lab','interest list'],
+  'index.html': ['AI Kollege','Problem first','What problem are you trying to solve?','Wisdom before automation','https://aikollege.com/','data-question','score_summary','lead_tier','data-payment-key','data-booking-link'],
+  'booking.html': ['AI Kollege','Problem-first AI review','What problem should we review before the call?','No fake availability','ai-readiness-booking','preferred_time_1','preferred_time_2','preferred_time_3'],
+  'answers.html': ['AI Kollege Answers','Direct answers for AI problems','Move from reading into problem-solving','answer/what-is-ai-readiness.html'],
+  'checklist.html': ['AI Kollege Checklist','Free problem-first checklist','What problem do you need to solve first?'],
+  'lab.html': ['AI Kollege Lab','Keep solving AI problems','What problem should the Lab help you keep solving?'],
   'assets/app.js': ['capture-lead','email fallback','data-payment-key','data-booking-link'],
   'assets/site-config.js': ['bookingUrl','aiStarterPass','businessAiReadinessAudit'],
   'assets/fifynow-logo.svg': ['AI Kollege logo','AI'],
@@ -16,9 +16,17 @@ const requiredText = {
   'assets/ai-readiness-visual.svg': ['AI Kollege Readiness View','Readiness Score'],
   'sitemap.xml': ['https://aikollege.com/','booking.html','answer/what-is-ai-readiness.html'],
   'robots.txt': ['https://aikollege.com/sitemap.xml'],
+  'docs/world-skill.md': ['The Jesus Pattern for business','Solomon','Fruit','long-term mission'],
+  'docs/master-platform-skill.md': ['Problem first','The gold follows solved problems','Solomon-centered wisdom','First question before every build'],
+  'docs/skill-registry.md': ['Skill quality standard','problem-first filter','customer-fruit measure'],
+  'docs/problem-first-jesus-solomon-operating-code.md': ['Stop looking for the gold','Gold is an effect','Jesus + Solomon synthesis'],
+  'docs/skill-upgrade-protocol.md': ['A skill is not a slogan','The Boss Skill upgraded','The World Skill upgraded'],
   'netlify/functions/capture-lead.mjs': ['LEADS_SECRET','LEADS_REPO','issues','[Booking]'],
   'api/capture-lead.mjs': ['LEADS_SECRET','LEADS_REPO','issues','[Booking]']
 };
+
+const publicFiles = ['index.html','booking.html','answers.html','checklist.html','lab.html','thanks.html','sitemap.xml','robots.txt'];
+const bannedPublicText = ['https://fifynowllc.com/ai-readiness-pass','validation-note','Layer 2: answer hub marker','Fify Now LLC</strong><p>Fix It For You Now'];
 
 const failures = [];
 for (const file of requiredFiles) if (!fs.existsSync(file)) failures.push(`Missing file: ${file}`);
@@ -26,6 +34,11 @@ for (const [file, snippets] of Object.entries(requiredText)) {
   if (!fs.existsSync(file)) continue;
   const text = fs.readFileSync(file, 'utf8');
   for (const snippet of snippets) if (!text.includes(snippet)) failures.push(`${file} missing: ${snippet}`);
+}
+for (const file of publicFiles) {
+  if (!fs.existsSync(file)) continue;
+  const text = fs.readFileSync(file, 'utf8');
+  for (const banned of bannedPublicText) if (text.includes(banned)) failures.push(`${file} contains banned public text: ${banned}`);
 }
 
 if (failures.length) {
