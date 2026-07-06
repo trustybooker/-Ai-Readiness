@@ -1,0 +1,39 @@
+AI Kollege app audit summary
+
+Date: 2026-07-06
+
+The app was reviewed against the upgraded skill stack.
+
+Main corrections completed:
+
+- Homepage now leads with the real problem, not only the product.
+- Homepage now says to solve AI confusion, risk, skill gaps, and workflow waste.
+- Booking page now asks what problem should be reviewed before the call.
+- Checklist page now says to find the AI problem before it becomes expensive.
+- Lab page now presents ongoing support as continued problem-solving and practice.
+- Answer hub now presents direct answers for AI problems before they become expensive.
+- Public canonical URLs now point to the AI Kollege domain.
+- Validation now checks the upgraded skill docs and problem-first language.
+
+Corrected app standard:
+
+- Diagnose before spending.
+- Train before automating.
+- Use human review before sensitive decisions.
+- Build proof before making claims.
+- Let revenue follow solved problems.
+
+Remaining external checks:
+
+- Redeploy the Netlify site.
+- Confirm the live page shows updated AI Kollege copy.
+- Test mobile and desktop views.
+- Test lead capture.
+- Test booking.
+- Test fallback email.
+- Connect and verify the AI Kollege domain when ready.
+- Add payment links only after they are real and tested.
+
+Conclusion:
+
+The repo is more aligned with the upgraded skills. It is not final live-production-ready until external checks pass.
