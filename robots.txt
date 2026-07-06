@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://fifynowllc.com/ai-readiness-pass/sitemap.xml
