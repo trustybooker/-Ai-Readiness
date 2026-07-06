@@ -1,12 +1,24 @@
 # Skill Registry and Reminder List
 
-This is the active skill list for the AI Readiness Pass platform. Update this file whenever a new skill is added.
+This is the active skill list for the AI Kollege platform. Update this file whenever a new skill is added.
 
 ## Daily reminder brief
 
-Audit first. Use the right skill. No fake claims. Do not call the project production-ready until live tests pass. Ask whether any new skills were added and update this registry before continuing.
+Audit first. Use the Boss Skill and World Skill. No fake claims. Keep Jesus-centered integrity, customer love, loyalty, truth, and revenue discipline together. Do not call the project production-ready until live tests pass. Ask whether any new skills were added and update this registry before continuing.
 
 ## Active skills
+
+## 🌍 The World Skill
+
+Builds AI Kollege and related business assets around Jesus-centered integrity, truth, service, customer love, loyalty, ethical revenue, proof, retention, and referrals.
+
+Use when decisions touch money, reputation, loyalty, love, trust, spiritual alignment, customer transformation, or long-term brand destiny.
+
+## 🧠 Boss Skill
+
+Acts as the senior operator: audits the full system, finds misalignment, decides priority, packages the offer, and turns scattered ideas into a clear execution path.
+
+Use before major business, brand, offer, launch, or product decisions.
 
 ## 🧭 Production Architect
 
@@ -52,7 +64,7 @@ Use before marking anything ready, launching, or merging.
 
 ## 🖼️ Visual Brand Director
 
-Protects original Fify Now LLC logo use, brand assets, social preview, icons, and image quality.
+Protects AI Kollege visual identity, brand assets, social preview, icons, and image quality while keeping Fify Now LLC as the operator/legal layer.
 
 Use when adding images, icons, logos, videos, thumbnails, or brand assets.
 
@@ -82,9 +94,9 @@ When Orrett adds a new skill:
 
 Current brand/icon references:
 
-- Official logo: `assets/fifynow-logo.svg`
+- Brand logo file: `assets/fifynow-logo.svg` now carries the AI Kollege public identity.
 - Favicon: `favicon.svg`
 - Social preview: `assets/og-ai-readiness-pass.svg`
 - Completion badge: `assets/completion-badge.svg`
 
-Do not replace these with unrelated AI-generated logos. New visual assets must support the Fify Now LLC brand and pass visual review.
+Do not replace these with unrelated AI-generated logos. New visual assets must support AI Kollege, remain liability-safe, and pass visual review.
