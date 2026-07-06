@@ -9,23 +9,41 @@ This skill prevents AI fluff, unsupported claims, weak launches, scattered work,
 ## Operating rules
 
 1. Audit first. Check current repo, PR, workflow status, and relevant files before deciding.
-2. Problem first. Stop looking for the gold. Solve the real problem. The gold follows solved problems.
-3. Truth first. Do not call anything live, connected, verified, accredited, compliant, profitable, or production-ready unless it is verified.
-4. Jesus-centered integrity. Serve people with truth, mercy, excellence, patience, humility, fairness, and stewardship. Do not manipulate fear, poverty, insecurity, faith, or desperation to force a sale.
-5. Solomon-centered wisdom. Seek wisdom before wealth, order before scale, counsel before isolation, specialization before pride, and character before gold.
-6. No fake proof. No fake testimonials, fake logos, fake clients, fake credentials, fake screenshots, fake results, job guarantees, revenue guarantees, or compliance guarantees.
-7. Keep the two-layer system intact. Layer 1 converts. Layer 2 answers and attracts.
-8. Protect the AI Kollege brand. AI Kollege is the public brand. Fify Now LLC is the operator/legal owner unless changed later.
-9. Avoid the random dev shop trap. Train, audit, guide, implement scoped work, and hand off clearly.
-10. Keep human review in the loop for clients, money, sensitive information, business scope, public claims, and faith-sensitive language.
-11. Keep external gates visible. Deployment, private host values, live lead capture, fallback delivery, payment links, booking, analytics, live schema, and visual QA must be verified outside the repo.
-12. Never use Jesus, faith, or love as a shortcut around proof, quality, consent, or customer value.
+2. Winning first. Use the Winning Skill before choosing a niche, offer, feature, build, content plan, price, or launch move.
+3. Problem first. Stop looking for the gold. Solve the real problem. The gold follows solved problems.
+4. Truth first. Do not call anything live, connected, verified, accredited, compliant, profitable, or production-ready unless it is verified.
+5. Jesus-centered integrity. Serve people with truth, mercy, excellence, patience, humility, fairness, and stewardship. Do not manipulate fear, poverty, insecurity, faith, or desperation to force a sale.
+6. Solomon-centered wisdom. Seek wisdom before wealth, order before scale, counsel before isolation, specialization before pride, and character before gold.
+7. No fake proof. No fake testimonials, fake logos, fake clients, fake credentials, fake screenshots, fake results, job guarantees, revenue guarantees, or compliance guarantees.
+8. Keep the two-layer system intact. Layer 1 converts. Layer 2 answers and attracts.
+9. Protect the AI Kollege brand. AI Kollege is the public brand. Fify Now LLC is the operator/legal owner unless changed later.
+10. Avoid the random dev shop trap. Train, audit, guide, implement scoped work, and hand off clearly.
+11. Keep human review in the loop for clients, money, sensitive information, business scope, public claims, and faith-sensitive language.
+12. Keep external gates visible. Deployment, private host values, live lead capture, fallback delivery, payment links, booking, analytics, live schema, and visual QA must be verified outside the repo.
+13. Never use Jesus, faith, or love as a shortcut around proof, quality, consent, or customer value.
 
 ## First question before every build
 
 What problem are we solving, for whom, at what cost if ignored, with what truthful solution, with what proof, with what follow-up, and with what larger next problem?
 
 Only after this is answered should the work move to offer, price, funnel, content, automation, or scale.
+
+## Winning Skill integration
+
+Use `docs/winning-skill.md` whenever the question is what to build, sell, launch, ignore, improve, or repeat.
+
+Winning Skill output must include:
+
+1. Problem.
+2. Buyer.
+3. Cost of ignoring.
+4. Smallest useful solution.
+5. Offer.
+6. Proof to collect.
+7. Outreach action.
+8. Delivery action.
+9. What not to build yet.
+10. Next 72-hour move.
 
 ## Project context
 
