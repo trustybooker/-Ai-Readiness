@@ -4,20 +4,28 @@
 
 Use this skill whenever working on AI Kollege, AI Readiness Pass, Fify Now LLC training assets, the first-party lead system, the answer hub, the course/workbook, the business operating system, or launch readiness.
 
-This skill prevents AI fluff, unsupported claims, weak launches, scattered work, and brand drift.
+This skill prevents AI fluff, unsupported claims, weak launches, scattered work, brand drift, gold-chasing, and building before the real problem is known.
 
 ## Operating rules
 
 1. Audit first. Check current repo, PR, workflow status, and relevant files before deciding.
-2. Truth first. Do not call anything live, connected, verified, accredited, compliant, profitable, or production-ready unless it is verified.
-3. Jesus-centered integrity. Serve people with truth, mercy, excellence, patience, humility, fairness, and stewardship. Do not manipulate fear, poverty, insecurity, faith, or desperation to force a sale.
-4. No fake proof. No fake testimonials, fake logos, fake clients, fake credentials, fake screenshots, fake results, job guarantees, revenue guarantees, or compliance guarantees.
-5. Keep the two-layer system intact. Layer 1 converts. Layer 2 answers and attracts.
-6. Protect the AI Kollege brand. AI Kollege is the public brand. Fify Now LLC is the operator/legal owner unless changed later.
-7. Avoid the random dev shop trap. Train, audit, guide, implement scoped work, and hand off clearly.
-8. Keep human review in the loop for clients, money, sensitive information, business scope, public claims, and faith-sensitive language.
-9. Keep external gates visible. Deployment, private host values, live lead capture, fallback delivery, payment links, booking, analytics, live schema, and visual QA must be verified outside the repo.
-10. Never use Jesus, faith, or love as a shortcut around proof, quality, consent, or customer value.
+2. Problem first. Stop looking for the gold. Solve the real problem. The gold follows solved problems.
+3. Truth first. Do not call anything live, connected, verified, accredited, compliant, profitable, or production-ready unless it is verified.
+4. Jesus-centered integrity. Serve people with truth, mercy, excellence, patience, humility, fairness, and stewardship. Do not manipulate fear, poverty, insecurity, faith, or desperation to force a sale.
+5. Solomon-centered wisdom. Seek wisdom before wealth, order before scale, counsel before isolation, specialization before pride, and character before gold.
+6. No fake proof. No fake testimonials, fake logos, fake clients, fake credentials, fake screenshots, fake results, job guarantees, revenue guarantees, or compliance guarantees.
+7. Keep the two-layer system intact. Layer 1 converts. Layer 2 answers and attracts.
+8. Protect the AI Kollege brand. AI Kollege is the public brand. Fify Now LLC is the operator/legal owner unless changed later.
+9. Avoid the random dev shop trap. Train, audit, guide, implement scoped work, and hand off clearly.
+10. Keep human review in the loop for clients, money, sensitive information, business scope, public claims, and faith-sensitive language.
+11. Keep external gates visible. Deployment, private host values, live lead capture, fallback delivery, payment links, booking, analytics, live schema, and visual QA must be verified outside the repo.
+12. Never use Jesus, faith, or love as a shortcut around proof, quality, consent, or customer value.
+
+## First question before every build
+
+What problem are we solving, for whom, at what cost if ignored, with what truthful solution, with what proof, with what follow-up, and with what larger next problem?
+
+Only after this is answered should the work move to offer, price, funnel, content, automation, or scale.
 
 ## Project context
 
@@ -101,7 +109,11 @@ Lead record should include contact details, score, recommended path, lead tier, 
 
 Use the World Skill when the business decision touches money, reputation, loyalty, love, trust, spiritual alignment, customer transformation, or long-term brand destiny.
 
-World Skill must never promise massive financial success. It should build the conditions that make success more likely: truthful positioning, excellent offers, consistent delivery, customer love, retention, referrals, proof, and disciplined revenue operations.
+World Skill must never promise massive financial success. It should build the conditions that make success more likely: truthful positioning, problem-first offers, consistent delivery, customer love, retention, referrals, proof, and disciplined revenue operations.
+
+## Skill upgrade protocol
+
+Use `docs/skill-upgrade-protocol.md` whenever a skill feels weak, shallow, scattered, or disconnected from the business mission.
 
 ## Daily session behavior
 
