@@ -1,10 +1,26 @@
-# Level 4: Implementation Partner Track
+# Level 4: AI Kollege Implementation Partner Track
 
 Audience: qualified businesses that completed an audit or have a clear workflow ready for guided implementation.
 
-## Outcome
+## Problem-first outcome
 
-The client receives a scoped implementation plan, tested workflow, human checkpoints, and handoff documentation.
+The client receives a scoped implementation plan, tested workflow, human checkpoints, proof notes, and handoff documentation.
+
+This level follows the Winning Skill: implement only after the problem, buyer, cost, scope, proof, and follow-up path are clear.
+
+## Gate before implementation
+
+Do not begin implementation until these are clear:
+
+- Problem being solved.
+- Buyer or owner responsible.
+- Cost of ignoring the problem.
+- Smallest useful fix.
+- What is included.
+- What is excluded.
+- What proof will show it helped.
+- What human review is required.
+- What happens after delivery.
 
 ## Module 1: Objective selection
 
@@ -16,6 +32,8 @@ Choose one measurable objective:
 - Better internal documentation.
 - Better reporting.
 - Better team training.
+- Better review request flow.
+- Better audience or customer signal capture.
 
 Deliverable:
 
@@ -31,6 +49,8 @@ Define:
 - What tools are involved.
 - What access is needed.
 - What human review is required.
+- What must remain manual.
+- What claim should not be made.
 
 Deliverable:
 
@@ -47,6 +67,9 @@ Possible assets:
 - Reporting summary template.
 - Customer FAQ draft workflow.
 - Review request workflow.
+- Audience signal capture form.
+- Daily content prompt list.
+- Owner handoff checklist.
 
 Deliverable:
 
@@ -62,12 +85,28 @@ Test:
 - Sensitive information warning.
 - Human approval point.
 - Final output quality.
+- Manual fallback.
+- Owner handoff clarity.
 
 Deliverable:
 
 - Test notes and fixes.
 
-## Module 5: Training and handoff
+## Module 5: Proof and signal capture
+
+Capture:
+
+- What was improved.
+- What evidence shows it helped.
+- What the owner or user said.
+- What questions repeated.
+- What should become the next checklist, product, post, Lab topic, or service.
+
+Deliverable:
+
+- Proof and signal report.
+
+## Module 6: Training and handoff
 
 Train the client on:
 
@@ -76,6 +115,7 @@ Train the client on:
 - What to avoid.
 - How to improve it.
 - When to ask for support.
+- What daily or weekly follow-up should happen.
 
 Deliverable:
 
@@ -91,5 +131,8 @@ Client receives:
 - Workflow/template system.
 - Test notes.
 - Human review checklist.
+- Proof and signal report.
 - Handoff guide.
 - Support recommendation.
+
+No implementation project should promise guaranteed revenue, guaranteed ranking, guaranteed employment, full legal compliance, or fully autonomous decision-making.
