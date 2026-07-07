@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 
-const requiredFiles = ['index.html','booking.html','answers.html','checklist.html','lab.html','content-engine.html','thanks.html','favicon.svg','site.webmanifest','robots.txt','sitemap.xml','assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg','assets/ai-readiness-visual.svg','netlify/functions/capture-lead.mjs','api/capture-lead.mjs','vercel.json','docs/world-skill.md','docs/master-platform-skill.md','docs/skill-registry.md','docs/problem-first-jesus-solomon-operating-code.md','docs/skill-upgrade-protocol.md','docs/winning-skill.md','docs/app-audit-summary.txt'];
+const requiredFiles = ['index.html','booking.html','answers.html','checklist.html','lab.html','content-engine.html','thanks.html','favicon.svg','site.webmanifest','robots.txt','sitemap.xml','assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg','assets/ai-readiness-visual.svg','netlify/functions/capture-lead.mjs','api/capture-lead.mjs','vercel.json','docs/world-skill.md','docs/master-platform-skill.md','docs/skill-registry.md','docs/problem-first-jesus-solomon-operating-code.md','docs/skill-upgrade-protocol.md','docs/winning-skill.md','docs/app-audit-summary.txt','docs/course-certification-model.md','docs/certification-standards.md','docs/user-flow-skills-alignment.md','course/level-1-ai-readiness-foundations.md','course/level-2-ai-job-productivity-pass.md','course/level-3-business-ai-readiness.md','course/level-4-implementation-partner-track.md','course/ai-readiness-workbook.md'];
 
 const requiredText = {
   'index.html': ['AI Kollege','What problem are you trying to solve?','Wisdom before automation','https://aikollege.com/','data-question','score_summary','lead_tier','data-payment-key','data-booking-link'],
@@ -23,6 +23,14 @@ const requiredText = {
   'docs/problem-first-jesus-solomon-operating-code.md': ['Stop looking for the gold','Gold is an effect','Jesus + Solomon synthesis'],
   'docs/skill-upgrade-protocol.md': ['A skill is not a slogan','The Boss Skill upgraded','The World Skill upgraded'],
   'docs/winning-skill.md': ['The Winning Skill','Content is daily service at scale','The audience signal rule','The three positioning questions','30-day content-to-cash loop'],
+  'docs/course-certification-model.md': ['AI Kollege Course and Completion Model','Score → problem → train → build proof → human review → badge → refresh','Winning Skill completion standard','User flow'],
+  'docs/certification-standards.md': ['AI Kollege Completion and Badge Standards','Problem-first summary','Proof and signal awareness','AI Kollege Readiness Pass'],
+  'docs/user-flow-skills-alignment.md': ['AI Kollege Skills-Aligned User Flow','Core flow','Skill alignment','Business model alignment'],
+  'course/level-1-ai-readiness-foundations.md': ['AI Kollege Readiness Foundations','Problem-first outcome','Daily value and audience signal','Completion badge language must say AI Kollege'],
+  'course/level-2-ai-job-productivity-pass.md': ['AI Kollege Job and Productivity Pass','Audience signal and opportunity awareness','Three daily value posts','Signal log'],
+  'course/level-3-business-ai-readiness.md': ['AI Kollege Business AI Readiness','Problem-size scoring','Revenue and signal map','Local Service Rescue Sprint'],
+  'course/level-4-implementation-partner-track.md': ['AI Kollege Implementation Partner Track','Proof and signal report','Gate before implementation','Manual fallback'],
+  'course/ai-readiness-workbook.md': ['AI Kollege Readiness Pass Workbook','Winning Skill intake','Signal log','Problem-first thinking','Proof and signal awareness'],
   'docs/app-audit-summary.txt': ['Homepage now leads with the real problem','Public canonical URLs now point to the AI Kollege domain','Validation now checks the upgraded skill docs'],
   'netlify/functions/capture-lead.mjs': ['LEADS_SECRET','LEADS_REPO','issues','[Booking]'],
   'api/capture-lead.mjs': ['LEADS_SECRET','LEADS_REPO','issues','[Booking]']
