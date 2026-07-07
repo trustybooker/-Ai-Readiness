@@ -1,9 +1,10 @@
 import fs from 'node:fs';
 
-const requiredFiles = ['index.html','booking.html','answers.html','checklist.html','lab.html','thanks.html','favicon.svg','site.webmanifest','robots.txt','sitemap.xml','assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg','assets/ai-readiness-visual.svg','netlify/functions/capture-lead.mjs','api/capture-lead.mjs','vercel.json','docs/world-skill.md','docs/master-platform-skill.md','docs/skill-registry.md','docs/problem-first-jesus-solomon-operating-code.md','docs/skill-upgrade-protocol.md','docs/winning-skill.md','docs/app-audit-summary.txt'];
+const requiredFiles = ['index.html','booking.html','answers.html','checklist.html','lab.html','content-engine.html','thanks.html','favicon.svg','site.webmanifest','robots.txt','sitemap.xml','assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg','assets/ai-readiness-visual.svg','netlify/functions/capture-lead.mjs','api/capture-lead.mjs','vercel.json','docs/world-skill.md','docs/master-platform-skill.md','docs/skill-registry.md','docs/problem-first-jesus-solomon-operating-code.md','docs/skill-upgrade-protocol.md','docs/winning-skill.md','docs/app-audit-summary.txt'];
 
 const requiredText = {
   'index.html': ['AI Kollege','What problem are you trying to solve?','Wisdom before automation','https://aikollege.com/','data-question','score_summary','lead_tier','data-payment-key','data-booking-link'],
+  'content-engine.html': ['AI Kollege Daily Content Engine','Post useful value daily','Audience signal','ai-kollege-signal','What should AI Kollege help solve next?'],
   'booking.html': ['AI Kollege','Problem-first AI review','What problem should we review before the call?','No fake availability','ai-readiness-booking','preferred_time_1','preferred_time_2','preferred_time_3'],
   'answers.html': ['AI Kollege Answers','Direct answers for AI problems','Move from reading into problem-solving','answer/what-is-ai-readiness.html'],
   'checklist.html': ['AI Kollege Checklist','Free problem-first checklist','What problem do you need to solve first?'],
@@ -14,7 +15,7 @@ const requiredText = {
   'assets/og-ai-readiness-pass.svg': ['AI KOLLEGE','AI Readiness Pass'],
   'assets/completion-badge.svg': ['AI KOLLEGE','COMPLETION BADGE'],
   'assets/ai-readiness-visual.svg': ['AI Kollege Readiness View','Readiness Score'],
-  'sitemap.xml': ['https://aikollege.com/','booking.html','answer/what-is-ai-readiness.html'],
+  'sitemap.xml': ['https://aikollege.com/','content-engine.html','booking.html','answer/what-is-ai-readiness.html'],
   'robots.txt': ['https://aikollege.com/sitemap.xml'],
   'docs/world-skill.md': ['The Jesus Pattern for business','Fruit','long-term mission'],
   'docs/master-platform-skill.md': ['Winning first','Daily value first','Creator consistency engine','First question before every build'],
@@ -35,7 +36,7 @@ for (const [file, snippets] of Object.entries(requiredText)) {
   for (const snippet of snippets) if (!text.includes(snippet)) failures.push(`${file} missing: ${snippet}`);
 }
 
-for (const file of ['index.html','booking.html','answers.html','checklist.html','lab.html','sitemap.xml','robots.txt']) {
+for (const file of ['index.html','booking.html','answers.html','checklist.html','lab.html','content-engine.html','sitemap.xml','robots.txt']) {
   if (!fs.existsSync(file)) continue;
   const text = fs.readFileSync(file, 'utf8');
   if (text.includes('fifynowllc.com/ai-readiness-pass')) failures.push(`${file} has legacy public URL`);
