@@ -1,10 +1,12 @@
-# Level 2: AI Job and Productivity Pass
+# Level 2: AI Kollege Job and Productivity Pass
 
 Audience: job seekers, workers, admin, customer service, marketing, trades, operations, audio/content, and business support roles.
 
-## Outcome
+## Problem-first outcome
 
-The learner can explain practical AI skill, show proof-of-work, and use AI to improve daily productivity without making unsafe claims.
+The learner can explain practical AI skill, show proof-of-work, use AI to improve daily productivity, and communicate value without unsafe claims.
+
+This level follows the Winning Skill: solve a real work problem, show proof, collect signal, and turn skill into a clear next step.
 
 ## Module 1: AI resume readiness
 
@@ -13,6 +15,7 @@ Teach:
 - Convert real experience into AI-assisted productivity examples.
 - Avoid saying “AI expert” unless experience supports it.
 - Use honest verbs: drafted, reviewed, organized, summarized, improved, automated with supervision.
+- Show the problem solved, not only the tool used.
 
 Exercise:
 
@@ -26,7 +29,7 @@ Deliverable:
 
 Teach:
 
-Use the STAR format:
+Use the STAR-H format:
 
 - Situation.
 - Task.
@@ -40,7 +43,7 @@ Prepare an answer to: “How have you used AI to improve work?”
 
 Deliverable:
 
-- One interview answer.
+- One interview answer that includes the problem, tool support, review step, and result.
 
 ## Module 3: Role-based prompt packs
 
@@ -68,11 +71,13 @@ Pick one repeated task and improve it.
 
 Workflow map:
 
+- Problem.
 - Trigger.
 - Input.
 - AI support.
 - Human review.
 - Final output.
+- Proof that it helped.
 
 Deliverable:
 
@@ -87,10 +92,26 @@ Project options:
 - Resume and interview packet.
 - Report summary workflow.
 - Content planning workflow.
+- Daily value post series.
 
 Deliverable:
 
 - One complete project with explanation.
+
+## Module 6: Audience signal and opportunity awareness
+
+Teach:
+
+Skill becomes more valuable when the learner can notice repeated problems, questions, objections, or requests.
+
+Exercise:
+
+Write three posts or messages that teach one useful lesson and invite a reply.
+
+Deliverable:
+
+- Three daily value posts.
+- One signal log with replies, questions, or expected objections.
 
 ## Completion standard
 
@@ -101,5 +122,7 @@ Learner submits:
 - Role prompt pack.
 - Productivity workflow.
 - Proof-of-skill project.
+- Three daily value posts or teaching notes.
+- Signal log.
 
-Completion badge remains a Fify Now LLC completion badge, not an accredited credential.
+Completion badge remains an AI Kollege completion badge operated by Fify Now LLC. It is not an accredited credential, job guarantee, income guarantee, or official license.
