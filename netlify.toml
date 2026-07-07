@@ -61,6 +61,26 @@
   status = 200
 
 [[redirects]]
+  from = "/ai-readiness-pass/courses"
+  to = "/courses.html"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/courses.html"
+  to = "/courses.html"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/badge"
+  to = "/badge.html"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/badge.html"
+  to = "/badge.html"
+  status = 200
+
+[[redirects]]
   from = "/ai-readiness-pass/thanks"
   to = "/thanks.html"
   status = 200
