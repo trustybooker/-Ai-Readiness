@@ -1,9 +1,11 @@
 import fs from 'node:fs';
 
-const requiredFiles = ['index.html','booking.html','answers.html','checklist.html','lab.html','content-engine.html','thanks.html','favicon.svg','site.webmanifest','robots.txt','sitemap.xml','assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg','assets/ai-readiness-visual.svg','netlify/functions/capture-lead.mjs','api/capture-lead.mjs','vercel.json','docs/world-skill.md','docs/master-platform-skill.md','docs/skill-registry.md','docs/problem-first-jesus-solomon-operating-code.md','docs/skill-upgrade-protocol.md','docs/winning-skill.md','docs/app-audit-summary.txt','docs/course-certification-model.md','docs/certification-standards.md','docs/user-flow-skills-alignment.md','course/level-1-ai-readiness-foundations.md','course/level-2-ai-job-productivity-pass.md','course/level-3-business-ai-readiness.md','course/level-4-implementation-partner-track.md','course/ai-readiness-workbook.md'];
+const requiredFiles = ['index.html','booking.html','answers.html','checklist.html','lab.html','content-engine.html','courses.html','badge.html','thanks.html','favicon.svg','site.webmanifest','robots.txt','sitemap.xml','assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg','assets/ai-readiness-visual.svg','netlify/functions/capture-lead.mjs','api/capture-lead.mjs','vercel.json','docs/world-skill.md','docs/master-platform-skill.md','docs/skill-registry.md','docs/problem-first-jesus-solomon-operating-code.md','docs/skill-upgrade-protocol.md','docs/winning-skill.md','docs/app-audit-summary.txt','docs/course-certification-model.md','docs/certification-standards.md','docs/user-flow-skills-alignment.md','docs/final-skills-alignment-audit.md','course/level-1-ai-readiness-foundations.md','course/level-2-ai-job-productivity-pass.md','course/level-3-business-ai-readiness.md','course/level-4-implementation-partner-track.md','course/ai-readiness-workbook.md'];
 
 const requiredText = {
-  'index.html': ['AI Kollege','What problem are you trying to solve?','Wisdom before automation','https://aikollege.com/','data-question','score_summary','lead_tier','data-payment-key','data-booking-link'],
+  'index.html': ['AI Kollege','What problem are you trying to solve?','Wisdom before automation','https://aikollege.com/','data-question','score_summary','lead_tier','data-payment-key','data-booking-link','How AI Kollege works','content-engine.html','checklist.html','lab.html','booking.html','courses.html','badge.html'],
+  'courses.html': ['AI Kollege Courses and Paths','paths and offers, not accredited degrees','AI Starter Pass','AI Job &amp; Productivity Pass','Business AI Readiness Audit','Team Training Sprint','AI Implementation Partner','AI Kollege Lab','not a licensed college, university, or degree-granting school','No job, income, or revenue outcome is guaranteed','badge.html','Operated by Fify Now LLC'],
+  'badge.html': ['AI Kollege Completion Badge','proof-of-work artifacts were submitted','human-reviewed only when a reviewer actually checked','Not accreditation','Not a job guarantee','Not an income or revenue guarantee','Not a legal or compliance certification','completion date and curriculum version','does not currently offer a public badge verification page','Operated by Fify Now LLC'],
   'content-engine.html': ['AI Kollege Daily Content Engine','Post useful value daily','Audience signal','ai-kollege-signal','What should AI Kollege help solve next?'],
   'booking.html': ['AI Kollege','Problem-first AI review','What problem should we review before the call?','No fake availability','ai-readiness-booking','preferred_time_1','preferred_time_2','preferred_time_3'],
   'answers.html': ['AI Kollege Answers','Direct answers for AI problems','Move from reading into problem-solving','answer/what-is-ai-readiness.html'],
@@ -15,7 +17,7 @@ const requiredText = {
   'assets/og-ai-readiness-pass.svg': ['AI KOLLEGE','AI Readiness Pass'],
   'assets/completion-badge.svg': ['AI KOLLEGE','COMPLETION BADGE'],
   'assets/ai-readiness-visual.svg': ['AI Kollege Readiness View','Readiness Score'],
-  'sitemap.xml': ['https://aikollege.com/','content-engine.html','booking.html','answer/what-is-ai-readiness.html'],
+  'sitemap.xml': ['https://aikollege.com/','content-engine.html','booking.html','courses.html','badge.html','answer/what-is-ai-readiness.html'],
   'robots.txt': ['https://aikollege.com/sitemap.xml'],
   'docs/world-skill.md': ['The Jesus Pattern for business','Fruit','long-term mission'],
   'docs/master-platform-skill.md': ['Winning first','Daily value first','Creator consistency engine','First question before every build'],
@@ -26,6 +28,7 @@ const requiredText = {
   'docs/course-certification-model.md': ['AI Kollege Course and Completion Model','Score → problem → train → build proof → human review → badge → refresh','Winning Skill completion standard','User flow'],
   'docs/certification-standards.md': ['AI Kollege Completion and Badge Standards','Problem-first summary','Proof and signal awareness','AI Kollege Readiness Pass'],
   'docs/user-flow-skills-alignment.md': ['AI Kollege Skills-Aligned User Flow','Core flow','Skill alignment','Business model alignment'],
+  'docs/final-skills-alignment-audit.md': ['Final Skills Alignment Audit','Repo-side ready','Live-production-ready','Winning Skill','QA Security Truth Auditor','Remaining external/live gates'],
   'course/level-1-ai-readiness-foundations.md': ['AI Kollege Readiness Foundations','Problem-first outcome','Daily value and audience signal','Completion badge language must say AI Kollege'],
   'course/level-2-ai-job-productivity-pass.md': ['AI Kollege Job and Productivity Pass','Audience signal and opportunity awareness','Three daily value posts','Signal log'],
   'course/level-3-business-ai-readiness.md': ['AI Kollege Business AI Readiness','Problem-size scoring','Revenue and signal map','Local Service Rescue Sprint'],
@@ -44,7 +47,7 @@ for (const [file, snippets] of Object.entries(requiredText)) {
   for (const snippet of snippets) if (!text.includes(snippet)) failures.push(`${file} missing: ${snippet}`);
 }
 
-for (const file of ['index.html','booking.html','answers.html','checklist.html','lab.html','content-engine.html','sitemap.xml','robots.txt']) {
+for (const file of ['index.html','booking.html','answers.html','checklist.html','lab.html','content-engine.html','courses.html','badge.html','sitemap.xml','robots.txt']) {
   if (!fs.existsSync(file)) continue;
   const text = fs.readFileSync(file, 'utf8');
   if (text.includes('fifynowllc.com/ai-readiness-pass')) failures.push(`${file} has legacy public URL`);
