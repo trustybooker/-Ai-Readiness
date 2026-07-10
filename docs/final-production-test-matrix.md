@@ -20,6 +20,11 @@ Run this after a deployment preview exists.
 - [ ] `/ai-readiness-pass/lab` loads.
 - [ ] `/thanks.html` loads.
 - [ ] `/ai-readiness-pass/thanks` loads.
+- [ ] `/courses.html` loads.
+- [ ] `/ai-readiness-pass/courses` loads.
+- [ ] `/badge.html` loads.
+- [ ] `/ai-readiness-pass/badge` loads.
+- [ ] `/refunds.html` loads.
 - [ ] All `/answer/` pages load.
 - [ ] All `/ai-readiness-pass/answer/` pages load.
 - [ ] `sitemap.xml` loads.
@@ -61,6 +66,22 @@ Run this after a deployment preview exists.
 - [ ] Booking issue includes meeting length, meeting preference, timezone, and preferred times.
 - [ ] If tracker is disabled, email fallback works.
 - [ ] Honeypot/spam field does not break normal submissions.
+- [ ] `npm test` passes (unit coverage for both capture paths).
+- [ ] `SITE_URL=<deployed> node scripts/live-lead-test.mjs` passes against the live site.
+
+## AI Secretary / Assistant / WhatsApp QA (run only after env vars are set)
+
+- [ ] `POST /api/secretary` answers a paths question from approved content only.
+- [ ] Asking the secretary for a discount/refund produces a refusal + handoff and a `[Secretary]` lead issue.
+- [ ] Secretary widget stays completely hidden while `secretary.enabled` is false.
+- [ ] `POST /api/assistant` without the Bearer token returns 401.
+- [ ] `leads_summary`, `draft_reply`, and `today` actions return usable output; drafts are never sent.
+- [ ] Meta webhook GET verification passes with `WHATSAPP_VERIFY_TOKEN`.
+- [ ] A POST with a bad `X-Hub-Signature-256` returns 401 and is not processed.
+- [ ] A customer WhatsApp message gets a grounded secretary reply; a purchase/refund intent gets a human-handoff reply and lead issue.
+- [ ] A message from `OWNER_WHATSAPP_NUMBER` returns the owner leads summary.
+- [ ] No payment link is ever sent by the bot on any channel.
+- [ ] Host-level rate limiting (Netlify/Vercel dashboard) is enabled for the three function endpoints.
 
 ## Business flow QA
 
@@ -104,6 +125,8 @@ Run this after a deployment preview exists.
 - [ ] No fake logos.
 - [ ] No fake availability.
 - [ ] No fake checkout.
+- [ ] No secrets committed to the repo (env vars only in host dashboards).
+- [ ] AI secretary cannot be prompted into promising outcomes, discounts, or refunds (spot-check on live endpoint).
 
 ## Launch decision
 

@@ -102,6 +102,45 @@ Every page states AI Kollege as the public brand and Fify Now LLC as operator, a
 8. Schema/rich-results check on the live homepage FAQ/Organization markup.
 9. Badge issuance is manual: keep records with date and curriculum version; build a verification page only after record IDs exist.
 
+## 4b. Launch build pass (2026-07-10, Phases 0-6)
+
+A second pass added the operational layer on the same branch. Everything below
+is **repo-side ready**; the live gates in section 4 still apply and grew the
+new checks in `docs/final-production-test-matrix.md`.
+
+- **Phase 1 — lead system**: unit tests for both capture paths (33 tests total
+  across the suite) prove the no-lead-lost behavior: label-failure retry,
+  tracker-off email fallback, honeypot, full field record.
+  `scripts/live-lead-test.mjs` is the owner-run live gate for issue #4.
+- **Phase 2 — revenue rails**: `refunds.html` states the conservative
+  refund/credit handling from `docs/onboarding-offboarding-refunds.md` (no
+  blanket guarantee) plus the four-step buyer onboarding sequence. Checkout
+  wiring for five offers already exists via `data-payment-key`; keys stay
+  empty until real tested links exist (issue #7 gate). Lab remains
+  interest-list-first by design.
+- **Phase 3 — AI Secretary**: `/api/secretary` +
+  `/.netlify/functions/secretary`, grounded only on approved site content,
+  hard guardrails (no outcome promises, no improvised pricing/discounts/
+  refunds, no payments, no booking confirmations), human handoff for money/
+  legal/complex, transcripts logged into the existing GitHub Issues lead
+  pipeline. Widget renders nothing until `secretary.enabled` is flipped after
+  live verification.
+- **Phase 4 — Owner assistant**: `/api/assistant` behind
+  `OWNER_ASSISTANT_TOKEN` (constant-time compare): lead summaries with offer
+  mapping, drafts that are never sent, today's bookings ([Booking] issues +
+  optional private ICS feed).
+- **Phase 5 — WhatsApp/Base44**: signed webhook (verify-token handshake,
+  `X-Hub-Signature-256` over raw body), owner number routes to the private
+  assistant, everyone else to the secretary, per-sender rate limiting, and a
+  server-side hard rule that nothing is sold, promised, or refunded by the
+  bot. Setup guide: `docs/assistant-api-and-whatsapp-setup.md`.
+- **Phase 6 — guardrails in CI**: validation now requires every new file and
+  its safety text, and fails on committed secrets in config files. `npm run
+  check` (tests + validation) passes.
+
+All secrets (LEADS_SECRET, ANTHROPIC_API_KEY, OWNER_ASSISTANT_TOKEN,
+WHATSAPP_*) are host-dashboard values; none are in the repo.
+
 ## 5. Risks and things intentionally not done
 
 - No payment links added — none are real/tested yet.
