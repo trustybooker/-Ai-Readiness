@@ -1,0 +1,127 @@
+import { test, beforeEach, afterEach } from 'node:test';
+import assert from 'node:assert/strict';
+
+import {
+  runSecretary,
+  logConversationLead,
+  rateLimit,
+  isConfigured,
+  SYSTEM_PROMPT,
+  APPROVED_KNOWLEDGE
+} from '../lib/secretary-core.mjs';
+
+function fakeClient(payload, stopReason = 'end_turn') {
+  return {
+    calls: [],
+    messages: {
+      create: async function (params) {
+        fakeClientLastParams = params;
+        return {
+          stop_reason: stopReason,
+          content: [{ type: 'text', text: typeof payload === 'string' ? payload : JSON.stringify(payload) }]
+        };
+      }
+    }
+  };
+}
+let fakeClientLastParams;
+
+const realFetch = globalThis.fetch;
+afterEach(() => {
+  globalThis.fetch = realFetch;
+  delete process.env.LEADS_SECRET;
+  delete process.env.LEADS_REPO;
+  delete process.env.ANTHROPIC_API_KEY;
+});
+beforeEach(() => {
+  fakeClientLastParams = undefined;
+});
+
+test('isConfigured requires ANTHROPIC_API_KEY', () => {
+  assert.equal(isConfigured(), false);
+  process.env.ANTHROPIC_API_KEY = 'sk-test';
+  assert.equal(isConfigured(), true);
+});
+
+test('system prompt carries the non-negotiable guardrails', () => {
+  for (const rule of [
+    'Never promise outcomes',
+    'Never improvise pricing, discounts, bundles, or refunds',
+    'Never take payment, send payment links, or confirm an appointment',
+    'set handoff to true'
+  ]) {
+    assert.ok(SYSTEM_PROMPT.includes(rule), `missing guardrail: ${rule}`);
+  }
+  assert.ok(APPROVED_KNOWLEDGE.includes('not accredited degrees'));
+  assert.ok(APPROVED_KNOWLEDGE.includes('no guaranteed jobs, income, or revenue'));
+});
+
+test('runSecretary returns the structured answer and lead', async () => {
+  const client = fakeClient({
+    reply: 'The AI Starter Pass is $59 and covers foundation training.',
+    handoff: false,
+    offer_booking: true,
+    lead: { name: 'Ann', email: 'ann@example.com', need: 'starter training', path: 'AI Starter Pass' }
+  });
+  const result = await runSecretary({ message: 'How much is the starter pass?', client });
+  assert.equal(result.handoff, false);
+  assert.equal(result.lead.email, 'ann@example.com');
+  assert.match(result.reply, /\$59/);
+  // Grounding: the request must pin the approved-content system prompt.
+  assert.ok(fakeClientLastParams.system[0].text.includes('<approved_content>'));
+  assert.equal(fakeClientLastParams.output_config.format.type, 'json_schema');
+});
+
+test('runSecretary hands off when the model refuses', async () => {
+  const client = fakeClient('', 'refusal');
+  const result = await runSecretary({ message: 'anything', client });
+  assert.equal(result.handoff, true);
+  assert.match(result.reply, /human/);
+});
+
+test('runSecretary hands off when the model output is not parseable', async () => {
+  const client = fakeClient('not json at all');
+  const result = await runSecretary({ message: 'anything', client });
+  assert.equal(result.handoff, true);
+});
+
+test('runSecretary caps history to bound cost', async () => {
+  const client = fakeClient({ reply: 'ok', handoff: false, offer_booking: false, lead: null });
+  const history = Array.from({ length: 40 }, (_, i) => ({ role: i % 2 ? 'assistant' : 'user', text: `turn ${i}` }));
+  await runSecretary({ message: 'latest', client, history });
+  assert.ok(fakeClientLastParams.messages.length <= 13);
+});
+
+test('logConversationLead writes the transcript into the lead pipeline with the human-approval boundary', async () => {
+  process.env.LEADS_SECRET = 'test';
+  process.env.LEADS_REPO = 'owner/repo';
+  let posted;
+  globalThis.fetch = async (url, options) => {
+    posted = JSON.parse(options.body);
+    return new Response(JSON.stringify({ html_url: 'https://github.com/x/y/issues/9', number: 9 }), { status: 201 });
+  };
+  const out = await logConversationLead({
+    result: { reply: 'A human will follow up.', handoff: true, offer_booking: false, lead: { name: 'Bo', email: 'bo@x.com', need: 'refund question', path: null } },
+    message: 'Can I get a refund?',
+    history: [],
+    channel: 'whatsapp'
+  });
+  assert.equal(out.ok, true);
+  assert.match(posted.title, /^\[Secretary\] Bo/);
+  assert.ok(posted.body.includes('Handoff requested: YES'));
+  assert.ok(posted.body.includes('Human-approval boundary'));
+  assert.ok(posted.body.includes('**Visitor:** Can I get a refund?'));
+  assert.ok(posted.labels.includes('priority-hot'));
+});
+
+test('logConversationLead reports not_configured without secrets', async () => {
+  const out = await logConversationLead({ result: { reply: 'x', handoff: true, lead: null }, message: 'hi' });
+  assert.equal(out.ok, false);
+  assert.equal(out.error, 'not_configured');
+});
+
+test('rateLimit blocks after the window limit', () => {
+  const key = `test:${Math.random()}`;
+  for (let i = 0; i < 10; i++) assert.equal(rateLimit(key), true);
+  assert.equal(rateLimit(key), false);
+});

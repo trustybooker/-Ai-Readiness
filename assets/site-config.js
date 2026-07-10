@@ -12,5 +12,10 @@ window.FIFYNOW_SITE_CONFIG = {
     teamTrainingDeposit: '',
     implementationReviewDeposit: '',
     aiReadinessLab: ''
+  },
+  secretary: {
+    // Flip to true ONLY after ANTHROPIC_API_KEY is set in the host dashboard
+    // and the /api/secretary endpoint answers on the deployed site.
+    enabled: false
   }
 };
