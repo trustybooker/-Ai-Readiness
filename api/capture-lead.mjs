@@ -131,8 +131,24 @@ async function createIssue(data) {
   return { ok: true, issue_url: issue.html_url, issue_number: issue.number };
 }
 
+// Best-effort per-IP throttle (per warm instance) so bots cannot loop valid
+// name/email posts into the private lead repo. A throttled real user still
+// delivers via the client-side email fallback, so no lead is lost.
+const rlBuckets = new Map();
+function throttle(key, limit = 6, windowMs = 60000) {
+  const now = Date.now();
+  const hits = (rlBuckets.get(key) || []).filter((t) => now - t < windowMs);
+  if (hits.length >= limit) { rlBuckets.set(key, hits); return false; }
+  hits.push(now);
+  rlBuckets.set(key, hits);
+  return true;
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'method_not_allowed' });
+
+  const ip = req.headers['x-forwarded-for'] || 'unknown';
+  if (!throttle(`lead:${ip}`)) return res.status(429).json({ ok: false, fallback: 'email_form', error: 'rate_limited' });
 
   let data;
   try {

@@ -27,6 +27,7 @@ Both platforms serve the same three endpoints (Netlify path first, Vercel second
 | `BOOKING_URL` | secretary, whatsapp | scheduler link offered in replies (optional) |
 | `OWNER_ASSISTANT_TOKEN` | assistant, whatsapp owner route | long random string; Bearer token for the private assistant |
 | `GOOGLE_CALENDAR_ICS_URL` | assistant `today` | optional; the private iCal address of the owner's calendar |
+| `CALENDAR_TIMEZONE` | assistant `today` | optional; IANA zone for "today" (defaults to `America/New_York`, matching the booking form) |
 | `WHATSAPP_VERIFY_TOKEN` | whatsapp | any random string; must match the value entered in the Meta dashboard |
 | `WHATSAPP_APP_SECRET` | whatsapp | Meta app secret; signs every webhook delivery |
 | `WHATSAPP_TOKEN` | whatsapp | WhatsApp Business Cloud API access token |

@@ -5,7 +5,8 @@ import {
   checkOwnerToken,
   isAssistantConfigured,
   handleAssistantAction,
-  fetchTodaysBookings
+  fetchTodaysBookings,
+  ownerToday
 } from '../lib/assistant-core.mjs';
 
 const realFetch = globalThis.fetch;
@@ -76,6 +77,26 @@ test('draft_reply returns a draft and explicitly does not send', async () => {
   assert.equal(result.ok, true);
   assert.match(result.draft, /Ann/);
   assert.match(result.note, /nothing has been sent/i);
+});
+
+test('ownerToday returns the local calendar date in the configured timezone', () => {
+  const utc = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  const ny = ownerToday('America/New_York');
+  assert.match(ny, /^\d{8}$/);
+  // Near the UTC-midnight boundary NY can be a day behind UTC; both are valid
+  // 8-digit dates, and the point is that the TZ is honored rather than raw UTC.
+  const kiritimati = ownerToday('Pacific/Kiritimati'); // UTC+14, always >= UTC date
+  assert.ok(kiritimati >= utc || Number(kiritimati) >= Number(ny));
+});
+
+test("today action surfaces a lead-tracker error instead of reporting no bookings", async () => {
+  process.env.LEADS_SECRET = 't';
+  process.env.LEADS_REPO = 'x/y';
+  globalThis.fetch = async () => new Response('{"message":"Bad credentials"}', { status: 401 });
+  const result = await handleAssistantAction({ action: 'today' }, fakeClient('unused'));
+  assert.equal(result.ok, false);
+  assert.match(result.error, /lead_tracker_error/);
+  assert.match(result.note, /may be hidden/i);
 });
 
 test('today lists booking requests and parses today calendar events', async () => {

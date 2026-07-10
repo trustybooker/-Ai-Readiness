@@ -42,18 +42,23 @@ function githubOk() {
   });
 }
 
-function netlifyRequest(data, method = 'POST') {
+// Each request uses a unique IP by default so per-IP throttling does not bleed
+// across independent test cases. Pass an explicit ip to exercise throttling.
+let ipCounter = 0;
+function nextIp() { return `10.0.0.${ipCounter++}`; }
+
+function netlifyRequest(data, method = 'POST', ip = nextIp()) {
   return new Request('http://localhost/.netlify/functions/capture-lead', {
     method,
-    headers: { 'content-type': 'application/json' },
+    headers: { 'content-type': 'application/json', 'x-forwarded-for': ip },
     body: method === 'POST' ? JSON.stringify(data) : undefined
   });
 }
 
-function vercelReqRes(data, method = 'POST') {
+function vercelReqRes(data, method = 'POST', ip = nextIp()) {
   const req = {
     method,
-    headers: { 'content-type': 'application/json' },
+    headers: { 'content-type': 'application/json', 'x-forwarded-for': ip },
     body: data
   };
   const res = {
@@ -180,4 +185,17 @@ test('vercel: signals email fallback when tracker is not configured', async () =
   await vercelHandler(req, res);
   assert.equal(res.statusCode, 503);
   assert.equal(res.payload.fallback, 'email_form');
+});
+
+test('netlify: throttles repeated posts from one IP and points them at email fallback', async () => {
+  mockFetch(() => githubOk());
+  const ip = '203.0.113.7';
+  let throttledStatus = 0;
+  let throttledBody;
+  for (let i = 0; i < 8; i++) {
+    const response = await netlifyHandler(netlifyRequest(SAMPLE_LEAD, 'POST', ip));
+    if (response.status === 429) { throttledStatus = 429; throttledBody = await response.json(); break; }
+  }
+  assert.equal(throttledStatus, 429, 'a burst from one IP should eventually be throttled');
+  assert.equal(throttledBody.fallback, 'email_form', 'throttled response tells the client to use email fallback');
 });

@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 
-const requiredFiles = ['index.html','booking.html','answers.html','checklist.html','lab.html','content-engine.html','courses.html','badge.html','refunds.html','thanks.html','assets/secretary.js','lib/secretary-core.mjs','lib/assistant-core.mjs','lib/whatsapp-core.mjs','netlify/functions/secretary.mjs','api/secretary.mjs','netlify/functions/assistant.mjs','api/assistant.mjs','netlify/functions/whatsapp-webhook.mjs','api/whatsapp-webhook.mjs','tests/capture-lead.test.mjs','tests/secretary.test.mjs','tests/assistant.test.mjs','tests/whatsapp.test.mjs','scripts/live-lead-test.mjs','docs/assistant-api-and-whatsapp-setup.md','favicon.svg','site.webmanifest','robots.txt','sitemap.xml','assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg','assets/ai-readiness-visual.svg','netlify/functions/capture-lead.mjs','api/capture-lead.mjs','vercel.json','docs/world-skill.md','docs/master-platform-skill.md','docs/skill-registry.md','docs/problem-first-jesus-solomon-operating-code.md','docs/skill-upgrade-protocol.md','docs/winning-skill.md','docs/app-audit-summary.txt','docs/course-certification-model.md','docs/certification-standards.md','docs/user-flow-skills-alignment.md','docs/final-skills-alignment-audit.md','course/level-1-ai-readiness-foundations.md','course/level-2-ai-job-productivity-pass.md','course/level-3-business-ai-readiness.md','course/level-4-implementation-partner-track.md','course/ai-readiness-workbook.md'];
+const requiredFiles = ['index.html','booking.html','answers.html','checklist.html','lab.html','content-engine.html','courses.html','badge.html','refunds.html','thanks.html','assets/secretary.js','lib/secretary-core.mjs','lib/assistant-core.mjs','lib/whatsapp-core.mjs','netlify/functions/secretary.mjs','api/secretary.mjs','netlify/functions/assistant.mjs','api/assistant.mjs','netlify/functions/whatsapp-webhook.mjs','api/whatsapp-webhook.mjs','tests/capture-lead.test.mjs','tests/secretary.test.mjs','tests/assistant.test.mjs','tests/whatsapp.test.mjs','scripts/live-lead-test.mjs','docs/assistant-api-and-whatsapp-setup.md','favicon.svg','site.webmanifest','robots.txt','sitemap.xml','assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg','assets/ai-readiness-visual.svg','netlify/functions/capture-lead.mjs','api/capture-lead.mjs','vercel.json','docs/world-skill.md','docs/master-platform-skill.md','docs/skill-registry.md','docs/problem-first-jesus-solomon-operating-code.md','docs/skill-upgrade-protocol.md','docs/winning-skill.md','docs/app-audit-summary.txt','docs/course-certification-model.md','docs/certification-standards.md','docs/user-flow-skills-alignment.md','docs/final-skills-alignment-audit.md','404.html','course/level-1-ai-readiness-foundations.md','course/level-2-ai-job-productivity-pass.md','course/level-3-business-ai-readiness.md','course/level-4-implementation-partner-track.md','course/ai-readiness-workbook.md'];
 
 const requiredText = {
   'index.html': ['AI Kollege','What problem are you trying to solve?','Wisdom before automation','https://aikollege.com/','data-question','score_summary','lead_tier','data-payment-key','data-booking-link','How AI Kollege works','content-engine.html','checklist.html','lab.html','booking.html','courses.html','badge.html'],
@@ -52,10 +52,15 @@ for (const [file, snippets] of Object.entries(requiredText)) {
   for (const snippet of snippets) if (!text.includes(snippet)) failures.push(`${file} missing: ${snippet}`);
 }
 
-for (const file of ['index.html','booking.html','answers.html','checklist.html','lab.html','content-engine.html','courses.html','badge.html','refunds.html','sitemap.xml','robots.txt']) {
+// Answer-hub pages are indexed at aikollege.com (sitemap), so their canonicals
+// and the FormSubmit fallback redirect must stay on-domain — never the legacy
+// fifynowllc.com URL or the old Netlify preview host.
+const answerPages = fs.existsSync('answer') ? fs.readdirSync('answer').filter((f) => f.endsWith('.html')).map((f) => `answer/${f}`) : [];
+for (const file of ['index.html','booking.html','answers.html','checklist.html','lab.html','content-engine.html','courses.html','badge.html','refunds.html','sitemap.xml','robots.txt', ...answerPages]) {
   if (!fs.existsSync(file)) continue;
   const text = fs.readFileSync(file, 'utf8');
   if (text.includes('fifynowllc.com/ai-readiness-pass')) failures.push(`${file} has legacy public URL`);
+  if (text.includes('ai-readiness-pass.netlify.app')) failures.push(`${file} has off-domain redirect/host`);
   if (text.includes('validation-note')) failures.push(`${file} has internal validation note`);
 }
 

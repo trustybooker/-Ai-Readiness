@@ -12,6 +12,16 @@
     }
   ],
   "rewrites": [
+    { "source": "/docs/(.*)", "destination": "/_internal_blocked" },
+    { "source": "/course/(.*)", "destination": "/_internal_blocked" },
+    { "source": "/lib/(.*)", "destination": "/_internal_blocked" },
+    { "source": "/tests/(.*)", "destination": "/_internal_blocked" },
+    { "source": "/scripts/(.*)", "destination": "/_internal_blocked" },
+    { "source": "/netlify/(.*)", "destination": "/_internal_blocked" },
+    { "source": "/package.json", "destination": "/_internal_blocked" },
+    { "source": "/package-lock.json", "destination": "/_internal_blocked" },
+    { "source": "/netlify.toml", "destination": "/_internal_blocked" },
+    { "source": "/vercel.json", "destination": "/_internal_blocked" },
     { "source": "/ai-readiness-pass", "destination": "/index.html" },
     { "source": "/ai-readiness-pass/index.html", "destination": "/index.html" },
     { "source": "/ai-readiness-pass/booking", "destination": "/booking.html" },

@@ -93,11 +93,14 @@ test('customer messages route to the secretary and handoffs are logged to the le
       })
     }
   };
-  const result = await routeMessage({ from: '15559998888', text: 'I want a refund now', client });
+  const result = await routeMessage({ from: '+1 (555) 999-8888', text: 'I want a refund now', client });
   assert.equal(result.routed, 'secretary');
   assert.equal(result.handoff, true);
   assert.match(result.reply, /Booking page:/);
   assert.ok(loggedIssue.body.includes('Channel: whatsapp'));
+  // The sender number must reach the owner even with no typed name/email.
+  assert.ok(loggedIssue.body.includes('15559998888'), 'normalized WhatsApp number is in the lead body');
+  assert.match(loggedIssue.title, /15559998888/, 'lead title falls back to the WhatsApp number');
 });
 
 test('owner route is refused when the private assistant is not enabled', async () => {

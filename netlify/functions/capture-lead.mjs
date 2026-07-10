@@ -128,8 +128,27 @@ async function createIssue(data) {
   return { ok: true, issue_url: issue.html_url, issue_number: issue.number };
 }
 
-export default async (req) => {
+// Best-effort per-IP throttle so a bot posting valid-looking name/email in a
+// loop cannot spam the private lead repo or burn GitHub quota. Per warm
+// instance only — platform-level rate limiting is the real defense (see
+// docs/assistant-api-and-whatsapp-setup.md). A throttled real user still
+// delivers via the client-side email fallback (429 is treated as tracker
+// unavailable), so no lead is lost.
+const rlBuckets = new Map();
+function throttle(key, limit = 6, windowMs = 60000) {
+  const now = Date.now();
+  const hits = (rlBuckets.get(key) || []).filter((t) => now - t < windowMs);
+  if (hits.length >= limit) { rlBuckets.set(key, hits); return false; }
+  hits.push(now);
+  rlBuckets.set(key, hits);
+  return true;
+}
+
+export default async (req, context) => {
   if (req.method !== 'POST') return Response.json({ ok: false, error: 'method_not_allowed' }, { status: 405 });
+
+  const ip = context?.ip || req.headers.get('x-forwarded-for') || 'unknown';
+  if (!throttle(`lead:${ip}`)) return Response.json({ ok: false, fallback: 'email_form', error: 'rate_limited' }, { status: 429 });
 
   let data;
   try {
