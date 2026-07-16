@@ -16,7 +16,7 @@ const requiredText = {
   'answers.html': ['AI Kollege Answers','Direct answers for AI problems','Move from reading into problem-solving','answer/what-is-ai-readiness.html'],
   'checklist.html': ['AI Kollege Checklist','Free problem-first checklist','What problem do you need to solve first?'],
   'lab.html': ['AI Kollege Lab','Keep solving AI problems','What problem should the Lab help you keep solving?'],
-  'assets/app.js': ['capture-lead','email fallback','data-payment-key','data-booking-link'],
+  'assets/app.js': ['capture-lead','email fallback','data-payment-key','data-booking-link','selfServeKeys'],
   'assets/site-config.js': ['bookingUrl','aiStarterPass','businessAiReadinessAudit'],
   'assets/fifynow-logo.svg': ['AI Kollege logo','AI'],
   'assets/og-ai-readiness-pass.svg': ['AI KOLLEGE','AI Readiness Pass'],

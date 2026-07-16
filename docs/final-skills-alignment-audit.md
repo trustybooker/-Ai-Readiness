@@ -112,6 +112,12 @@ new checks in `docs/final-production-test-matrix.md`.
   across the suite) prove the no-lead-lost behavior: label-failure retry,
   tracker-off email fallback, honeypot, full field record.
   `scripts/live-lead-test.mjs` is the owner-run live gate for issue #4.
+- **Checkout policy (post-review)**: only the two low-tier individual passes
+  (Starter $59, Job & Productivity $197) can become direct self-serve checkout
+  when a real link is set. Business Audit, Team Sprint, and Implementation
+  always route to the human-review/booking form even if a payment key is
+  filled — enforced in `assets/app.js` via a self-serve allowlist, so money and
+  implementation decisions keep a human-in-the-loop step.
 - **Phase 2 — revenue rails**: `refunds.html` states the conservative
   refund/credit handling from `docs/onboarding-offboarding-refunds.md` (no
   blanket guarantee) plus the four-step buyer onboarding sequence. Checkout

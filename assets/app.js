@@ -124,9 +124,14 @@ function applyIntegrations(){
     implementationReviewDeposit: safeUrl(payments.implementationReviewDeposit),
     aiReadinessLab: safeUrl(payments.aiReadinessLab)
   };
+  // Only the low-tier individual passes may become direct self-serve checkout.
+  // Business audit, team sprint, and implementation always route to the human
+  // review/booking form even when a payment link is set, so sensitive business,
+  // money, and implementation decisions keep a human-in-the-loop step.
+  const selfServeKeys = new Set(['aiStarterPass','aiJobProductivityPass']);
   document.querySelectorAll('[data-payment-key]').forEach(link => {
     const url = paymentLinks[link.dataset.paymentKey];
-    if(url){
+    if(url && selfServeKeys.has(link.dataset.paymentKey)){
       link.href = url;
       link.target = '_blank';
       link.rel = 'noopener';
