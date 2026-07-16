@@ -90,6 +90,9 @@ Run this after a deployment preview exists.
 - [ ] Lab waitlist CTA works.
 - [ ] Business audit CTA works.
 - [ ] Payment request buttons do not pretend checkout is live before payment links exist.
+- [ ] Stripe Payment Links created and TEST-mode purchase completed before pasting live links (see docs/stripe-setup.md).
+- [ ] Only aiStarterPass and aiJobProductivityPass show a Buy button; audit/team/implementation stay routed to human review.
+- [ ] Payment Link "After payment" redirects to https://aikollege.com/thanks.html (once domain is live).
 - [ ] Booking link is added and tested before launch.
 - [ ] Google Calendar scheduler opens from deployed site.
 - [ ] Internal booking request remains available for custom/fit-review cases.
