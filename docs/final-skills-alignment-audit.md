@@ -147,6 +147,22 @@ new checks in `docs/final-production-test-matrix.md`.
 All secrets (LEADS_SECRET, ANTHROPIC_API_KEY, OWNER_ASSISTANT_TOKEN,
 WHATSAPP_*) are host-dashboard values; none are in the repo.
 
+## 4c. Gap-closure pass (branding, social, privacy)
+
+- **Answer-hub branding**: all 7 `/answer/*` pages now lead with AI Kollege as
+  the public brand (title, nav chip, footer) with Fify Now LLC kept as the
+  operator credit — they previously carried legacy "Fify Now LLC" titles and an
+  "F" logo chip, violating the "AI Kollege is the public brand" definition of
+  done. Validation now guards this.
+- **Social preview**: `courses.html`, `badge.html`, and `refunds.html` gained
+  Open Graph + Twitter card tags (they only had canonical/description before).
+- **Privacy page**: added `privacy.html` — a plain-language data-handling
+  summary covering form data, the AI assistant transcript, and WhatsApp
+  numbers; states we don't sell data and how to request deletion. It explicitly
+  does **not** claim legal compliance; a formal policy under legal review is a
+  live gate (see below). Linked from the homepage footer, in the sitemap, and
+  required by validation.
+
 ## 5. Risks and things intentionally not done
 
 - No payment links added — none are real/tested yet.
