@@ -25,16 +25,19 @@
 - [ ] Confirm Gmail receives fallback copy.
 - [ ] Verify the lead includes name, email, phone, path, message, and score summary.
 
-## Fast payment setup
+## Fast payment setup — Stripe
 
-- [ ] Create Square Payment Link: AI Starter Pass.
-- [ ] Create Square Payment Link: AI Job and Productivity Pass.
-- [ ] Create Square Payment Link: Business AI Readiness Audit.
-- [ ] Create Square deposit link: Team Training Sprint deposit.
-- [ ] Create Square deposit link: AI Implementation Review deposit.
-- [ ] Add refund/credit policy before taking paid orders.
-- [ ] Replace request buttons with verified pay links only after test purchase works.
-- [ ] Use PayPal Payment Links as backup if Square setup is delayed.
+Use `docs/stripe-setup.md` as the authoritative payment guide. Do not use the retired Square/PayPal launch instructions from the June 25 draft.
+
+- [ ] In Stripe Test mode, create a one-time Payment Link for AI Starter Pass ($59).
+- [ ] In Stripe Test mode, create a one-time Payment Link for AI Job & Productivity Pass ($197).
+- [ ] Set each test link to redirect to the deployed `thanks.html` page after payment.
+- [ ] Add the two test links to `assets/site-config.js` only on the release branch.
+- [ ] Complete test purchases for both offers and verify success + redirect.
+- [ ] Only after both test purchases pass, create the corresponding Live-mode links.
+- [ ] Replace test URLs with the transaction-tested live URLs and redeploy.
+- [ ] Keep Business AI Readiness Audit, Team Training Sprint, AI Implementation Review, and AI Kollege Lab human-review-only; do not expose direct site Buy buttons for them.
+- [ ] Confirm refund/credit policy before accepting live orders.
 
 ## Course and delivery setup
 
@@ -75,7 +78,8 @@
 
 - [ ] `npm run validate` passes.
 - [ ] GitHub Actions validate workflow passes.
-- [ ] Netlify or Vercel preview loads.
+- [ ] Netlify preview/deploy loads from `release/ai-kollege-launch`.
 - [ ] First-party tracker works on deployed URL.
 - [ ] Email fallback works on deployed URL.
+- [ ] Approved `/api/*` aliases resolve to their Netlify Functions; all other `/api/*` paths return 404.
 - [ ] No temporary files committed.
