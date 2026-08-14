@@ -50,6 +50,32 @@
   status = 404
   force = true
 
+# Explicit public API aliases used by the site, launch smoke tests, and Base44.
+# Keep these before the /api/* deny rule so only approved functions are exposed.
+[[redirects]]
+  from = "/api/capture-lead"
+  to = "/.netlify/functions/capture-lead"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/secretary"
+  to = "/.netlify/functions/secretary"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/assistant"
+  to = "/.netlify/functions/assistant"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/whatsapp-webhook"
+  to = "/.netlify/functions/whatsapp-webhook"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/api/*"
   to = "/404.html"
