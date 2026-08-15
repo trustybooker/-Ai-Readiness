@@ -4,8 +4,8 @@ window.FIFYNOW_SITE_CONFIG = {
   // The primary pipeline remains the verified private lead repository.
   fallbackFormAction: 'https://formsubmit.co/fifynow@fifynowllc.com',
   analytics: {
-    provider: 'none',
-    googleAnalyticsId: '',
+    provider: 'google-analytics-4',
+    googleAnalyticsId: 'G-P4TR060PFF',
     plausibleDomain: ''
   },
   payments: {
