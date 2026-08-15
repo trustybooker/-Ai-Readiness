@@ -50,7 +50,7 @@
   status = 404
   force = true
 
-# Explicit public API aliases used by the site, launch smoke tests, and Base44.
+# Explicit public API aliases used by the site, launch smoke tests, and channels.
 # Keep these before the /api/* deny rule so only approved functions are exposed.
 [[redirects]]
   from = "/api/capture-lead"
@@ -73,6 +73,12 @@
 [[redirects]]
   from = "/api/whatsapp-webhook"
   to = "/.netlify/functions/whatsapp-webhook"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/twilio-voice"
+  to = "/.netlify/functions/twilio-voice"
   status = 200
   force = true
 
