@@ -79,6 +79,18 @@ function loadAnalytics(){
   }
 }
 
+function loadSecretaryWidget(){
+  if(!config.secretary?.enabled) return;
+  if(document.querySelector('script[src$="secretary.js"]')) return;
+  const appScript = document.currentScript;
+  const src = appScript?.src ? new URL('secretary.js', appScript.src).href : 'assets/secretary.js';
+  const script = document.createElement('script');
+  script.src = src;
+  script.defer = true;
+  script.dataset.aiKollegeSecretary = 'true';
+  document.body.appendChild(script);
+}
+
 function hydrateCaptureFields(root=document){
   const params = new URLSearchParams(window.location.search);
   setField('landing_page', window.location.href, root);
@@ -261,6 +273,7 @@ async function submitLead(event){
 loadAnalytics();
 applyIntegrations();
 addPrivacyNotices();
+loadSecretaryWidget();
 
 if(hasQuiz()){
   $('[data-prev]').addEventListener('click', () => { if(current > 0){ current -= 1; render(); } });
