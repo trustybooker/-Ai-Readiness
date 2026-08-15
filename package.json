@@ -6,7 +6,7 @@
     "check": "npm test && npm run validate"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=18"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.110.0"
