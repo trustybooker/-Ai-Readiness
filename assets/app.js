@@ -25,6 +25,32 @@ function bookingFallbackHref(){
   return 'booking.html';
 }
 
+function setSelectValue(select, value){
+  if(!select || !value) return false;
+  const match = [...select.options].find(option => option.value === value || option.text === value);
+  if(!match) return false;
+  select.value = match.value;
+  return true;
+}
+
+function applyPathDefaults(path, root=document){
+  if(!path) return;
+  setSelectValue(root.querySelector('select[name="path"]'), path);
+  const budget = root.querySelector('select[name="budget_range"]');
+  if(!budget || budget.value) return;
+  const budgetByPath = {
+    'Free AI Readiness Score': '$0 - free score first',
+    'Free AI Readiness Review': '$0 - free review first',
+    'AI Starter Pass': '$59 starter pass',
+    'AI Job & Productivity Pass': '$197 job/productivity pass',
+    'Business AI Readiness Audit': '$497 business audit',
+    'Team Training Sprint': '$1,500+ team training',
+    'AI Implementation Partner': 'Implementation review / custom scope',
+    'AI Implementation Partner Review': 'Implementation review / custom scope'
+  };
+  setSelectValue(budget, budgetByPath[path]);
+}
+
 function trackEvent(name, params = {}){
   if(typeof window.gtag === 'function') window.gtag('event', name, params);
   if(typeof window.plausible === 'function') window.plausible(name, { props: params });
@@ -63,11 +89,19 @@ function hydrateCaptureFields(root=document){
   setField('utm_term', params.get('utm_term') || '', root);
   setField('utm_content', params.get('utm_content') || '', root);
   setField('lead_source', params.get('utm_source') || document.referrer || 'direct', root);
-  const requestedPath = params.get('path');
-  if(requestedPath){
-    const select = root.querySelector('select[name="path"]');
-    if(select && [...select.options].some(option => option.value === requestedPath || option.text === requestedPath)) select.value = requestedPath;
-  }
+  applyPathDefaults(params.get('path'), root);
+}
+
+function addPrivacyNotices(){
+  document.querySelectorAll('form[name]:not(#quiz)').forEach(form => {
+    if(form.querySelector('[data-privacy-notice]')) return;
+    const note = document.createElement('p');
+    note.className = 'note';
+    note.dataset.privacyNotice = 'true';
+    note.innerHTML = 'We use these details only to respond to this request and deliver the selected service. Do not submit passwords or sensitive personal data. <a href="privacy.html">Privacy details</a>.';
+    const button = form.querySelector('button[type="submit"]');
+    if(button) button.insertAdjacentElement('afterend', note); else form.appendChild(note);
+  });
 }
 
 function hasQuiz(){
@@ -117,7 +151,8 @@ function showResult(){
   const strongest = sorted[sorted.length - 1][1];
   const weakest = sorted[0][1];
   const crmTier = leadTier(score);
-  resultBox.innerHTML = `<p class='eyebrow'>Your AI readiness profile</p><h3>${tier}</h3><div class='score'><b>${score}</b><span>/100</span></div><p><strong>Recommended path:</strong> ${path}</p><p>${message}</p><p><strong>Lead tier:</strong> ${crmTier}<br><strong>Strongest area:</strong> ${strongest}<br><strong>Riskiest gap:</strong> ${weakest}</p><a class='btn primary' href='${bookingFallbackHref()}' style='margin-top:1.2rem'>Request human review</a>`;
+  applyPathDefaults(path);
+  resultBox.innerHTML = `<p class='eyebrow'>Your AI readiness profile</p><h3>${tier}</h3><div class='score'><b>${score}</b><span>/100</span></div><p><strong>Recommended path:</strong> ${path}</p><p>${message}</p><p><strong>Lead tier:</strong> ${crmTier}<br><strong>Strongest area:</strong> ${strongest}<br><strong>Riskiest gap:</strong> ${weakest}</p><a class='btn primary' href='${bookingFallbackHref()}' style='margin-top:1.2rem'>Continue with this recommendation</a>`;
   setField('score_summary', `Score ${score}/100 | ${tier} | Lead tier: ${crmTier} | Path: ${path} | Strongest: ${strongest} | Gap: ${weakest}`);
   setField('recommended_path', path);
   setField('lead_tier', crmTier);
@@ -141,8 +176,8 @@ function applyIntegrations(){
     const url = paymentLinks[link.dataset.paymentKey];
     if(url && selfServeKeys.has(link.dataset.paymentKey)){
       link.href = url;
-      link.target = '_blank';
-      link.rel = 'noopener';
+      link.removeAttribute('target');
+      link.removeAttribute('rel');
       link.dataset.checkoutReady = 'true';
       if(link.dataset.readyText) link.textContent = link.dataset.readyText;
     } else {
@@ -172,13 +207,29 @@ function applyIntegrations(){
   });
 }
 
+async function fetchWithTimeout(endpoint, options, timeoutMs = 8000){
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(endpoint, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function postFirstPartyLead(form){
   const body = new URLSearchParams(new FormData(form));
   const endpoints = ['/.netlify/functions/capture-lead','/api/capture-lead'];
   for(const endpoint of endpoints){
-    const response = await fetch(endpoint, { method:'POST', body });
-    if(response.ok) return { ok: true, endpoint };
-    if(response.status !== 404) throw new Error(`first party capture unavailable: ${endpoint}`);
+    try {
+      const response = await fetchWithTimeout(endpoint, { method:'POST', body });
+      if(response.ok) return { ok: true, endpoint };
+      if(response.status === 404) continue;
+      throw new Error(`first party capture unavailable: ${endpoint}`);
+    } catch(error){
+      if(error && error.name === 'AbortError') continue;
+      throw error;
+    }
   }
   throw new Error('first party capture unavailable');
 }
@@ -190,20 +241,26 @@ async function submitLead(event){
   if(form.dataset.disableFirstParty === 'true') return;
   event.preventDefault();
   const note = form.querySelector('[data-note]') || $('[data-note]');
+  const button = form.querySelector('button[type="submit"]');
+  const originalText = button ? button.textContent : '';
+  if(button){ button.disabled = true; button.textContent = 'Sending…'; }
+  if(note) note.textContent = 'Sending securely…';
   try {
     const result = await postFirstPartyLead(form);
     trackEvent('lead_captured_first_party', { form: form.getAttribute('name') || 'unknown', endpoint: result.endpoint });
     window.location.href = form.dataset.success || 'thanks.html';
   } catch (error) {
-    if(note) note.textContent = 'First-party tracker is not configured yet, so this is being sent through email fallback.';
+    if(note) note.textContent = 'Secure tracker is unavailable, so we are using the email fallback now.';
     trackEvent('lead_email_fallback', { form: form.getAttribute('name') || 'unknown' });
     form.dataset.disableFirstParty = 'true';
+    if(button){ button.disabled = false; button.textContent = originalText; }
     form.submit();
   }
 }
 
 loadAnalytics();
 applyIntegrations();
+addPrivacyNotices();
 
 if(hasQuiz()){
   $('[data-prev]').addEventListener('click', () => { if(current > 0){ current -= 1; render(); } });
@@ -212,6 +269,7 @@ if(hasQuiz()){
 }
 
 $('[data-menu]')?.addEventListener('click', () => { const links = $('[data-links]'); if(!links) return; const open = links.classList.toggle('open'); $('[data-menu]').setAttribute('aria-expanded', String(open)); });
-document.querySelectorAll('[data-plan]').forEach(link => link.addEventListener('click', () => { const select = document.querySelector('select[name=path]'); if(select) select.value = link.dataset.plan; }));
+document.querySelectorAll('[data-links] a').forEach(link => link.addEventListener('click', () => { const links = link.closest('[data-links]'); const menu = document.querySelector('[data-menu]'); if(links && menu){ links.classList.remove('open'); menu.setAttribute('aria-expanded','false'); } }));
+document.querySelectorAll('[data-plan]').forEach(link => link.addEventListener('click', () => applyPathDefaults(link.dataset.plan)));
 document.querySelectorAll('form[name]:not(#quiz)').forEach(form => form.addEventListener('submit', submitLead));
 hydrateCaptureFields();
