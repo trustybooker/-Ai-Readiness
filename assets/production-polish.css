@@ -14,6 +14,8 @@ html,body{max-width:100%;overflow-x:clip}
 .lead-box form{align-self:start}
 .public-phone{margin-top:.75rem;color:#c7d4e5}
 .public-phone a{font-weight:850;text-decoration:underline;text-underline-offset:3px}
+/* Homepage differentiator: people actively learning and applying AI with a collaborative assistant, not generic robot stock art. */
+.aik-home .impact-card:after{background-image:url('workplace-ai-learning.svg')!important;background-size:cover!important;background-position:center!important;min-height:330px}
 /* Local icon treatment: no dependency on icon fonts/CDNs. */
 .aik-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto;background:#edf4ff;border:1px solid #d7e5fa;color:#1d55c6;margin-bottom:.8rem}
 .aik-icon svg{width:23px;height:23px;display:block;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
@@ -29,6 +31,7 @@ html,body{max-width:100%;overflow-x:clip}
  .section .split>.panel{padding:22px}
  .aik-chat-btn{bottom:78px!important;right:12px!important}
  .lead-box{gap:22px}
+ .aik-home .impact-card:after{min-height:250px;background-size:cover!important}
 }
 @media(min-width:721px){.aik-chat-btn{right:18px!important;bottom:18px!important}}
 /* Never allow decorative transforms to clip focus outlines or copy. */
