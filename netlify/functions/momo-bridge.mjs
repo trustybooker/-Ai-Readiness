@@ -1,7 +1,7 @@
 import {checkMomoToken,momoHealth,momoCapabilities,validateMomoAction} from '../../lib/momo-bridge.mjs';
 import {fetchLeads,runAssistant} from '../../lib/assistant-core.mjs';
 import {loadOwnerSettings,settingsFingerprint} from '../../lib/owner-settings.mjs';
-import {createSocialDraft,listSocialOps,socialCapabilities} from '../../lib/social-ops.mjs';
+import {createSocialDraft,listSocialOps,socialCapabilities,getSocialOp,publicationGate} from '../../lib/social-ops.mjs';
 
 export default async(req)=>{
   if(req.method!=='POST')return Response.json({ok:false,error:'method_not_allowed'},{status:405});
@@ -12,7 +12,8 @@ export default async(req)=>{
     if(action==='health')return Response.json(await momoHealth());
     if(action==='business_snapshot'){const s=await loadOwnerSettings();return Response.json({ok:true,action,settings_fingerprint:settingsFingerprint(s.settings),front_office:{secretary:s.settings.secretaryEnabled,web:s.settings.webSecretaryEnabled,whatsapp:s.settings.whatsappCustomerEnabled,human_forward:s.settings.humanForward.enabled},social:socialCapabilities(),capabilities:momoCapabilities()});}
     if(action==='social_status')return Response.json({ok:true,action,capabilities:socialCapabilities(),ops:await listSocialOps({limit:Math.min(Number(data.limit)||20,50)})});
-    if(action==='propose_social_draft'){const draft=await createSocialDraft({campaign_id:data.campaign_id,content_id:data.content_id,platforms:data.platforms,text:data.text,media:data.media,scheduled_for:data.scheduled_for},{actor:'momo'});return Response.json({...draft,action,requires_owner_approval:true,publish_authority:false});}
+    if(action==='propose_social_draft'){const draft=await createSocialDraft({campaign_id:data.campaign_id,content_id:data.content_id,platforms:data.platforms,text:data.text,media:data.media,scheduled_for:data.scheduled_for},{actor:'momo'});return Response.json({...draft,action,requires_owner_approval:true,publish_authority:'after-owner-approval-only'});}
+    if(action==='social_publish_check'){const current=await getSocialOp(data.issue_number),gate=publicationGate(current.op);return Response.json({ok:true,action,issue_number:current.issue_number,owner_approved:Boolean(current.op.approval?.actor==='owner'&&current.op.approval?.fingerprint===current.op.fingerprint),gate,op:current.op,may_execute_when_adapter_connected:gate.ok});}
     const leads=await fetchLeads({limit:Math.min(Number(data.limit)||10,20)});if(!leads.ok)return Response.json({ok:false,error:leads.error},{status:502});
     const clean=leads.leads.map(({body,...x})=>x);
     if(action==='lead_summary')return Response.json({ok:true,action,leads:clean});
