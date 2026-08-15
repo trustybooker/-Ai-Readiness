@@ -5,11 +5,12 @@
   if (!secretaryConfig.enabled) return;
 
   var ENDPOINTS = ['/.netlify/functions/secretary', '/api/secretary'];
-  var history = [], busy = false, listening = false, voiceReply = false;
+  var history = [], busy = false, listening = false, voiceReply = false, openedTracked = false;
   var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   var recognition = SpeechRecognition ? new SpeechRecognition() : null;
   var canSpeak = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
   if (recognition) { recognition.lang = document.documentElement.lang || 'en-US'; recognition.interimResults = false; recognition.maxAlternatives = 1; }
+  function track(name,params){ if(typeof window.gtag==='function')window.gtag('event',name,params||{}); if(typeof window.plausible==='function')window.plausible(name,{props:params||{}}); }
 
   var css = '.aik-chat-btn{position:fixed;bottom:18px;right:18px;z-index:60;background:#0d63d8;color:#fff;border:0;border-radius:999px;padding:.7rem 1.1rem;font:600 .9rem/1 inherit;cursor:pointer;box-shadow:0 8px 24px rgba(9,17,31,.35)}' +
     '.aik-chat{position:fixed;bottom:74px;right:18px;z-index:60;width:min(400px,calc(100vw - 24px));max-height:74vh;display:none;flex-direction:column;background:#0e1626;color:#eaf1fb;border:1px solid rgba(255,255,255,.14);border-radius:16px;overflow:hidden;box-shadow:0 16px 44px rgba(0,0,0,.45)}' +
@@ -46,10 +47,12 @@
     history.push({role:'user',text:message}); history.push({role:'assistant',text:result.body.reply}); if(history.length>12) history=history.slice(-12);
     var status=result.body.handoff?(result.body.followup_saved?'Human follow-up was saved for review.':'Human review is recommended; use Booking if you want to make sure we can reach you.'):(result.body.logged?'Your follow-up details were saved privately.':'');
     addMessage('bot',result.body.reply,result.body.links||[],status); speak(result.body.reply);
+    track('secretary_interaction_completed',{channel:listening?'web_voice':'web',handoff:Boolean(result.body.handoff),followup_saved:Boolean(result.body.followup_saved)});
+    if(result.body.handoff)track('human_handoff_requested',{channel:listening?'web_voice':'web',followup_saved:Boolean(result.body.followup_saved)});
   }
   panel.querySelector('[data-form]').addEventListener('submit',function(event){event.preventDefault();submitMessage(input.value);});
   if (recognition) { voiceButton.addEventListener('click',function(){ if(listening){recognition.stop();return;} try{recognition.start();}catch(e){} }); recognition.onstart=function(){listening=true;voiceButton.classList.add('active');voiceStatus.textContent='Listening… speak naturally.';}; recognition.onend=function(){listening=false;voiceButton.classList.remove('active');if(voiceStatus.textContent.indexOf('Heard:')!==0) voiceStatus.textContent='Voice is ready.';}; recognition.onerror=function(event){voiceStatus.textContent=event.error==='not-allowed'?'Microphone permission was not granted. You can keep typing.':'I could not hear that clearly. Try again or type.';}; recognition.onresult=function(event){var transcript=event.results&&event.results[0]&&event.results[0][0]?event.results[0][0].transcript:''; if(!transcript)return; voiceStatus.textContent='Heard: '+transcript; submitMessage(transcript);}; }
   soundButton.addEventListener('click',function(){ if(!canSpeak)return; voiceReply=!voiceReply; soundButton.setAttribute('aria-pressed',voiceReply?'true':'false'); soundButton.textContent=voiceReply?'🔊 Read replies: on':'🔊 Read replies: off'; if(!voiceReply) window.speechSynthesis.cancel(); });
-  launcher.addEventListener('click',function(){panel.classList.toggle('open');if(panel.classList.contains('open')){if(!log.childElementCount)addMessage('bot','Hi — I’m the AI Kollege receptionist. Tell me what you are trying to accomplish and I can explain the right path, pricing we publish, the free score, courses, or how to reach a person.');input.focus();}});
+  launcher.addEventListener('click',function(){panel.classList.toggle('open');if(panel.classList.contains('open')){if(!openedTracked){openedTracked=true;track('secretary_opened',{page:location.pathname});}if(!log.childElementCount)addMessage('bot','Hi — I’m the AI Kollege receptionist. Tell me what you are trying to accomplish and I can explain the right path, pricing we publish, the free score, courses, or how to reach a person.');input.focus();}});
   panel.querySelector('[data-close]').addEventListener('click',function(){panel.classList.remove('open');if(canSpeak)window.speechSynthesis.cancel();if(recognition&&listening)recognition.stop();});
 })();
