@@ -19,6 +19,10 @@ html,body{max-width:100%;overflow-x:clip}
 .aik-icon svg{width:23px;height:23px;display:block;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .aik-icon.gold{background:#fff7e8;border-color:#f4ddb4;color:#a96100}
 .aik-icon.green{background:#edf9f2;border-color:#ccebd8;color:#15804a}
+.purchase-verification{border:1px solid #cbd8e8;background:#f7faff;border-radius:14px;padding:.85rem 1rem;font-weight:800;color:#334155;line-height:1.4}
+.purchase-verification.checking{border-color:#b9d3ff;background:#eef5ff;color:#164aa8}
+.purchase-verification.verified{border-color:#b7e3c8;background:#effaf3;color:#16633a}
+.purchase-verification.neutral{border-color:#ead6ad;background:#fff9ee;color:#80510a}
 /* Keep the floating Secretary clear of sticky CTAs/footer and usable at zoom. */
 .aik-chat-btn{max-width:calc(100vw - 28px);white-space:normal;text-align:center;line-height:1.15}
 @media(max-width:720px){
