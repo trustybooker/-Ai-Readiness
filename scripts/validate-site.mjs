@@ -1,19 +1,7 @@
 import fs from 'node:fs';
 const requiredFiles=['index.html','booking.html','answers.html','checklist.html','checklist-start.html','lab.html','content-engine.html','courses.html','badge.html','refunds.html','thanks.html','purchase-success.html','owner.html','assets/owner-assistant.js','assets/secretary.js','lib/secretary-core.mjs','lib/assistant-core.mjs','lib/whatsapp-core.mjs','netlify/functions/secretary.mjs','netlify/functions/twilio-voice.mjs','netlify/functions/assistant.mjs','netlify/functions/whatsapp-webhook.mjs','netlify/functions/capture-lead.mjs','api/secretary.mjs','api/assistant.mjs','api/whatsapp-webhook.mjs','api/capture-lead.mjs','assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','favicon.svg','site.webmanifest','robots.txt','sitemap.xml','privacy.html','404.html','vercel.json','netlify.toml'];
 const failures=[];for(const f of requiredFiles)if(!fs.existsSync(f))failures.push(`Missing file: ${f}`);
-const checks={
-'index.html':['AI Kollege','data-question','data-payment-key','data-booking-link','booking.html','courses.html'],
-'purchase-success.html':['noindex','Stripe is the payment record of truth','does not grant access by itself','verify the Stripe payment'],
-'owner.html':['noindex','data-token','data-unlock','data-avatar','owner-assistant.js'],
-'assets/owner-assistant.js':['sessionStorage','Bearer ','phone_handoffs','Draft only','Locked'],
-'assets/app.js':['capture-lead','email fallback','data-payment-key','data-booking-link','checkout_started','booking_clicked','applyPathDefaults','fetchWithTimeout','Sending…'],
-'assets/site-config.js':['bookingUrl','aiStarterPass','aiJobProductivityPass'],
-'lib/assistant-core.mjs':['OWNER_ASSISTANT_TOKEN','timingSafeEqual','phone_handoffs','never send','DRAFT'],
-'lib/secretary-core.mjs':['Never promise outcomes','Never improvise pricing, discounts, bundles, or refunds','Human-approval boundary'],
-'netlify/functions/twilio-voice.mjs':['TWILIO_AUTH_TOKEN','x-twilio-signature','CallSid','TWILIO_HUMAN_FORWARD_NUMBER'],
-'lib/whatsapp-core.mjs':['WHATSAPP_APP_SECRET','timingSafeEqual','hub.verify_token'],
-'sitemap.xml':['https://aikollege.com/'],
-'robots.txt':['https://aikollege.com/sitemap.xml']};
+const checks={'index.html':['AI Kollege','data-question','data-payment-key','data-booking-link','booking.html','courses.html'],'purchase-success.html':['noindex','Stripe is the payment record of truth','does not grant access by itself','verify the Stripe payment'],'owner.html':['noindex','data-token','data-unlock','data-avatar','owner-assistant.js','phone_handoffs'],'assets/owner-assistant.js':['sessionStorage','Bearer ','phone_handoffs','Locked'],'assets/app.js':['capture-lead','email fallback','data-payment-key','data-booking-link','checkout_started','booking_clicked','applyPathDefaults','fetchWithTimeout','Sending…'],'assets/site-config.js':['bookingUrl','aiStarterPass','aiJobProductivityPass'],'lib/assistant-core.mjs':['OWNER_ASSISTANT_TOKEN','timingSafeEqual','phone_handoffs','never send','DRAFT'],'lib/secretary-core.mjs':['Never promise outcomes','Never improvise pricing, discounts, bundles, or refunds','Human-approval boundary'],'netlify/functions/twilio-voice.mjs':['TWILIO_AUTH_TOKEN','x-twilio-signature','CallSid','TWILIO_HUMAN_FORWARD_NUMBER'],'lib/whatsapp-core.mjs':['WHATSAPP_APP_SECRET','timingSafeEqual','hub.verify_token'],'sitemap.xml':['https://aikollege.com/'],'robots.txt':['https://aikollege.com/sitemap.xml']};
 for(const [f,parts] of Object.entries(checks)){if(!fs.existsSync(f))continue;const t=fs.readFileSync(f,'utf8');for(const p of parts)if(!t.includes(p))failures.push(`${f} missing: ${p}`);}
 const owner=fs.existsSync('owner.html')?fs.readFileSync('owner.html','utf8'):'';if(owner&&!owner.includes('noindex'))failures.push('owner.html must be noindex');if(/OWNER_ASSISTANT_TOKEN\s*[:=]\s*["'][^"']+/.test(owner))failures.push('owner.html appears to embed owner token');
 const sitemap=fs.existsSync('sitemap.xml')?fs.readFileSync('sitemap.xml','utf8'):'';if(/owner(?:\.html)?</.test(sitemap))failures.push('private owner cockpit must not appear in sitemap');
