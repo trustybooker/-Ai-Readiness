@@ -27,6 +27,17 @@ window.AIKOLLEGE_SITE_CONFIG = {
   }
 };
 
+// Load production UI hardening from the same origin. Keeping this separate makes
+// it easy to regression-test visual fixes without duplicating style blocks across pages.
+(function(){
+  if(!document.querySelector('link[data-aik-production-polish]')){
+    const l=document.createElement('link');l.rel='stylesheet';l.href='assets/production-polish.css';l.dataset.aikProductionPolish='true';document.head.appendChild(l);
+  }
+  if(!document.querySelector('script[data-aik-public-ui]')){
+    const s=document.createElement('script');s.src='assets/public-ui.js';s.defer=true;s.dataset.aikPublicUi='true';document.head.appendChild(s);
+  }
+})();
+
 // Keep the public phone consistent across public pages without duplicating it into every template.
 document.addEventListener('DOMContentLoaded',()=>{
   const c=window.AIKOLLEGE_SITE_CONFIG?.contact||{};
