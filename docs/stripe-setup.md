@@ -1,102 +1,92 @@
 # Stripe Setup — AI Kollege
 
-This is the only Stripe work left, and it is all in **your** Stripe dashboard —
-no code, no secret keys in the repo. Stripe **Payment Links** are public
-checkout URLs; you create them, copy the URL, and paste it into one config
-file. That's it.
+AI Kollege uses **Stripe Payment Links** for the two low-ticket individual passes. This keeps launch simple: no Stripe secret key is needed in the repo, and the site only receives public `buy.stripe.com` URLs after those links have been tested.
 
-**Division of work**
-- **You:** create the Stripe account, verify your business, create the Payment
-  Links, and paste the URLs (the "login and token" part).
-- **Already done in the code:** the pricing buttons, the self-serve policy, the
-  success-page wiring, and validation. You only paste URLs.
+## Production boundary
 
-**No secret key is stored anywhere.** Payment Links don't need the Stripe secret
-API key, so nothing sensitive goes into the repo or the site. (If you ever want
-dynamic Stripe Checkout instead, that's a separate, bigger job that *does* need a
-secret key as a host env var — you don't need it for launch.)
+- **Self-serve checkout:** AI Starter Pass ($59) and AI Job & Productivity Pass ($197).
+- **Human-review first:** Business AI Readiness Audit, Team Training Sprint, implementation work, and Lab pricing until those offers are explicitly approved for a different flow.
+- **Never grant paid access from a URL alone.** The Stripe payment record is the source of truth. The post-checkout page only collects onboarding details; a human verifies the checkout record before paid fulfillment or completion status is issued.
 
----
+## Step 1 — Confirm the Stripe account
 
-## Step 1 — Create and verify your Stripe account (you)
+Use the Fify Now LLC Stripe account that operates AI Kollege. Complete business and payout verification before taking live payments.
 
-1. Go to https://stripe.com and sign up (or log in).
-2. Complete business verification (name = Fify Now LLC, bank account for payouts).
-3. Leave the account in **Test mode** for now (toggle is in the dashboard). You'll
-   test with fake cards first, then switch to Live.
+## Step 2 — Create TEST-mode products and Payment Links first
 
-## Step 2 — Create a Payment Link per offer (you)
+In Stripe Test mode create two one-time products:
 
-In the Stripe dashboard: **Product catalog → Payment Links → New**, or go to
-https://dashboard.stripe.com/payment-links . For each offer below:
+| Offer | Product name | Price |
+|---|---|---:|
+| AI Starter Pass | AI Starter Pass | $59 |
+| AI Job & Productivity Pass | AI Job & Productivity Pass | $197 |
 
-1. Add the product **name** and **price** exactly as listed.
-2. Set it to a **one-time** payment (not subscription), unless you decide otherwise.
-3. Under **After payment**, choose **Redirect** and set the URL to
-   `https://aikollege.com/thanks.html` so buyers land back on your site.
-   (This only works once the domain is live — until then use the Stripe default.)
-4. Click **Create**, then **Copy** the link. It looks like
-   `https://buy.stripe.com/xxxxxxxxxxxx`.
+For each Payment Link:
 
-| Offer | Name to use | Price | Goes on the site? |
-|---|---|---|---|
-| AI Starter Pass | AI Starter Pass | $59 | **Yes — shows a Buy button** |
-| AI Job & Productivity Pass | AI Job & Productivity Pass | $197 | **Yes — shows a Buy button** |
-| Business AI Readiness Audit | Business AI Readiness Audit | $497 | No — sent by a human after fit review |
-| Team Training Sprint (deposit) | Team Training Sprint | your deposit amount | No — sent by a human after scope review |
-| AI Implementation (review deposit) | AI Implementation Review | your deposit amount | No — sent by a human after written scope |
-| AI Kollege Lab | AI Kollege Lab | your price | No — sent when Lab pricing is confirmed |
+1. Use a one-time price.
+2. Collect the buyer email.
+3. Under **After payment**, redirect to:
+   `https://aikollege.com/purchase-success.html`
+4. Do not add a live URL to the site yet.
 
-Only the first two become self-serve "Buy" buttons on the pricing grid. The rest
-are created so a **human can send the link** after a review — this keeps the
-"human review before money and implementation" rule intact. You can create those
-four now or later; the site works either way.
+The return page deliberately does **not** expose paid curriculum. It asks the buyer for short onboarding details and states that Stripe will be checked before paid start instructions are sent.
 
-## Step 3 — Paste the two self-serve links into the site (you, one file)
+## Step 3 — Paste TEST links into the site
 
-Open `assets/site-config.js` and paste the two `buy.stripe.com` URLs:
+In `assets/site-config.js`:
 
 ```js
-  payments: {
-    aiStarterPass: 'https://buy.stripe.com/PASTE_STARTER_LINK',
-    aiJobProductivityPass: 'https://buy.stripe.com/PASTE_JOB_LINK',
-    businessAiReadinessAudit: '',      // leave empty — sent by a human
-    teamTrainingDeposit: '',           // leave empty — sent by a human
-    implementationReviewDeposit: '',   // leave empty — sent by a human
-    aiReadinessLab: ''                 // leave empty — sent by a human
-  },
+payments: {
+  aiStarterPass: 'https://buy.stripe.com/TEST_STARTER_LINK',
+  aiJobProductivityPass: 'https://buy.stripe.com/TEST_JOB_LINK',
+  businessAiReadinessAudit: '',
+  teamTrainingDeposit: '',
+  implementationReviewDeposit: '',
+  aiReadinessLab: ''
+}
 ```
 
-That's the whole change. The buttons pick up the links automatically. (Links must
-start with `https://` or the site ignores them by design.)
+Only the first two keys become direct checkout buttons. The other offers keep routing to human review even if somebody later fills those config fields accidentally.
 
-## Step 4 — Test before going live (you + the site)
+## Step 4 — Complete both TEST purchases
 
-1. In Stripe **Test mode**, create test versions of the two links and paste those
-   first.
-2. Deploy the site (or use the deploy preview) and click **Buy AI Starter Pass**.
-3. On the Stripe page, pay with the test card `4242 4242 4242 4242`, any future
-   expiry, any CVC, any ZIP.
-4. Confirm the payment succeeds in the Stripe dashboard and that you're redirected
-   to `thanks.html`.
-5. When both test buys work, switch Stripe to **Live mode**, create the real
-   links, and replace the test URLs in `site-config.js` with the live ones.
+From the deployed AI Kollege site:
 
-**Do not paste a live link you haven't completed a real (or test) transaction
-through.** That's the launch rule: no untested payment link goes on the site.
+1. Click **Buy AI Starter Pass**.
+2. Complete checkout with Stripe test card `4242 4242 4242 4242`, any future expiry, any CVC, and any valid ZIP.
+3. Confirm the payment succeeds in Stripe Test mode.
+4. Confirm the browser returns to `purchase-success.html`.
+5. Submit the buyer-onboarding form and confirm it reaches the lead system/email fallback.
+6. Repeat the same test for AI Job & Productivity Pass.
 
-## Step 5 — After a sale
+**Gate:** both offers must complete the full sequence: site button → Stripe → successful test payment → buyer onboarding page → captured onboarding request.
 
-- Buyers are handled through your normal onboarding: see `refunds.html` and
-  `docs/onboarding-offboarding-refunds.md`.
-- Stripe fees (about 2.9% + 30¢ per charge in the US) come out of each payment —
-  price with that in mind.
-- Refund/credit handling is described on `refunds.html`; you issue refunds from
-  the Stripe dashboard when appropriate.
+## Step 5 — Create LIVE links only after the test gate passes
 
-## What stays out of the repo
+Switch to Live mode and create live versions of the two products/Payment Links with the same names, prices, and return URL:
 
-- No Stripe secret key, publishable key, or webhook secret is needed for Payment
-  Links, so none are committed. If you later add dynamic Checkout or Stripe
-  webhooks, those secrets go in the **host dashboard** as env vars, never in the
-  repo — same rule as the other keys in `docs/assistant-api-and-whatsapp-setup.md`.
+`https://aikollege.com/purchase-success.html`
+
+Replace the two test URLs in `assets/site-config.js` with the live Payment Links and redeploy.
+
+Do not place an untested live checkout link on the site.
+
+## Step 6 — Fulfillment rule for launch
+
+For launch, paid fulfillment is intentionally human-verified:
+
+1. Stripe records the payment and checkout email.
+2. Buyer lands on `purchase-success.html` and submits start details.
+3. Fify Now LLC matches the onboarding request to the Stripe payment.
+4. The correct training start instructions/materials are sent.
+5. Proof-of-work and reviewer status are tracked according to the badge standard.
+
+This avoids exposing paid curriculum publicly and avoids pretending a public success-page URL proves payment. A future Stripe webhook + authenticated learner area/LMS can automate this later without changing the safety boundary.
+
+## Refunds and support
+
+The public policy and onboarding explanation lives at `refunds.html`. Refund/credit decisions are handled according to the actual offer, material delivered, work performed, and written expectations; no blanket guarantee is advertised.
+
+## Secret hygiene
+
+Payment Links are public checkout URLs. No Stripe secret key, publishable key, or webhook secret is required for this launch flow, so none should be committed to the repository. If dynamic Checkout or webhooks are added later, secrets belong in the host environment only.
