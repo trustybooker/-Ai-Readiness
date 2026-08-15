@@ -12,9 +12,10 @@ test('Owner Studio is private and never embeds the owner secret', () => {
   assert.match(js, /authorization'\s*:\s*'Bearer '\s*\+\s*token/i);
 });
 
-test('Owner Studio exposes complete business workflows but no consequential mutation controls', () => {
-  for (const text of ['Summarize open leads','Show today','What needs my attention','Draft reply to private lead','Check business wiring','Show all business links in chat','Open public site','Booking page']) assert.match(html,new RegExp(text));
-  assert.match(html,/nothing consequential is sent automatically/i);
+test('Owner Studio exposes complete business workflows while consequential actions remain protected', () => {
+  for (const text of ['Summarize open leads','Show today','What needs my attention','Private lead record','Check business wiring','Show business links in chat','Open public site','Booking page']) assert.match(html,new RegExp(text));
+  assert.match(html,/Payments, refunds, destructive changes and binding commitments remain separately protected/i);
+  assert.match(html,/Consequential actions stay approval-gated/i);
   assert.doesNotMatch(html,/>\s*(Send email|Issue refund|Charge customer|Approve payment)\s*</i);
 });
 
