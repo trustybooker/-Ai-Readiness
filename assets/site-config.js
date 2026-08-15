@@ -36,6 +36,9 @@ window.AIKOLLEGE_SITE_CONFIG = {
   if(!document.querySelector('script[data-aik-public-ui]')){
     const s=document.createElement('script');s.src='assets/public-ui.js';s.defer=true;s.dataset.aikPublicUi='true';document.head.appendChild(s);
   }
+  if(/\/purchase-success\.html$/i.test(location.pathname)&&!document.querySelector('script[data-aik-purchase-verification]')){
+    const s=document.createElement('script');s.src='assets/purchase-verification.js';s.defer=true;s.dataset.aikPurchaseVerification='true';document.head.appendChild(s);
+  }
 })();
 
 // Keep the public phone consistent across public pages without duplicating it into every template.
