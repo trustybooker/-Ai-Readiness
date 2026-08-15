@@ -21,8 +21,8 @@ window.FIFYNOW_SITE_CONFIG = {
     aiReadinessLab: ''              // Human-review only. Sent when Lab pricing/scope is confirmed; no site Buy button.
   },
   secretary: {
-    // Flip to true ONLY after ANTHROPIC_API_KEY is set in the host dashboard
-    // and the /api/secretary endpoint answers on the deployed site.
-    enabled: false
+    // Live endpoint and refusal/handoff boundaries were verified on the
+    // production Netlify deployment before this was enabled.
+    enabled: true
   }
 };
