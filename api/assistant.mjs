@@ -1,31 +1,6 @@
 import { isAssistantConfigured, checkOwnerToken, handleAssistantAction } from '../lib/assistant-core.mjs';
 import { rateLimit } from '../lib/secretary-core.mjs';
-
-function parseBody(req) {
-  if (!req.body) return {};
-  if (typeof req.body === 'object') return req.body;
-  return JSON.parse(req.body);
-}
-
-export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ ok: false, error: 'method_not_allowed' });
-  if (!isAssistantConfigured()) return res.status(503).json({ ok: false, error: 'not_configured' });
-  if (!checkOwnerToken(req.headers['authorization'])) {
-    return res.status(401).json({ ok: false, error: 'unauthorized' });
-  }
-  if (!rateLimit('assistant', { limit: 30 })) return res.status(429).json({ ok: false, error: 'rate_limited' });
-
-  let data;
-  try {
-    data = parseBody(req);
-  } catch {
-    return res.status(400).json({ ok: false, error: 'invalid_request_body' });
-  }
-
-  try {
-    const result = await handleAssistantAction(data);
-    return res.status(result.ok ? 200 : 502).json(result);
-  } catch {
-    return res.status(502).json({ ok: false, error: 'assistant_unavailable' });
-  }
-}
+import {loadOwnerSettings} from '../lib/owner-settings.mjs';
+function parseBody(req){if(!req.body)return{};if(typeof req.body==='object')return req.body;return JSON.parse(req.body);}
+async function autonomyGate(data){const action=String(data?.action||'ask');if(!['draft_reply','lead_update'].includes(action))return null;const loaded=await loadOwnerSettings(),level=loaded.settings.assistantAutonomy||'draft';if(action==='draft_reply'&&level==='observe')return{ok:false,error:'draft_actions_disabled',required:'draft'};if(action==='lead_update'&&level!=='act-safe')return{ok:false,error:'safe_actions_disabled',required:'act-safe'};return null;}
+export default async function handler(req,res){if(req.method!=='POST')return res.status(405).json({ok:false,error:'method_not_allowed'});if(!isAssistantConfigured())return res.status(503).json({ok:false,error:'not_configured'});if(!checkOwnerToken(req.headers['authorization']))return res.status(401).json({ok:false,error:'unauthorized'});if(!rateLimit('assistant',{limit:30}))return res.status(429).json({ok:false,error:'rate_limited'});let data;try{data=parseBody(req);}catch{return res.status(400).json({ok:false,error:'invalid_request_body'});}try{const gate=await autonomyGate(data);if(gate)return res.status(403).json(gate);const result=await handleAssistantAction(data);return res.status(result.ok?200:502).json(result);}catch{return res.status(502).json({ok:false,error:'assistant_unavailable'});}}
