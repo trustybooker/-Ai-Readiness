@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "validate": "node scripts/validate-site.mjs && node scripts/seo-integrity.mjs",
+    "validate": "node scripts/validate-site.mjs && node scripts/seo-integrity.mjs && node scripts/security-quality.mjs",
+    "security": "node scripts/security-quality.mjs",
     "test": "node --test tests/*.test.mjs",
     "check": "npm test && npm run validate"
   },

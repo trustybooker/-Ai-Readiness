@@ -3,6 +3,7 @@ import {loadOwnerSettings} from '../../lib/owner-settings.mjs';
 
 export default async (req, context) => {
   if (req.method !== 'POST') return Response.json({ ok: false, error: 'method_not_allowed' }, { status: 405 });
+  const contentLength=Number(req.headers.get('content-length')||0);if(contentLength>65536)return Response.json({ok:false,error:'request_too_large'},{status:413});
   if (!isConfigured()) return Response.json({ ok: false, error: 'not_configured' }, { status: 503 });
   const loaded=await loadOwnerSettings(),settings=loaded.settings;
   if(!settings.secretaryEnabled||!settings.webSecretaryEnabled)return Response.json({ok:false,error:'channel_disabled'},{status:503});
