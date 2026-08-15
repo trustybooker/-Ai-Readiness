@@ -1,0 +1,33 @@
+name: AI Kollege Twilio live probe
+
+on:
+  push:
+    branches: [release/ai-kollege-launch]
+    paths: [.github/workflows/twilio-live-probe.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Probe live voice endpoint
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://ai-readiness-pass.netlify.app/.netlify/functions/twilio-voice'
+          GET_CODE=$(curl -sS -o /tmp/get.out -w '%{http_code}' --max-time 15 "$URL" || true)
+          POST_CODE=$(curl -sS -o /tmp/post.out -w '%{http_code}' --max-time 15 -X POST -H 'content-type: application/x-www-form-urlencoded' --data 'From=%2B17725550123&To=%2B17726665472' "$URL" || true)
+          echo "GET=$GET_CODE BODY=$(cat /tmp/get.out 2>/dev/null || true)"
+          echo "UNSIGNED_POST=$POST_CODE BODY=$(cat /tmp/post.out 2>/dev/null || true)"
+          if [ "$GET_CODE" != "405" ]; then
+            echo 'Voice function is not live at the expected production endpoint.' >&2
+            exit 1
+          fi
+          if [ "$POST_CODE" != "403" ]; then
+            echo 'Unsigned Twilio POST was not rejected as expected.' >&2
+            exit 1
+          fi
+          echo 'PASS: production voice endpoint exists and rejects unsigned requests.'
