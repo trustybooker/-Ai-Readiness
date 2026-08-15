@@ -24,4 +24,13 @@ export default async (req) => {
   }
 };
 
-export const config = { path: '/.netlify/functions/assistant' };
+// Netlify edge-level protection. The owner token remains the primary access
+// control; this rate limit limits damage/cost if a token is abused or leaked.
+export const config = {
+  path: ['/.netlify/functions/assistant', '/api/assistant'],
+  rateLimit: {
+    windowLimit: 30,
+    windowSize: 60,
+    aggregateBy: ['ip', 'domain']
+  }
+};
