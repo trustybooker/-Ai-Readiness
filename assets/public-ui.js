@@ -21,8 +21,13 @@
     document.querySelectorAll('.cards article h3,.list-grid b').forEach(h=>{
       if(h.parentElement?.querySelector(':scope > .aik-icon'))return;
       const key=iconMap.get(h.textContent.trim().toLowerCase());if(!key)return;
-      const box=document.createElement('span');box.className='aik-icon';box.setAttribute('aria-hidden','true');
-      box.innerHTML=`<svg viewBox="0 0 24 24">${paths[key]}</svg>`;h.parentElement.prepend(box);
+      const box=document.createElement('span');box.className='aik-icon';box.setAttribute('aria-hidden','true');box.innerHTML=`<svg viewBox="0 0 24 24">${paths[key]}</svg>`;h.parentElement.prepend(box);
+    });
+    document.querySelectorAll('.lead-box').forEach(box=>{
+      const left=box.firstElementChild;if(!left||left.querySelector('.request-next'))return;
+      const guide=document.createElement('div');guide.className='request-next';guide.setAttribute('aria-label','What happens after you send a request');
+      guide.innerHTML='<div><b>1</b><span><strong>We review the request</strong><span>Your stated goal and selected path are used to route the request correctly.</span></span></div><div><b>2</b><span><strong>You get a relevant next step</strong><span>We recommend the smallest useful option instead of forcing a larger service.</span></span></div><div><b>3</b><span><strong>Human judgment stays available</strong><span>Use the AI receptionist for quick help or ask for a person when the situation needs one.</span></span></div>';
+      left.appendChild(guide);
     });
     const menu=document.querySelector('[data-menu]');if(menu&&!menu.getAttribute('aria-label'))menu.setAttribute('aria-label','Open navigation menu');
   };
