@@ -6,11 +6,11 @@ import {
   routeMessage,
   sendWhatsAppReply
 } from '../../lib/whatsapp-core.mjs';
+import {reserveWebhookEvent} from '../../lib/webhook-replay.mjs';
 
 export default async (req) => {
   const url = new URL(req.url);
 
-  // Meta endpoint verification handshake.
   if (req.method === 'GET') {
     const verification = handleVerificationRequest(url.searchParams);
     if (verification.ok) return new Response(verification.challenge, { status: 200 });
@@ -18,6 +18,7 @@ export default async (req) => {
   }
 
   if (req.method !== 'POST') return Response.json({ ok: false, error: 'method_not_allowed' }, { status: 405 });
+  const contentLength=Number(req.headers.get('content-length')||0);if(contentLength>1048576)return Response.json({ok:false,error:'request_too_large'},{status:413});
   if (!isWhatsAppConfigured()) return Response.json({ ok: false, error: 'not_configured' }, { status: 503 });
 
   const rawBody = await req.text();
@@ -26,19 +27,16 @@ export default async (req) => {
   }
 
   let payload;
-  try {
-    payload = JSON.parse(rawBody);
-  } catch {
-    return Response.json({ ok: false, error: 'invalid_request_body' }, { status: 400 });
-  }
+  try { payload = JSON.parse(rawBody); }
+  catch { return Response.json({ ok: false, error: 'invalid_request_body' }, { status: 400 }); }
 
-  // Process, reply, and always 200 so Meta does not retry-storm; failures are
-  // reflected per message in the Graph send call.
   for (const message of extractMessages(payload)) {
     try {
+      const reservation=await reserveWebhookEvent('whatsapp',message.id);
+      if(reservation.duplicate)continue;
       const { reply } = await routeMessage({ from: message.from, text: message.text });
       if (reply) await sendWhatsAppReply(message.from, reply);
-    } catch { /* keep processing remaining messages */ }
+    } catch { /* keep processing remaining messages; endpoint still acknowledges Meta */ }
   }
   return Response.json({ ok: true });
 };
