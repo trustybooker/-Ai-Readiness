@@ -147,6 +147,16 @@
   status = 200
 
 [[redirects]]
+  from = "/ai-readiness-pass/checklist-start"
+  to = "/checklist-start.html"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/checklist-start.html"
+  to = "/checklist-start.html"
+  status = 200
+
+[[redirects]]
   from = "/ai-readiness-pass/lab"
   to = "/lab.html"
   status = 200
@@ -184,6 +194,16 @@
 [[redirects]]
   from = "/ai-readiness-pass/thanks.html"
   to = "/thanks.html"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/purchase-success"
+  to = "/purchase-success.html"
+  status = 200
+
+[[redirects]]
+  from = "/ai-readiness-pass/purchase-success.html"
+  to = "/purchase-success.html"
   status = 200
 
 [[redirects]]
