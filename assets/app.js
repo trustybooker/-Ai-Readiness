@@ -19,6 +19,12 @@ function safeUrl(value){
   return typeof value === 'string' && /^https:\/\//.test(value) ? value : '';
 }
 
+function bookingFallbackHref(){
+  if(document.querySelector('#book')) return '#book';
+  if(document.querySelector('#booking-form')) return '#booking-form';
+  return 'booking.html';
+}
+
 function trackEvent(name, params = {}){
   if(typeof window.gtag === 'function') window.gtag('event', name, params);
   if(typeof window.plausible === 'function') window.plausible(name, { props: params });
@@ -57,6 +63,11 @@ function hydrateCaptureFields(root=document){
   setField('utm_term', params.get('utm_term') || '', root);
   setField('utm_content', params.get('utm_content') || '', root);
   setField('lead_source', params.get('utm_source') || document.referrer || 'direct', root);
+  const requestedPath = params.get('path');
+  if(requestedPath){
+    const select = root.querySelector('select[name="path"]');
+    if(select && [...select.options].some(option => option.value === requestedPath || option.text === requestedPath)) select.value = requestedPath;
+  }
 }
 
 function hasQuiz(){
@@ -106,7 +117,7 @@ function showResult(){
   const strongest = sorted[sorted.length - 1][1];
   const weakest = sorted[0][1];
   const crmTier = leadTier(score);
-  resultBox.innerHTML = `<p class='eyebrow'>Your AI readiness profile</p><h3>${tier}</h3><div class='score'><b>${score}</b><span>/100</span></div><p><strong>Recommended path:</strong> ${path}</p><p>${message}</p><p><strong>Lead tier:</strong> ${crmTier}<br><strong>Strongest area:</strong> ${strongest}<br><strong>Riskiest gap:</strong> ${weakest}</p><a class='btn primary' href='#book' style='margin-top:1.2rem'>Request human review</a>`;
+  resultBox.innerHTML = `<p class='eyebrow'>Your AI readiness profile</p><h3>${tier}</h3><div class='score'><b>${score}</b><span>/100</span></div><p><strong>Recommended path:</strong> ${path}</p><p>${message}</p><p><strong>Lead tier:</strong> ${crmTier}<br><strong>Strongest area:</strong> ${strongest}<br><strong>Riskiest gap:</strong> ${weakest}</p><a class='btn primary' href='${bookingFallbackHref()}' style='margin-top:1.2rem'>Request human review</a>`;
   setField('score_summary', `Score ${score}/100 | ${tier} | Lead tier: ${crmTier} | Path: ${path} | Strongest: ${strongest} | Gap: ${weakest}`);
   setField('recommended_path', path);
   setField('lead_tier', crmTier);
@@ -124,10 +135,7 @@ function applyIntegrations(){
     implementationReviewDeposit: safeUrl(payments.implementationReviewDeposit),
     aiReadinessLab: safeUrl(payments.aiReadinessLab)
   };
-  // Only the low-tier individual passes may become direct self-serve checkout.
-  // Business audit, team sprint, and implementation always route to the human
-  // review/booking form even when a payment link is set, so sensitive business,
-  // money, and implementation decisions keep a human-in-the-loop step.
+  const fallback = bookingFallbackHref();
   const selfServeKeys = new Set(['aiStarterPass','aiJobProductivityPass']);
   document.querySelectorAll('[data-payment-key]').forEach(link => {
     const url = paymentLinks[link.dataset.paymentKey];
@@ -138,7 +146,9 @@ function applyIntegrations(){
       link.dataset.checkoutReady = 'true';
       if(link.dataset.readyText) link.textContent = link.dataset.readyText;
     } else {
-      link.href = '#book';
+      link.href = fallback;
+      link.removeAttribute('target');
+      link.removeAttribute('rel');
       link.dataset.checkoutReady = 'false';
       if(link.dataset.pendingText) link.textContent = link.dataset.pendingText;
     }
@@ -153,7 +163,9 @@ function applyIntegrations(){
       link.dataset.bookingReady = 'true';
       if(link.dataset.readyText) link.textContent = link.dataset.readyText;
     } else {
-      link.href = '#book';
+      link.href = fallback;
+      link.removeAttribute('target');
+      link.removeAttribute('rel');
       link.dataset.bookingReady = 'false';
       if(link.dataset.pendingText) link.textContent = link.dataset.pendingText;
     }
