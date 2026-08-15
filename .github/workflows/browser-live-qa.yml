@@ -1,22 +1,23 @@
 name: AI Kollege live browser QA
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - release/ai-kollege-launch
-    paths:
-      - .github/workflows/browser-live-qa.yml
+    branches: [release/ai-kollege-launch]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ai-kollege-browser-live-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   browser:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     env:
-      SITE_URL: https://deploy-preview-12--ai-readiness-pass.netlify.app
+      SITE_URL: https://www.aikollege.com
     steps:
       - uses: actions/setup-node@v4
         with:
@@ -26,17 +27,20 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm install --no-audit --no-fund playwright@1.55.0
           npx playwright install --with-deps chromium
-      - name: Wait for Secretary-enabled latest preview
+      - name: Wait for canonical production deploy
         shell: bash
         run: |
           set -euo pipefail
-          for i in $(seq 1 36); do
-            cfg=$(curl --max-time 5 -fsS "$SITE_URL/assets/site-config.js" || true)
-            if echo "$cfg" | grep -q 'enabled: true'; then exit 0; fi
+          for i in $(seq 1 48); do
+            cfg=$(curl --max-time 8 -fsS "$SITE_URL/assets/site-config.js" || true)
+            if echo "$cfg" | grep -q "G-P4TR060PFF" && echo "$cfg" | grep -q "17726665472"; then
+              echo "Current production config found on attempt $i"
+              exit 0
+            fi
             sleep 5
           done
           exit 1
-      - name: Run mobile and conversion-flow checks
+      - name: Run mobile, navigation, analytics and conversion-flow checks
         shell: bash
         run: |
           cat > live-qa.mjs <<'EOF'
@@ -45,13 +49,16 @@ jobs:
           const browser = await chromium.launch({headless:true});
           const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
           const errors = [];
+          const gaRequests = [];
           page.on('pageerror', e => errors.push(String(e)));
+          page.on('request', r => { if (/google-analytics\.com|googletagmanager\.com/.test(r.url())) gaRequests.push(r.url()); });
           await page.goto(site, {waitUntil:'networkidle'});
-          await page.evaluate(() => {
-            document.querySelectorAll('iframe[title="Netlify Drawer"], [data-netlify-deploy-id]').forEach(el => el.remove());
-          });
           const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
           if (overflow) throw new Error('mobile horizontal overflow on homepage');
+          if ((await page.locator('script[data-aik-ga="G-P4TR060PFF"]').count()) !== 1) throw new Error('GA4 tag missing or duplicated');
+          if (!gaRequests.some(u=>u.includes('googletagmanager.com/gtag/js'))) throw new Error('GA4 loader request not observed');
+          const publicPhone = await page.locator('[data-aik-public-phone]').innerText();
+          if (!publicPhone.includes('(772) 666-5472') || !/AI receptionist/i.test(publicPhone)) throw new Error('public receptionist phone missing or mislabeled');
           await page.locator('[data-menu]').click();
           if (!(await page.locator('[data-links]').evaluate(el => el.classList.contains('open')))) throw new Error('mobile menu did not open');
           await page.locator('[data-menu]').click();
@@ -61,7 +68,7 @@ jobs:
           }
           await page.locator('#result .score').waitFor();
           const result = await page.locator('#result').innerText();
-          if (!/Recommended path:/i.test(result) || !/Lead tier:/i.test(result)) throw new Error('quiz result missing recommendation/tier');
+          if (!/Recommended path:/i.test(result) || !/self-assessment signal/i.test(result)) throw new Error('quiz result missing recommendation/truth boundary');
           const selectedPath = await page.locator('select[name="path"]').inputValue();
           if (!selectedPath) throw new Error('quiz recommendation did not carry into form');
           const bookingHref = await page.locator('[data-booking-link]').first().getAttribute('href');
@@ -70,17 +77,25 @@ jobs:
           await page.locator('.aik-chat-btn').click({force:true});
           if (!(await page.locator('.aik-chat').evaluate(el => el.classList.contains('open')))) throw new Error('Secretary widget did not open');
           await page.goto(`${site}/courses.html`, {waitUntil:'networkidle'});
-          await page.evaluate(() => {
-            document.querySelectorAll('iframe[title="Netlify Drawer"], [data-netlify-deploy-id]').forEach(el => el.remove());
-          });
           const coursesOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
           if (coursesOverflow) throw new Error('mobile horizontal overflow on courses');
-          const starter = page.locator('[data-payment-key="aiStarterPass"]').first();
-          if ((await starter.getAttribute('data-checkout-ready')) !== 'false') throw new Error('Starter checkout should remain fail-closed until Stripe link is installed');
-          const starterHref = await starter.getAttribute('href');
-          if (!starterHref || !/booking\.html|#book|#booking-form/.test(starterHref)) throw new Error('Starter fallback is not a safe booking path');
+          for (const key of ['aiStarterPass','aiJobProductivityPass']) {
+            const link = page.locator(`[data-payment-key="${key}"]`).first();
+            if ((await link.getAttribute('data-checkout-ready')) !== 'true') throw new Error(`${key} checkout is not live`);
+            const href = await link.getAttribute('href');
+            if (!href?.startsWith('https://buy.stripe.com/')) throw new Error(`${key} is not wired to Stripe`);
+          }
+          const localLinks = await page.locator('a[href]').evaluateAll(els => [...new Set(els.map(a=>a.getAttribute('href')).filter(h=>h && !h.startsWith('#') && !h.startsWith('mailto:') && !h.startsWith('tel:') && !/^https?:\/\//.test(h)))].slice(0,40));
+          for (const href of localLinks) {
+            const res = await page.request.get(new URL(href, site).href, {maxRedirects:5});
+            if (res.status() >= 400) throw new Error(`broken local navigation ${href}: HTTP ${res.status()}`);
+          }
+          const owner = await page.request.get(`${site}/owner.html`);
+          const robots = owner.headers()['x-robots-tag'] || '';
+          const cache = owner.headers()['cache-control'] || '';
+          if (!/noindex/i.test(robots) || !/no-store/i.test(cache)) throw new Error('Owner Studio privacy headers missing');
           if (errors.length) throw new Error(`page JS errors: ${errors.join(' | ')}`);
           await browser.close();
-          console.log('PASS live mobile/user-flow browser QA');
+          console.log('PASS canonical production mobile/navigation/analytics/conversion QA');
           EOF
           node live-qa.mjs
