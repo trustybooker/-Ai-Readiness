@@ -5,6 +5,7 @@ import {createSocialDraft,listSocialOps,socialCapabilities,getSocialOp,publicati
 
 export default async(req)=>{
   if(req.method!=='POST')return Response.json({ok:false,error:'method_not_allowed'},{status:405});
+  const contentLength=Number(req.headers.get('content-length')||0);if(contentLength>131072)return Response.json({ok:false,error:'request_too_large'},{status:413});
   if(!checkMomoToken(req.headers.get('authorization')))return Response.json({ok:false,error:'unauthorized'},{status:401});
   let data={};try{data=await req.json();}catch{return Response.json({ok:false,error:'invalid_request_body'},{status:400});}
   const action=String(data.action||'health');if(!validateMomoAction(action))return Response.json({ok:false,error:'action_not_allowed'},{status:403});
