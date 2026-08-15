@@ -1,0 +1,20 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const failures=[];
+const must=(file,parts)=>{const s=fs.readFileSync(file,'utf8');for(const part of parts)if(!s.includes(part))failures.push(`${file} missing security control: ${part}`);};
+const prodFiles=[];function walk(dir){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const p=path.join(dir,entry.name);if(entry.isDirectory()){if(['node_modules','.git','tests','docs'].includes(entry.name))continue;walk(p);}else if(/\.(?:js|mjs|html|toml)$/.test(entry.name))prodFiles.push(p);}}for(const d of ['assets','lib','netlify','api'])if(fs.existsSync(d))walk(d);for(const f of ['index.html','booking.html','owner.html','netlify.toml'])if(fs.existsSync(f))prodFiles.push(f);
+for(const f of [...new Set(prodFiles)]){const s=fs.readFileSync(f,'utf8');if(/\beval\s*\(/.test(s))failures.push(`${f} uses eval`);if(/new\s+Function\s*\(/.test(s))failures.push(`${f} uses Function constructor`);if(/document\.write\s*\(/.test(s))failures.push(`${f} uses document.write`);if(/Access-Control-Allow-Origin[^\n]*\*/i.test(s))failures.push(`${f} exposes wildcard CORS`);if(/href\s*=\s*["']javascript:/i.test(s))failures.push(`${f} contains javascript: navigation`);}
+must('netlify.toml',["default-src 'self'","object-src 'none'","frame-ancestors 'none'","script-src-attr 'none'","X-Frame-Options = \"DENY\"","X-Content-Type-Options = \"nosniff\"","Strict-Transport-Security","Cross-Origin-Opener-Policy = \"same-origin\"",'from = "/api/*"']);
+must('netlify/functions/assistant.mjs',['checkOwnerToken','request_too_large','rateLimit']);
+must('netlify/functions/social-ops.mjs',['checkOwnerToken','request_too_large','rateLimit']);
+must('netlify/functions/momo-bridge.mjs',['checkMomoToken','request_too_large','rateLimit']);
+must('netlify/functions/secretary.mjs',['request_too_large','rateLimit']);
+must('netlify/functions/capture-lead.mjs',['request_too_large','throttle(`lead:${ip}`','rateLimit:{windowLimit:']);
+must('netlify/functions/whatsapp-webhook.mjs',['verifySignature','request_too_large',"reserveWebhookEvent('whatsapp',message.id)"]);
+must('netlify/functions/twilio-voice.mjs',['validateTwilioRequest','TWILIO_AUTH_TOKEN']);
+must('lib/webhook-replay.mjs',['privateStoreGate','sha256','duplicate:true','MAX_IDS=256']);
+must('lib/channel-memory.mjs',['CHANNEL_MEMORY_KEY','CHANNEL_MEMORY_LEGACY_KEY','aes-256-gcm','memoryKeySource']);
+must('lib/social-ops.mjs',['APPROVAL_ACTORS','PUBLISH_EXECUTORS','owner_approval_required','destructive_remote_actions:false']);
+const owner=fs.readFileSync('owner.html','utf8');if(/site-config\.js|googletagmanager|gtag\(/i.test(owner))failures.push('Owner Studio includes public analytics');
+const cfg=fs.readFileSync('assets/site-config.js','utf8');if(/TWILIO_HUMAN_FORWARD_NUMBER\s*[:=]\s*["'][+\d]/.test(cfg))failures.push('private forward number exposed in public config');
+if(failures.length){console.error('Security/code-quality gate failed:');for(const f of failures)console.error('- '+f);process.exit(1);}console.log(`Security/code-quality gate passed (${new Set(prodFiles).size} production files scanned).`);
