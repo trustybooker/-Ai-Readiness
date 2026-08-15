@@ -1,0 +1,30 @@
+name: AI Kollege domain diagnosis
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release/ai-kollege-launch
+    paths:
+      - .github/workflows/domain-diagnose.yml
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: DNS and HTTPS diagnosis
+        shell: bash
+        run: |
+          set +e
+          echo 'A_RECORDS:'; dig +short A aikollege.com
+          echo 'AAAA_RECORDS:'; dig +short AAAA aikollege.com
+          echo 'CNAME_RECORDS:'; dig +short CNAME aikollege.com
+          echo 'WWW_CNAME:'; dig +short CNAME www.aikollege.com
+          echo 'NS_RECORDS:'; dig +short NS aikollege.com
+          echo 'HTTPS_CHECK:'; curl -sS -I --max-time 15 https://aikollege.com/ || true
+          echo 'WWW_HTTPS_CHECK:'; curl -sS -I --max-time 15 https://www.aikollege.com/ || true
+          echo 'HTTP_CHECK:'; curl -sS -I --max-time 15 http://aikollege.com/ || true
