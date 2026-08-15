@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
-      SITE_URL: https://ai-readiness-pass.netlify.app
+      SITE_URL: https://deploy-preview-12--ai-readiness-pass.netlify.app
     steps:
       - uses: actions/setup-node@v4
         with:
@@ -26,7 +26,7 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm install --no-audit --no-fund playwright@1.55.0
           npx playwright install --with-deps chromium
-      - name: Wait for Secretary-enabled production deploy
+      - name: Wait for Secretary-enabled latest preview
         shell: bash
         run: |
           set -euo pipefail
