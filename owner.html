@@ -31,62 +31,18 @@
       <a class="owner-link" href="/booking.html" target="_blank" rel="noopener">Booking page</a>
     </div>
   </header>
-
   <section class="studio-grid">
     <aside class="panel sidebar">
-      <div class="sidebar-block" data-access-block>
-        <p class="section-label">Secure access</p><h2>Unlock this session</h2>
-        <div class="token-row"><input type="password" autocomplete="current-password" data-token placeholder="Owner token" aria-label="Owner token"><button type="button" data-unlock>Unlock</button></div>
-        <p class="safe-note">The token stays in this browser session only. The server validates every request.</p>
-      </div>
-
-      <div class="sidebar-block">
-        <p class="section-label">Today</p><h2>Business pulse</h2>
-        <div class="quick">
-          <button type="button" class="primary-action" data-action="priority">What needs my attention?<small>Prioritize urgent leads, handoffs and risks.</small></button>
-          <button type="button" data-action="today">Show today<small>Booking requests and calendar events.</small></button>
-          <button type="button" data-action="pipeline_health">Check business wiring<small>Lead store, calendar and key business routes.</small></button>
-        </div>
-      </div>
-
-      <div class="sidebar-block">
-        <p class="section-label">Pipeline</p><h2>Customers and opportunities</h2>
-        <div class="quick">
-          <button type="button" data-action="leads_summary">Summarize open leads<small>Who, need, path and priority.</small></button>
-          <button type="button" data-action="phone_handoffs">Review phone handoffs<small>See callers that need human follow-up.</small></button>
-        </div>
-        <label for="issue" style="display:block;margin-top:12px;font-weight:850">Draft reply to private lead #</label>
-        <div class="mini-row" style="margin-top:7px"><input class="mini-input" id="issue" inputmode="numeric" data-issue placeholder="Issue #"><button class="mini-button" type="button" data-draft>Draft</button></div>
-      </div>
-
-      <div class="sidebar-block">
-        <p class="section-label">Business links</p><h2>Open the right page fast</h2>
-        <div class="studio-shortcuts">
-          <a href="/#assessment" target="_blank" rel="noopener">Free score</a><a href="/courses.html" target="_blank" rel="noopener">Courses</a>
-          <a href="/answers.html" target="_blank" rel="noopener">Answers</a><a href="/checklist.html" target="_blank" rel="noopener">Checklist</a>
-          <a href="/refunds.html" target="_blank" rel="noopener">Refunds</a><a href="/privacy.html" target="_blank" rel="noopener">Privacy</a>
-        </div>
-        <button type="button" data-action="business_links" class="owner-ghost" style="width:100%;margin-top:9px">Show all business links in chat</button>
-      </div>
+      <div class="sidebar-block" data-access-block><p class="section-label">Secure access</p><h2>Unlock this session</h2><div class="token-row"><input type="password" autocomplete="current-password" data-token placeholder="Owner token" aria-label="Owner token"><button type="button" data-unlock>Unlock</button></div><p class="safe-note">The token stays in this browser session only. The server validates every request.</p></div>
+      <div class="sidebar-block"><p class="section-label">Today</p><h2>Business pulse</h2><div class="quick"><button type="button" class="primary-action" data-action="priority">What needs my attention?<small>Prioritize urgent leads, handoffs and risks.</small></button><button type="button" data-action="today">Show today<small>Booking requests and calendar events.</small></button><button type="button" data-action="pipeline_health">Check business wiring<small>Lead store, calendar and key business routes.</small></button></div></div>
+      <div class="sidebar-block"><p class="section-label">Pipeline</p><h2>Customers and opportunities</h2><div class="quick"><button type="button" data-action="leads_summary">Summarize open leads<small>Who, need, path and priority.</small></button><button type="button" data-action="phone_handoffs">Review phone handoffs<small>See callers that need human follow-up.</small></button></div><label for="issue" style="display:block;margin-top:12px;font-weight:850">Draft reply to private lead #</label><div class="mini-row" style="margin-top:7px"><input class="mini-input" id="issue" inputmode="numeric" data-issue placeholder="Issue #"><button class="mini-button" type="button" data-draft>Draft</button></div></div>
+      <div class="sidebar-block"><p class="section-label">Business links</p><h2>Open the right page fast</h2><div class="studio-shortcuts"><a href="/#assessment" target="_blank" rel="noopener">Free score</a><a href="/courses.html" target="_blank" rel="noopener">Courses</a><a href="/answers.html" target="_blank" rel="noopener">Answers</a><a href="/checklist.html" target="_blank" rel="noopener">Checklist</a><a href="/refunds.html" target="_blank" rel="noopener">Refunds</a><a href="/privacy.html" target="_blank" rel="noopener">Privacy</a></div><button type="button" data-action="business_links" class="owner-ghost" style="width:100%;margin-top:9px">Show all business links in chat</button></div>
       <p class="safe-note">Draft means draft. Owner Studio cannot send customer messages, place calls, change routing, approve refunds or discounts, or charge customers.</p>
     </aside>
-
-    <section class="panel workspace">
-      <div class="workspace-head"><div><strong>Operations conversation</strong><div class="safe-note" style="margin:2px 0 0">Ask naturally. Owner Studio can attach verified business links and private lead-record links when useful.</div></div><div class="workspace-tools"><button type="button" data-speak-toggle aria-pressed="false">Voice replies: off</button><button type="button" data-clear>Clear chat</button><button type="button" data-lock>Lock</button></div></div>
-      <div class="owner-log" data-log aria-live="polite">
-        <div class="empty-tip" data-empty><strong>Owner Studio is ready when you are.</strong>Unlock the session, then ask “What needs my attention?”, “Give me the booking link”, “Summarize my leads”, or “Draft a reply for lead #12.”</div>
-      </div>
-      <div class="owner-form-wrap">
-        <form class="owner-form" data-form>
-          <textarea data-input maxlength="4000" placeholder="Ask about leads, bookings, offers, customer follow-up, business pages, refunds, privacy, or what to do next…" aria-label="Message Owner Studio"></textarea>
-          <button type="button" class="secondary" data-mic aria-label="Speak to Owner Studio">🎙 Speak</button>
-          <button type="submit">Ask</button>
-        </form>
-        <div class="compose-hint"><span>Enter to send · Shift+Enter for a new line</span><span>Sensitive or binding actions always stay with you.</span></div>
-      </div>
-    </section>
+    <section class="panel workspace"><div class="workspace-head"><div><strong>Operations conversation</strong><div class="safe-note" style="margin:2px 0 0">Ask naturally. Owner Studio can attach verified business links and private lead-record links when useful.</div></div><div class="workspace-tools"><button type="button" data-speak-toggle aria-pressed="false">Voice replies: off</button><button type="button" data-clear>Clear chat</button><button type="button" data-lock>Lock</button></div></div><div class="owner-log" data-log aria-live="polite"><div class="empty-tip" data-empty><strong>Owner Studio is ready when you are.</strong>Unlock the session, then ask “What needs my attention?”, “Give me the booking link”, “Summarize my leads”, or “Draft a reply for lead #12.”</div></div><div class="owner-form-wrap"><form class="owner-form" data-form><textarea data-input maxlength="4000" placeholder="Ask about leads, bookings, offers, customer follow-up, business pages, refunds, privacy, or what to do next…" aria-label="Message Owner Studio"></textarea><button type="button" class="secondary" data-mic aria-label="Speak to Owner Studio">🎙 Speak</button><button type="submit">Ask</button></form><div class="compose-hint"><span>Enter to send · Shift+Enter for a new line</span><span>Sensitive or binding actions always stay with you.</span></div></div></section>
   </section>
 </main>
 <script src="assets/owner-assistant.js"></script>
+<script src="assets/owner-controls.js"></script>
 </body>
 </html>
