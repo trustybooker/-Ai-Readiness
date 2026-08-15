@@ -16,7 +16,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Install dependencies
-        run: npm install --no-audit --no-fund
-      - name: Run tests and static validation
+      - name: Install dependencies reproducibly
+        run: npm ci --no-audit --no-fund
+      - name: Dependency security audit
+        run: npm audit --omit=dev --audit-level=high
+      - name: Run tests, wiring, SEO and security validation
         run: npm run check
