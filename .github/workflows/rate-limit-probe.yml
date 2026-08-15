@@ -1,0 +1,41 @@
+name: AI Kollege Netlify rate-limit probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release/ai-kollege-launch
+    paths:
+      - .github/workflows/rate-limit-probe.yml
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
+    env:
+      SITE_URL: https://ai-readiness-pass.netlify.app
+    steps:
+      - name: Wait for rate-limit deployment marker
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 24); do
+            if curl --max-time 5 -fsS "$SITE_URL/rate-limit-ready.txt" | grep -q AI_KOLLEGE_HOST_RATE_LIMIT_V1; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+      - name: Send cost-free invalid POSTs until edge returns 429
+        shell: bash
+        run: |
+          set -euo pipefail
+          saw429=0
+          for i in $(seq 1 24); do
+            code=$(curl --max-time 5 -sS -o /dev/null -w '%{http_code}' -X POST "$SITE_URL/api/secretary" \
+              -H 'content-type: application/json' --data '{}') || code=timeout
+            echo "request $i -> $code"
+            if [ "$code" = "429" ]; then saw429=1; break; fi
+          done
+          test "$saw429" = 1
