@@ -1,0 +1,32 @@
+/* AI Kollege production UI hardening. Loaded after the main styles. */
+html,body{max-width:100%;overflow-x:clip}
+/* Public split panels must have their own inner spacing. Without this, text can sit under rounded corners and appear cut off. */
+.section .split>.panel{padding:clamp(22px,3vw,32px);overflow:visible}
+.section .split>.panel:before{border-radius:var(--radius) var(--radius) 0 0}
+/* Never truncate customer- or owner-critical labels. */
+.status,.public-phone,.note,.record-card,.cards article,.list-grid div,.impact-meter span,.proof span{overflow-wrap:anywhere;word-break:normal}
+.status{white-space:normal;line-height:1.25}
+.cards article,.list-grid div,.lead-box>*{min-width:0}
+.cards article h3,.list-grid b{hyphens:none}
+/* Make the request area look intentional rather than like an empty two-column shell. */
+.lead-box{align-items:start}
+.lead-box>div:first-child{align-self:start;padding-block:4px}
+.lead-box form{align-self:start}
+.public-phone{margin-top:.75rem;color:#c7d4e5}
+.public-phone a{font-weight:850;text-decoration:underline;text-underline-offset:3px}
+/* Local icon treatment: no dependency on icon fonts/CDNs. */
+.aik-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto;background:#edf4ff;border:1px solid #d7e5fa;color:#1d55c6;margin-bottom:.8rem}
+.aik-icon svg{width:23px;height:23px;display:block;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.aik-icon.gold{background:#fff7e8;border-color:#f4ddb4;color:#a96100}
+.aik-icon.green{background:#edf9f2;border-color:#ccebd8;color:#15804a}
+/* Keep the floating Secretary clear of sticky CTAs/footer and usable at zoom. */
+.aik-chat-btn{max-width:calc(100vw - 28px);white-space:normal;text-align:center;line-height:1.15}
+@media(max-width:720px){
+ .section .split>.panel{padding:22px}
+ .aik-chat-btn{bottom:78px!important;right:12px!important}
+ .lead-box{gap:22px}
+}
+@media(min-width:721px){.aik-chat-btn{right:18px!important;bottom:18px!important}}
+/* Never allow decorative transforms to clip focus outlines or copy. */
+main{overflow:visible!important}
+.cards article:focus-within,.panel:focus-within,.hero-card:focus-within{transform:none!important}
