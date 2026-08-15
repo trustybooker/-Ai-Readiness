@@ -4,54 +4,89 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>AI Kollege Owner Assistant</title>
+  <meta name="theme-color" content="#07111f">
+  <title>AI Kollege Owner Studio</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/styles.css">
   <style>
-    body{background:#09111f;color:#eef5ff;min-height:100vh}.owner-shell{max-width:1180px;margin:auto;padding:24px}.owner-top{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}.owner-brand{display:flex;align-items:center;gap:14px}.avatar{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 25%,#6fd3ff,#2757d8 46%,#121a31 72%);box-shadow:0 0 0 5px rgba(111,211,255,.08),0 16px 50px rgba(0,0,0,.35);position:relative}.avatar:after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(111,211,255,.35);animation:pulse 2.4s ease-in-out infinite}.avatar.listening:after{border-color:#8df5b2;animation-duration:.7s}.avatar.thinking:after{border-color:#ffd37a;animation-duration:1s}@keyframes pulse{50%{transform:scale(1.06);opacity:.45}}.avatar span{font-weight:800;font-size:1.2rem}.muted{opacity:.7}.owner-grid{display:grid;grid-template-columns:280px 1fr;gap:18px}.panel{background:#101a2e;border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:16px;box-shadow:0 20px 50px rgba(0,0,0,.2)}.quick{display:grid;gap:10px}.quick button,.owner-form button,.token-row button{border:0;border-radius:10px;padding:.75rem .9rem;background:#1f67d8;color:#fff;font-weight:700;cursor:pointer}.quick button.secondary{background:#182845}.token-row{display:flex;gap:8px}.token-row input,.owner-form textarea,.owner-form input{width:100%;background:#0b1425;color:#eef5ff;border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:.75rem}.owner-log{min-height:380px;max-height:62vh;overflow:auto;display:flex;flex-direction:column;gap:10px;padding-bottom:12px}.bubble{max-width:88%;padding:.8rem 1rem;border-radius:14px;white-space:pre-wrap;line-height:1.45}.bubble.me{align-self:flex-end;background:#1f67d8}.bubble.ai{align-self:flex-start;background:#17243d}.owner-form{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end}.owner-form textarea{min-height:64px;resize:vertical}.status{font-size:.8rem;padding:.35rem .6rem;border-radius:999px;background:#16243d;display:inline-flex;align-items:center;gap:.4rem}.status:before{content:"";width:8px;height:8px;border-radius:50%;background:#8df5b2}.danger{color:#ffb0b0}.safe-note{font-size:.8rem;opacity:.72;margin-top:10px}.draft-card{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px;margin-top:8px;background:#0d1729}.draft-card button{margin-top:8px}.hidden{display:none!important}@media(max-width:800px){.owner-grid{grid-template-columns:1fr}.owner-form{grid-template-columns:1fr 1fr}.owner-form textarea{grid-column:1/-1}.avatar{width:58px;height:58px}}
+    :root{--studio:#07111f;--studio2:#0d1a2e;--studio3:#132642;--studioLine:rgba(255,255,255,.1);--studioText:#f3f8ff;--studioMuted:#9fb1c8;--studioBlue:#4f8cff;--studioCyan:#63d9ff;--studioGold:#f6be4f;--good:#70e0a1;--warn:#ffd27a}
+    body{background:radial-gradient(circle at 84% -10%,rgba(79,140,255,.24),transparent 30%),linear-gradient(180deg,#07111f 0%,#091629 100%);color:var(--studioText);min-height:100vh}
+    .owner-shell{width:min(1440px,calc(100% - 28px));margin:auto;padding:20px 0 36px}.owner-top{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;padding:10px 4px 20px}.owner-brand{display:flex;gap:14px;align-items:center}.avatar{width:62px;height:62px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(145deg,#1f5fd8,#173c8d 58%,#0a1830);box-shadow:0 14px 45px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.16);position:relative}.avatar:after{content:"";position:absolute;inset:-4px;border-radius:21px;border:1px solid rgba(99,217,255,.34);animation:pulse 2.5s ease-in-out infinite}.avatar.listening:after{border-color:var(--good);animation-duration:.7s}.avatar.thinking:after{border-color:var(--studioGold);animation-duration:1s}.avatar span{font-weight:950;letter-spacing:-.06em}.owner-title{margin:.12rem 0;font-size:clamp(1.65rem,3vw,2.45rem)}.owner-sub{margin:0;color:var(--studioMuted);max-width:760px}.owner-top-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.owner-link,.owner-ghost{display:inline-flex;min-height:40px;align-items:center;justify-content:center;border-radius:12px;padding:.65rem .85rem;font-weight:850;border:1px solid var(--studioLine);background:rgba(255,255,255,.04);color:var(--studioText)}.owner-link:hover,.owner-ghost:hover{background:rgba(255,255,255,.09)}.status{font-size:.82rem;padding:.45rem .7rem;border-radius:999px;background:rgba(255,255,255,.07);display:inline-flex;align-items:center;gap:.45rem;font-weight:850}.status:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--warn)}.status.ready:before{background:var(--good)}
+    .studio-grid{display:grid;grid-template-columns:330px minmax(0,1fr);gap:16px}.panel{background:linear-gradient(180deg,rgba(18,34,58,.96),rgba(11,24,43,.96));border:1px solid var(--studioLine);border-radius:22px;box-shadow:0 24px 70px rgba(0,0,0,.25)}.sidebar{padding:16px;align-self:start;position:sticky;top:16px;max-height:calc(100vh - 34px);overflow:auto}.workspace{display:grid;grid-template-rows:auto minmax(420px,1fr) auto;min-height:calc(100vh - 150px);overflow:hidden}.section-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.16em;color:var(--studioCyan);font-weight:950;margin:0 0 8px}.sidebar h2{font-size:1.05rem;letter-spacing:-.02em;margin:0 0 10px}.sidebar-block+.sidebar-block{border-top:1px solid var(--studioLine);padding-top:15px;margin-top:15px}.token-row{display:flex;gap:8px}.token-row input,.owner-form textarea,.mini-input{width:100%;background:#081529;color:var(--studioText);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:.78rem}.token-row button,.quick button,.owner-form button,.mini-button{border:0;border-radius:12px;padding:.75rem .85rem;background:#286bdd;color:#fff;font-weight:850;cursor:pointer}.token-row button:hover,.quick button:hover,.owner-form button:hover,.mini-button:hover{filter:brightness(1.08)}.quick{display:grid;grid-template-columns:1fr;gap:8px}.quick button{text-align:left;background:#122b4d;border:1px solid rgba(255,255,255,.08)}.quick button.primary-action{background:linear-gradient(135deg,#2469df,#1f56b6)}.quick small{display:block;color:#b6c6da;font-weight:650;margin-top:2px}.safe-note{font-size:.79rem;color:var(--studioMuted);margin:.7rem 0 0}.mini-row{display:flex;gap:8px}.studio-shortcuts{display:grid;grid-template-columns:1fr 1fr;gap:7px}.studio-shortcuts a{font-size:.82rem;padding:.65rem;border-radius:11px;border:1px solid var(--studioLine);background:rgba(255,255,255,.035);color:#dce9fb;font-weight:800}.studio-shortcuts a:hover{background:rgba(79,140,255,.12);border-color:rgba(79,140,255,.35)}
+    .workspace-head{padding:14px 16px;border-bottom:1px solid var(--studioLine);display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.workspace-head strong{font-size:1rem}.workspace-tools{display:flex;gap:7px}.workspace-tools button{border:1px solid var(--studioLine);background:rgba(255,255,255,.04);color:var(--studioText);border-radius:10px;padding:.55rem .7rem;cursor:pointer;font-weight:800}.owner-log{overflow:auto;padding:18px;display:flex;flex-direction:column;gap:13px;scroll-behavior:smooth}.bubble-wrap{display:flex;flex-direction:column;gap:7px;max-width:88%}.bubble-wrap.me{align-self:flex-end;align-items:flex-end}.bubble-wrap.ai{align-self:flex-start;align-items:flex-start}.bubble{padding:.9rem 1rem;border-radius:16px;white-space:pre-wrap;line-height:1.5;box-shadow:0 10px 28px rgba(0,0,0,.12)}.bubble-wrap.me .bubble{background:linear-gradient(135deg,#2e72e6,#2458b2);color:white;border-bottom-right-radius:5px}.bubble-wrap.ai .bubble{background:#101f36;color:#edf5ff;border:1px solid rgba(255,255,255,.075);border-bottom-left-radius:5px}.bubble-meta{font-size:.72rem;color:#7f94ad;padding:0 4px}.link-chips{display:flex;flex-wrap:wrap;gap:7px}.link-chip{display:inline-flex;align-items:center;gap:.35rem;padding:.55rem .72rem;border-radius:999px;background:#122e50;border:1px solid rgba(99,217,255,.22);color:#dff7ff;font-size:.82rem;font-weight:850}.link-chip:after{content:'↗';font-size:.75rem;opacity:.7}.link-chip.internal:after{content:'→'}.record-list{display:grid;gap:8px;width:min(760px,100%)}.record-card{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;background:#0d1b30;border:1px solid var(--studioLine);border-radius:13px;padding:10px 12px}.record-card b{display:block;font-size:.9rem}.record-card span{color:var(--studioMuted);font-size:.78rem}.record-card a{flex:0 0 auto;color:#bfeaff;font-weight:850;font-size:.8rem}.owner-form-wrap{padding:14px 16px;border-top:1px solid var(--studioLine);background:rgba(5,14,27,.38)}.owner-form{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:end}.owner-form textarea{min-height:72px;max-height:180px;resize:vertical}.owner-form button.secondary{background:#152943;border:1px solid var(--studioLine)}.compose-hint{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:7px;color:var(--studioMuted);font-size:.76rem}.empty-tip{margin:auto;max-width:660px;text-align:center;padding:30px 20px;color:var(--studioMuted)}.empty-tip strong{display:block;color:var(--studioText);font-size:1.15rem;margin-bottom:8px}.hidden{display:none!important}@keyframes pulse{50%{transform:scale(1.045);opacity:.45}}
+    @media(max-width:980px){.studio-grid{grid-template-columns:1fr}.sidebar{position:static;max-height:none}.workspace{min-height:72vh}.quick{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:650px){.owner-shell{width:min(100% - 16px,1440px);padding-top:8px}.owner-top-actions{width:100%}.owner-link{flex:1}.studio-shortcuts,.quick{grid-template-columns:1fr}.owner-form{grid-template-columns:1fr 1fr}.owner-form textarea{grid-column:1/-1}.bubble-wrap{max-width:96%}.workspace{min-height:78vh}.avatar{width:52px;height:52px;border-radius:15px}.owner-title{font-size:1.5rem}}
   </style>
 </head>
 <body>
-  <main class="owner-shell">
-    <header class="owner-top">
-      <div class="owner-brand">
-        <div class="avatar" data-avatar><span>AI</span></div>
-        <div><p class="eyebrow">Private owner workspace</p><h1 style="margin:.1rem 0">AI Kollege Owner Assistant</h1><p class="muted" style="margin:0">Leads, phone handoffs, bookings, drafts and decision support — nothing consequential is sent automatically.</p></div>
-      </div>
+<main class="owner-shell">
+  <header class="owner-top">
+    <div class="owner-brand">
+      <div class="avatar" data-avatar aria-hidden="true"><span>AI</span></div>
+      <div><p class="section-label">Private operations workspace</p><h1 class="owner-title">AI Kollege Owner Studio</h1><p class="owner-sub">Run the business from one place: pipeline review, bookings, customer follow-up drafts, business links and operational checks. Nothing consequential is sent automatically.</p></div>
+    </div>
+    <div class="owner-top-actions">
       <span class="status" data-status>Locked</span>
-    </header>
+      <a class="owner-link" href="/" target="_blank" rel="noopener">Open public site</a>
+      <a class="owner-link" href="/booking.html" target="_blank" rel="noopener">Booking page</a>
+    </div>
+  </header>
 
-    <section class="owner-grid">
-      <aside class="panel">
-        <h2 style="margin-top:0">Secure access</h2>
-        <p class="muted">Enter the private owner token. It is kept only for this browser tab/session and is never written into the page source.</p>
-        <div class="token-row"><input type="password" autocomplete="current-password" data-token placeholder="Owner token"><button type="button" data-unlock>Unlock</button></div>
-        <p class="safe-note">Closing the tab clears the session token. The server still validates every request.</p>
-        <hr style="border-color:rgba(255,255,255,.09);margin:18px 0">
-        <h2>Quick actions</h2>
+  <section class="studio-grid">
+    <aside class="panel sidebar">
+      <div class="sidebar-block" data-access-block>
+        <p class="section-label">Secure access</p><h2>Unlock this session</h2>
+        <div class="token-row"><input type="password" autocomplete="current-password" data-token placeholder="Owner token" aria-label="Owner token"><button type="button" data-unlock>Unlock</button></div>
+        <p class="safe-note">The token stays in this browser session only. The server validates every request.</p>
+      </div>
+
+      <div class="sidebar-block">
+        <p class="section-label">Today</p><h2>Business pulse</h2>
         <div class="quick">
-          <button type="button" data-action="leads_summary">Summarize open leads</button>
-          <button type="button" data-action="phone_handoffs" class="secondary">Review phone handoffs</button>
-          <button type="button" data-action="today" class="secondary">Show today</button>
-          <button type="button" data-action="priority" class="secondary">What needs my attention?</button>
+          <button type="button" class="primary-action" data-action="priority">What needs my attention?<small>Prioritize urgent leads, handoffs and risks.</small></button>
+          <button type="button" data-action="today">Show today<small>Booking requests and calendar events.</small></button>
+          <button type="button" data-action="pipeline_health">Check business wiring<small>Lead store, calendar and key business routes.</small></button>
         </div>
-        <hr style="border-color:rgba(255,255,255,.09);margin:18px 0">
-        <label for="issue">Draft reply to lead #</label>
-        <div class="token-row" style="margin-top:7px"><input id="issue" inputmode="numeric" data-issue placeholder="Issue #"><button type="button" data-draft>Draft</button></div>
-        <p class="safe-note">Draft means draft. The assistant cannot send customer messages, place calls, change Twilio routing, approve refunds, discounts, legal promises, or payments.</p>
-      </aside>
+      </div>
 
-      <section class="panel">
-        <div class="owner-log" data-log aria-live="polite"><div class="bubble ai">Owner Assistant is locked. Enter your private token to begin.</div></div>
+      <div class="sidebar-block">
+        <p class="section-label">Pipeline</p><h2>Customers and opportunities</h2>
+        <div class="quick">
+          <button type="button" data-action="leads_summary">Summarize open leads<small>Who, need, path and priority.</small></button>
+          <button type="button" data-action="phone_handoffs">Review phone handoffs<small>See callers that need human follow-up.</small></button>
+        </div>
+        <label for="issue" style="display:block;margin-top:12px;font-weight:850">Draft reply to private lead #</label>
+        <div class="mini-row" style="margin-top:7px"><input class="mini-input" id="issue" inputmode="numeric" data-issue placeholder="Issue #"><button class="mini-button" type="button" data-draft>Draft</button></div>
+      </div>
+
+      <div class="sidebar-block">
+        <p class="section-label">Business links</p><h2>Open the right page fast</h2>
+        <div class="studio-shortcuts">
+          <a href="/#assessment" target="_blank" rel="noopener">Free score</a><a href="/courses.html" target="_blank" rel="noopener">Courses</a>
+          <a href="/answers.html" target="_blank" rel="noopener">Answers</a><a href="/checklist.html" target="_blank" rel="noopener">Checklist</a>
+          <a href="/refunds.html" target="_blank" rel="noopener">Refunds</a><a href="/privacy.html" target="_blank" rel="noopener">Privacy</a>
+        </div>
+        <button type="button" data-action="business_links" class="owner-ghost" style="width:100%;margin-top:9px">Show all business links in chat</button>
+      </div>
+      <p class="safe-note">Draft means draft. Owner Studio cannot send customer messages, place calls, change routing, approve refunds or discounts, or charge customers.</p>
+    </aside>
+
+    <section class="panel workspace">
+      <div class="workspace-head"><div><strong>Operations conversation</strong><div class="safe-note" style="margin:2px 0 0">Ask naturally. Owner Studio can attach verified business links and private lead-record links when useful.</div></div><div class="workspace-tools"><button type="button" data-speak-toggle aria-pressed="false">Voice replies: off</button><button type="button" data-clear>Clear chat</button><button type="button" data-lock>Lock</button></div></div>
+      <div class="owner-log" data-log aria-live="polite">
+        <div class="empty-tip" data-empty><strong>Owner Studio is ready when you are.</strong>Unlock the session, then ask “What needs my attention?”, “Give me the booking link”, “Summarize my leads”, or “Draft a reply for lead #12.”</div>
+      </div>
+      <div class="owner-form-wrap">
         <form class="owner-form" data-form>
-          <textarea data-input maxlength="4000" placeholder="Ask: Who should I respond to first? Review phone handoffs. Summarize today. Draft a response for lead #12…"></textarea>
-          <button type="button" data-mic aria-label="Speak to Owner Assistant">🎙 Speak</button>
+          <textarea data-input maxlength="4000" placeholder="Ask about leads, bookings, offers, customer follow-up, business pages, refunds, privacy, or what to do next…" aria-label="Message Owner Studio"></textarea>
+          <button type="button" class="secondary" data-mic aria-label="Speak to Owner Studio">🎙 Speak</button>
           <button type="submit">Ask</button>
         </form>
-        <p class="safe-note">Voice uses your browser's speech recognition when available. Spoken replies are optional. Sensitive decisions remain yours.</p>
-      </section>
+        <div class="compose-hint"><span>Enter to send · Shift+Enter for a new line</span><span>Sensitive or binding actions always stay with you.</span></div>
+      </div>
     </section>
-  </main>
-  <script src="assets/owner-assistant.js"></script>
+  </section>
+</main>
+<script src="assets/owner-assistant.js"></script>
 </body>
 </html>
