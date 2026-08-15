@@ -8,4 +8,5 @@
   document.querySelectorAll('.studio-shortcuts a').forEach(a=>{const h=a.getAttribute('href')||'';apply(a,/booking/.test(h)?'calendar':/courses|checklist|answers|refunds|privacy/.test(h)?'book':'link');});
   const observer=new MutationObserver(()=>{apply(document.querySelector('[data-settings-load]'),'settings');apply(document.querySelector('[data-settings-save]'),'check');apply(document.querySelector('[data-workflow-save]'),'check');});
   observer.observe(document.documentElement,{subtree:true,childList:true});
+  if(!document.querySelector('script[data-aik-social-control]')){const s=document.createElement('script');s.src='/assets/social-control.js';s.defer=true;s.dataset.aikSocialControl='true';document.body.appendChild(s);}
 })();
