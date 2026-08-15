@@ -94,6 +94,11 @@
   status = 200
   force = true
 [[redirects]]
+  from = "/api/social-ops"
+  to = "/.netlify/functions/social-ops"
+  status = 200
+  force = true
+[[redirects]]
   from = "/api/*"
   to = "/404.html"
   status = 404

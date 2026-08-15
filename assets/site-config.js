@@ -1,5 +1,12 @@
 window.AIKOLLEGE_SITE_CONFIG = {
   bookingUrl: 'https://calendar.app.google/wSVv9b3k5X5GiQqf6',
+  // Public customer-facing Twilio receptionist line. This is intentionally public.
+  // The private human-forward destination remains server-side in TWILIO_HUMAN_FORWARD_NUMBER / Owner Studio only.
+  contact: {
+    phoneE164: '+17726665472',
+    phoneDisplay: '(772) 666-5472',
+    phoneLabel: 'Call AI receptionist'
+  },
   // Used only if both first-party lead-capture routes are unavailable.
   // The primary pipeline remains the verified private lead repository.
   fallbackFormAction: 'https://formsubmit.co/fifynow@fifynowllc.com',
@@ -22,3 +29,15 @@ window.AIKOLLEGE_SITE_CONFIG = {
 };
 // Temporary compatibility alias for older cached scripts. New code uses AIKOLLEGE_SITE_CONFIG.
 window.FIFYNOW_SITE_CONFIG = window.AIKOLLEGE_SITE_CONFIG;
+
+// Keep the public phone consistent across public pages without duplicating it into every template.
+document.addEventListener('DOMContentLoaded',()=>{
+  const c=window.AIKOLLEGE_SITE_CONFIG?.contact||{};
+  if(!/^\+[1-9]\d{7,14}$/.test(String(c.phoneE164||''))||!c.phoneDisplay)return;
+  if(document.querySelector('[data-aik-public-phone]'))return;
+  const footer=document.querySelector('.footer .footer-grid > div:first-child, .footer .shell > div:first-child, .footer .shell');
+  if(!footer)return;
+  const p=document.createElement('p');p.dataset.aikPublicPhone='true';p.className='public-phone';
+  const a=document.createElement('a');a.href=`tel:${c.phoneE164}`;a.textContent=`${c.phoneLabel||'Call'}: ${c.phoneDisplay}`;a.setAttribute('aria-label',`${c.phoneLabel||'Call'} at ${c.phoneDisplay}`);
+  p.appendChild(a);const note=document.createElement('span');note.textContent=' · AI receptionist; ask for a human when needed.';p.appendChild(note);footer.appendChild(p);
+});
