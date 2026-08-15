@@ -8,4 +8,5 @@
  @keyframes aikTalk{from{height:3px;width:13px}to{height:10px;width:10px;border-radius:45%}}@keyframes aikBlink{0%,46%,49%,100%{transform:scaleY(1)}47%,48%{transform:scaleY(.08)}}@keyframes aikThink{50%{transform:translateY(-2px) scale(1.03)}}`;
  document.head.appendChild(style);
  if('speechSynthesis'in window){const original=window.speechSynthesis.speak.bind(window.speechSynthesis);window.speechSynthesis.speak=(utterance)=>{const start=utterance.onstart,end=utterance.onend,error=utterance.onerror;utterance.onstart=(e)=>{avatar.classList.add('speaking');start?.call(utterance,e)};utterance.onend=(e)=>{avatar.classList.remove('speaking');end?.call(utterance,e)};utterance.onerror=(e)=>{avatar.classList.remove('speaking');error?.call(utterance,e)};return original(utterance);};}
+ if(!document.querySelector('script[data-social-ops-loader]')){const s=document.createElement('script');s.src='/assets/social-ops.js';s.defer=true;s.dataset.socialOpsLoader='true';document.head.appendChild(s);}
 })();
