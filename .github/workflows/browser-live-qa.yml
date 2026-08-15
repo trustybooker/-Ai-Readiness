@@ -1,22 +1,23 @@
 name: AI Kollege live browser QA
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - release/ai-kollege-launch
-    paths:
-      - .github/workflows/browser-live-qa.yml
+    branches: [release/ai-kollege-launch]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ai-kollege-browser-live-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   browser:
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     env:
-      SITE_URL: https://deploy-preview-12--ai-readiness-pass.netlify.app
+      SITE_URL: https://www.aikollege.com
     steps:
       - uses: actions/setup-node@v4
         with:
@@ -26,61 +27,61 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm install --no-audit --no-fund playwright@1.55.0
           npx playwright install --with-deps chromium
-      - name: Wait for Secretary-enabled latest preview
+      - name: Wait for current canonical production deploy
         shell: bash
         run: |
           set -euo pipefail
-          for i in $(seq 1 36); do
-            cfg=$(curl --max-time 5 -fsS "$SITE_URL/assets/site-config.js" || true)
-            if echo "$cfg" | grep -q 'enabled: true'; then exit 0; fi
+          for i in $(seq 1 48); do
+            cfg=$(curl --max-time 8 -fsS "$SITE_URL/assets/site-config.js" || true)
+            if echo "$cfg" | grep -q "G-P4TR060PFF" && echo "$cfg" | grep -q "purchase-verification.js" && echo "$cfg" | grep -q "production-polish.css"; then
+              echo "Current production config found on attempt $i"
+              exit 0
+            fi
             sleep 5
           done
           exit 1
-      - name: Run mobile and conversion-flow checks
+      - name: Run desktop/mobile visual, navigation, analytics and conversion checks
         shell: bash
         run: |
           cat > live-qa.mjs <<'EOF'
           import { chromium } from 'playwright';
           const site = process.env.SITE_URL;
           const browser = await chromium.launch({headless:true});
-          const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
-          const errors = [];
-          page.on('pageerror', e => errors.push(String(e)));
-          await page.goto(site, {waitUntil:'networkidle'});
-          await page.evaluate(() => {
-            document.querySelectorAll('iframe[title="Netlify Drawer"], [data-netlify-deploy-id]').forEach(el => el.remove());
-          });
-          const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
-          if (overflow) throw new Error('mobile horizontal overflow on homepage');
-          await page.locator('[data-menu]').click();
-          if (!(await page.locator('[data-links]').evaluate(el => el.classList.contains('open')))) throw new Error('mobile menu did not open');
-          await page.locator('[data-menu]').click();
-          for (let i=0;i<7;i++) {
-            await page.locator('[data-question] .option').nth(2).click();
-            await page.locator('[data-next]').click();
-          }
-          await page.locator('#result .score').waitFor();
-          const result = await page.locator('#result').innerText();
-          if (!/Recommended path:/i.test(result) || !/Lead tier:/i.test(result)) throw new Error('quiz result missing recommendation/tier');
-          const selectedPath = await page.locator('select[name="path"]').inputValue();
-          if (!selectedPath) throw new Error('quiz recommendation did not carry into form');
-          const bookingHref = await page.locator('[data-booking-link]').first().getAttribute('href');
-          if (!bookingHref?.startsWith('https://calendar.app.google/')) throw new Error('booking URL not hydrated');
-          await page.locator('.aik-chat-btn').waitFor({state:'visible', timeout:10000});
-          await page.locator('.aik-chat-btn').click({force:true});
-          if (!(await page.locator('.aik-chat').evaluate(el => el.classList.contains('open')))) throw new Error('Secretary widget did not open');
-          await page.goto(`${site}/courses.html`, {waitUntil:'networkidle'});
-          await page.evaluate(() => {
-            document.querySelectorAll('iframe[title="Netlify Drawer"], [data-netlify-deploy-id]').forEach(el => el.remove());
-          });
-          const coursesOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
-          if (coursesOverflow) throw new Error('mobile horizontal overflow on courses');
-          const starter = page.locator('[data-payment-key="aiStarterPass"]').first();
-          if ((await starter.getAttribute('data-checkout-ready')) !== 'false') throw new Error('Starter checkout should remain fail-closed until Stripe link is installed');
-          const starterHref = await starter.getAttribute('href');
-          if (!starterHref || !/booking\.html|#book|#booking-form/.test(starterHref)) throw new Error('Starter fallback is not a safe booking path');
-          if (errors.length) throw new Error(`page JS errors: ${errors.join(' | ')}`);
-          await browser.close();
-          console.log('PASS live mobile/user-flow browser QA');
+          const errors=[];
+          const gaRequests=[];
+          const page=await browser.newPage({viewport:{width:1366,height:768}});
+          page.on('pageerror',e=>errors.push(String(e)));
+          page.on('request',r=>{if(/google-analytics\.com|googletagmanager\.com/.test(r.url()))gaRequests.push(r.url());});
+          await page.goto(site,{waitUntil:'networkidle'});
+          if((await page.locator('script[data-aik-ga="G-P4TR060PFF"]').count())!==1)throw new Error('GA4 tag missing or duplicated');
+          if(!gaRequests.some(u=>u.includes('googletagmanager.com/gtag/js')))throw new Error('GA4 loader request not observed');
+          if((await page.locator('link[data-aik-production-polish]').count())!==1)throw new Error('production visual hardening stylesheet missing or duplicated');
+          const visual=page.locator('.impact-card').first();
+          const bg=await visual.evaluate(el=>getComputedStyle(el,'::after').backgroundImage);
+          if(!/workplace-ai-learning\.svg/.test(bg))throw new Error('homepage workplace-learning visual not active');
+          const publicPhone=await page.locator('[data-aik-public-phone]').innerText();
+          if(!publicPhone.includes('(772) 666-5472')||!/AI receptionist/i.test(publicPhone))throw new Error('public receptionist phone missing or mislabeled');
+          const jobs=page.locator('#jobs .panel').first();await jobs.scrollIntoViewIfNeeded();
+          const clipped=await jobs.evaluate(el=>{const r=el.getBoundingClientRect(),h=el.querySelector('h2'),e=el.querySelector('.eyebrow');const hr=h?.getBoundingClientRect(),er=e?.getBoundingClientRect();return !hr||!er||hr.left<r.left+12||er.left<r.left+12||hr.right>r.right-12;});
+          if(clipped)throw new Error('work/careers panel text is clipped by its rounded card');
+          if((await page.locator('.aik-icon').count())<6)throw new Error('local public icon system did not render enough context icons');
+          const lead=page.locator('#book .lead-box');await lead.scrollIntoViewIfNeeded();
+          const leadHeight=await lead.evaluate(el=>el.getBoundingClientRect().height);if(leadHeight>900)throw new Error(`request panel has excessive empty height: ${leadHeight}`);
+
+          const mobile=await browser.newPage({viewport:{width:390,height:844}});const mobileErrors=[];mobile.on('pageerror',e=>mobileErrors.push(String(e)));await mobile.goto(site,{waitUntil:'networkidle'});
+          const overflow=await mobile.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+2);if(overflow)throw new Error('mobile horizontal overflow on homepage');
+          await mobile.locator('[data-menu]').click();if(!(await mobile.locator('[data-links]').evaluate(el=>el.classList.contains('open'))))throw new Error('mobile menu did not open');await mobile.locator('[data-menu]').click();
+          for(let i=0;i<7;i++){await mobile.locator('[data-question] .option').nth(2).click();await mobile.locator('[data-next]').click();}
+          await mobile.locator('#result .score').waitFor();const result=await mobile.locator('#result').innerText();if(!/Recommended path:/i.test(result)||!/self-assessment signal/i.test(result))throw new Error('quiz result missing recommendation/truth boundary');
+          const selectedPath=await mobile.locator('select[name="path"]').inputValue();if(!selectedPath)throw new Error('quiz recommendation did not carry into form');
+          const bookingHref=await mobile.locator('[data-booking-link]').first().getAttribute('href');if(!bookingHref?.startsWith('https://calendar.app.google/'))throw new Error('booking URL not hydrated');
+          await mobile.locator('.aik-chat-btn').waitFor({state:'visible',timeout:10000});const chatBox=await mobile.locator('.aik-chat-btn').boundingBox();if(!chatBox||chatBox.x<0||chatBox.x+chatBox.width>390)throw new Error('Secretary trigger clipped on mobile');
+          await mobile.locator('.aik-chat-btn').click({force:true});if(!(await mobile.locator('.aik-chat').evaluate(el=>el.classList.contains('open'))))throw new Error('Secretary widget did not open');
+          await mobile.goto(`${site}/courses.html`,{waitUntil:'networkidle'});const coursesOverflow=await mobile.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+2);if(coursesOverflow)throw new Error('mobile horizontal overflow on courses');
+          for(const key of ['aiStarterPass','aiJobProductivityPass']){const link=mobile.locator(`[data-payment-key="${key}"]`).first();if((await link.getAttribute('data-checkout-ready'))!=='true')throw new Error(`${key} checkout is not live`);const href=await link.getAttribute('href');if(!href?.startsWith('https://buy.stripe.com/'))throw new Error(`${key} is not wired to Stripe`);}
+          const localLinks=await mobile.locator('a[href]').evaluateAll(els=>[...new Set(els.map(a=>a.getAttribute('href')).filter(h=>h&&!h.startsWith('#')&&!h.startsWith('mailto:')&&!h.startsWith('tel:')&&!/^https?:\/\//.test(h)))].slice(0,40));for(const href of localLinks){const res=await mobile.request.get(new URL(href,site).href,{maxRedirects:5});if(res.status()>=400)throw new Error(`broken local navigation ${href}: HTTP ${res.status()}`);}
+          const owner=await mobile.request.get(`${site}/owner.html`);const robots=owner.headers()['x-robots-tag']||'',cache=owner.headers()['cache-control']||'';if(!/noindex/i.test(robots)||!/no-store/i.test(cache))throw new Error('Owner Studio privacy headers missing');
+          if(errors.length||mobileErrors.length)throw new Error(`page JS errors: ${[...errors,...mobileErrors].join(' | ')}`);
+          await browser.close();console.log('PASS canonical production desktop/mobile visual/navigation/analytics/conversion QA');
           EOF
           node live-qa.mjs

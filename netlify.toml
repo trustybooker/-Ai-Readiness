@@ -22,6 +22,11 @@
     Cache-Control = "no-store, private"
     X-Robots-Tag = "noindex, nofollow, noarchive"
 
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store"
+
 # One public canonical origin. These host redirects stack with rel=canonical and the sitemap.
 [[redirects]]
   from = "https://aikollege.com/*"
@@ -98,6 +103,16 @@
 [[redirects]]
   from = "/api/social-ops"
   to = "/.netlify/functions/social-ops"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/api/stripe-webhook"
+  to = "/.netlify/functions/stripe-webhook"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/api/stripe-session"
+  to = "/.netlify/functions/stripe-session"
   status = 200
   force = true
 [[redirects]]

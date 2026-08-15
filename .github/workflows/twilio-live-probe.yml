@@ -3,31 +3,43 @@ name: AI Kollege Twilio live probe
 on:
   push:
     branches: [release/ai-kollege-launch]
-    paths: [.github/workflows/twilio-live-probe.yml]
   workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ai-kollege-twilio-live-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   probe:
     runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
-      - name: Probe live voice endpoint
+      - name: Wait for and probe canonical production voice endpoint
         shell: bash
         run: |
           set -euo pipefail
-          URL='https://ai-readiness-pass.netlify.app/.netlify/functions/twilio-voice'
-          GET_CODE=$(curl -sS -o /tmp/get.out -w '%{http_code}' --max-time 15 "$URL" || true)
-          POST_CODE=$(curl -sS -o /tmp/post.out -w '%{http_code}' --max-time 15 -X POST -H 'content-type: application/x-www-form-urlencoded' --data 'From=%2B17725550123&To=%2B17726665472' "$URL" || true)
+          URL='https://www.aikollege.com/api/twilio-voice'
+          GET_CODE=''
+          for i in $(seq 1 36); do
+            GET_CODE=$(curl -sS -o /tmp/get.out -w '%{http_code}' --max-time 15 "$URL" || true)
+            if [ "$GET_CODE" = "405" ]; then
+              echo "Voice endpoint ready on attempt $i"
+              break
+            fi
+            sleep 5
+          done
+          POST_CODE=$(curl -sS -o /tmp/post.out -w '%{http_code}' --max-time 15 -X POST -H 'content-type: application/x-www-form-urlencoded' --data 'From=%2B15551234567&To=%2B17726665472' "$URL" || true)
           echo "GET=$GET_CODE BODY=$(cat /tmp/get.out 2>/dev/null || true)"
           echo "UNSIGNED_POST=$POST_CODE BODY=$(cat /tmp/post.out 2>/dev/null || true)"
           if [ "$GET_CODE" != "405" ]; then
-            echo 'Voice function is not live at the expected production endpoint.' >&2
+            echo 'Voice function is not live at the canonical production endpoint.' >&2
             exit 1
           fi
           if [ "$POST_CODE" != "403" ]; then
             echo 'Unsigned Twilio POST was not rejected as expected.' >&2
             exit 1
           fi
-          echo 'PASS: production voice endpoint exists and rejects unsigned requests.'
+          echo 'PASS: canonical production voice endpoint exists and rejects unsigned requests.'
