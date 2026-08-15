@@ -1,5 +1,6 @@
 (function(){
   const ready=()=>{
+    if(location.pathname==='/'||/\/index\.html$/i.test(location.pathname))document.body.classList.add('aik-home');
     const iconMap=new Map([
       ['build ai skills','spark'],['improve work','workflow'],['prepare a team','people'],
       ['assess','search'],['train','book'],['implement','workflow'],['review','shield'],
