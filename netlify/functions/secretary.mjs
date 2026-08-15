@@ -37,4 +37,14 @@ export default async (req, context) => {
   }
 };
 
-export const config = { path: '/.netlify/functions/secretary' };
+// Netlify edge-level protection in addition to the in-function limiter above.
+// Per-domain + IP aggregation is available on all Netlify plans. Keep this
+// deliberately conservative because each accepted request can invoke an LLM.
+export const config = {
+  path: ['/.netlify/functions/secretary', '/api/secretary'],
+  rateLimit: {
+    windowLimit: 20,
+    windowSize: 60,
+    aggregateBy: ['ip', 'domain']
+  }
+};
