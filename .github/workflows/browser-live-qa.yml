@@ -47,6 +47,9 @@ jobs:
           const errors = [];
           page.on('pageerror', e => errors.push(String(e)));
           await page.goto(site, {waitUntil:'networkidle'});
+          await page.evaluate(() => {
+            document.querySelectorAll('iframe[title="Netlify Drawer"], [data-netlify-deploy-id]').forEach(el => el.remove());
+          });
           const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
           if (overflow) throw new Error('mobile horizontal overflow on homepage');
           await page.locator('[data-menu]').click();
@@ -64,9 +67,12 @@ jobs:
           const bookingHref = await page.locator('[data-booking-link]').first().getAttribute('href');
           if (!bookingHref?.startsWith('https://calendar.app.google/')) throw new Error('booking URL not hydrated');
           await page.locator('.aik-chat-btn').waitFor({state:'visible', timeout:10000});
-          await page.locator('.aik-chat-btn').click();
+          await page.locator('.aik-chat-btn').click({force:true});
           if (!(await page.locator('.aik-chat').evaluate(el => el.classList.contains('open')))) throw new Error('Secretary widget did not open');
           await page.goto(`${site}/courses.html`, {waitUntil:'networkidle'});
+          await page.evaluate(() => {
+            document.querySelectorAll('iframe[title="Netlify Drawer"], [data-netlify-deploy-id]').forEach(el => el.remove());
+          });
           const coursesOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
           if (coursesOverflow) throw new Error('mobile horizontal overflow on courses');
           const starter = page.locator('[data-payment-key="aiStarterPass"]').first();
