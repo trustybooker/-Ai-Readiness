@@ -13,8 +13,16 @@ const twiml = (body) => new Response(`<?xml version="1.0" encoding="UTF-8"?><Res
   headers: { 'content-type': 'text/xml; charset=utf-8', 'cache-control': 'no-store' }
 });
 
-function gather(prompt, { action = '/.netlify/functions/twilio-voice', timeout = 4 } = {}) {
-  return `<Gather input="speech dtmf" action="${esc(action)}" method="POST" speechTimeout="auto" timeout="${timeout}" actionOnEmptyResult="true"><Say voice="Polly.Joanna">${esc(prompt)}</Say></Gather>`;
+function publicBase() {
+  return (process.env.PUBLIC_SITE_URL || 'https://ai-readiness-pass.netlify.app').replace(/\/$/, '');
+}
+
+function voiceAction() {
+  return `${publicBase()}/.netlify/functions/twilio-voice`;
+}
+
+function gather(prompt, { action = voiceAction(), timeout = 4 } = {}) {
+  return `<Gather input="speech dtmf" action="${esc(action)}" method="POST" speechTimeout="auto" timeout="${timeout}" actionOnEmptyResult="true"><Say>${esc(prompt)}</Say></Gather>`;
 }
 
 function parseForm(raw) {
@@ -22,22 +30,39 @@ function parseForm(raw) {
   return Object.fromEntries(params.entries());
 }
 
+function hmacMatches(authToken, signature, url, params) {
+  const suffix = Object.keys(params).sort().map((key) => key + params[key]).join('');
+  const expected = crypto.createHmac('sha1', authToken).update(url + suffix).digest('base64');
+  try {
+    const a = Buffer.from(signature);
+    const b = Buffer.from(expected);
+    return a.length === b.length && crypto.timingSafeEqual(a, b);
+  } catch {
+    return false;
+  }
+}
+
 function validateTwilioRequest(req, params) {
   const authToken = process.env.TWILIO_AUTH_TOKEN;
   const signature = req.headers.get('x-twilio-signature') || '';
   if (!authToken || !signature) return false;
-  // Twilio signs the exact webhook URL plus every POST form field sorted by name.
-  // Use the externally visible HTTPS URL, not a reconstructed internal host.
-  const publicBase = (process.env.PUBLIC_SITE_URL || 'https://ai-readiness-pass.netlify.app').replace(/\/$/, '');
+
+  // Twilio signs the exact external webhook URL plus sorted POST fields.
+  // Netlify may expose the same request through its canonical host, a custom
+  // domain, or forwarded-host metadata. Validate only against concrete URLs
+  // that represent this exact request; never skip HMAC verification.
   const incoming = new URL(req.url);
-  const url = publicBase + incoming.pathname + incoming.search;
-  const suffix = Object.keys(params).sort().map((key) => key + params[key]).join('');
-  const expected = crypto.createHmac('sha1', authToken).update(url + suffix).digest('base64');
-  try {
-    return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected));
-  } catch {
-    return false;
+  const candidates = new Set([incoming.toString()]);
+  candidates.add(`${publicBase()}${incoming.pathname}${incoming.search}`);
+
+  const forwardedHost = String(req.headers.get('x-forwarded-host') || '').split(',')[0].trim();
+  const forwardedProto = String(req.headers.get('x-forwarded-proto') || 'https').split(',')[0].trim() || 'https';
+  if (forwardedHost) candidates.add(`${forwardedProto}://${forwardedHost}${incoming.pathname}${incoming.search}`);
+
+  for (const url of candidates) {
+    if (hmacMatches(authToken, signature, url, params)) return true;
   }
+  return false;
 }
 
 function safeCaller(value) {
@@ -82,9 +107,9 @@ export default async (req) => {
     }).catch(() => null);
     const transfer = String(process.env.TWILIO_HUMAN_FORWARD_NUMBER || '').trim();
     if (transfer) {
-      return twiml(`<Say voice="Polly.Joanna">One moment while I try to connect you.</Say><Dial timeout="20" answerOnBridge="true">${esc(transfer)}</Dial><Say voice="Polly.Joanna">No one was available. I have marked this call for human follow-up.</Say><Hangup/>`);
+      return twiml(`<Say>One moment while I try to connect you.</Say><Dial timeout="20" answerOnBridge="true">${esc(transfer)}</Dial><Say>No one was available. I have marked this call for human follow-up.</Say><Hangup/>`);
     }
-    return twiml('<Say voice="Polly.Joanna">I have marked this call for human follow-up. Someone from AI Kollege can review it. You may also use the booking link on our website. Goodbye.</Say><Hangup/>');
+    return twiml('<Say>I have marked this call for human follow-up. Someone from AI Kollege can review it. You may also use the booking link on our website. Goodbye.</Say><Hangup/>');
   }
 
   try {
@@ -96,13 +121,13 @@ export default async (req) => {
     if (result.handoff) {
       const transfer = String(process.env.TWILIO_HUMAN_FORWARD_NUMBER || '').trim();
       if (transfer) {
-        return twiml(`<Say voice="Polly.Joanna">${esc(reply)}</Say><Say voice="Polly.Joanna">I will try to connect you with a person now.</Say><Dial timeout="20" answerOnBridge="true">${esc(transfer)}</Dial><Say voice="Polly.Joanna">No one was available. Your request has been marked for human follow-up.</Say><Hangup/>`);
+        return twiml(`<Say>${esc(reply)}</Say><Say>I will try to connect you with a person now.</Say><Dial timeout="20" answerOnBridge="true">${esc(transfer)}</Dial><Say>No one was available. Your request has been marked for human follow-up.</Say><Hangup/>`);
       }
-      return twiml(`<Say voice="Polly.Joanna">${esc(reply)}</Say><Say voice="Polly.Joanna">Your request has been marked for human follow-up.</Say><Hangup/>`);
+      return twiml(`<Say>${esc(reply)}</Say><Say>Your request has been marked for human follow-up.</Say><Hangup/>`);
     }
-    return twiml(`<Say voice="Polly.Joanna">${esc(reply)}</Say>${gather('What else can I help you with? You can say human or press zero at any time.')}<Say voice="Polly.Joanna">Thank you for calling AI Kollege. Goodbye.</Say><Hangup/>`);
+    return twiml(`<Say>${esc(reply)}</Say>${gather('What else can I help you with? You can say human or press zero at any time.')}<Say>Thank you for calling AI Kollege. Goodbye.</Say><Hangup/>`);
   } catch {
-    return twiml('<Say voice="Polly.Joanna">I am having trouble answering right now. Please use the booking or request form on the AI Kollege website and a human will follow up. Goodbye.</Say><Hangup/>');
+    return twiml('<Say>I am having trouble answering right now. Please use the booking or request form on the AI Kollege website and a human will follow up. Goodbye.</Say><Hangup/>');
   }
 };
 
