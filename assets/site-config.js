@@ -1,14 +1,13 @@
 window.AIKOLLEGE_SITE_CONFIG = {
   bookingUrl: 'https://calendar.app.google/wSVv9b3k5X5GiQqf6',
-  // Public customer-facing Twilio receptionist line. This is intentionally public.
-  // The private human-forward destination remains server-side in TWILIO_HUMAN_FORWARD_NUMBER / Owner Studio only.
+  // Public customer-facing Twilio receptionist line. The private human-forward
+  // destination stays server-side in Netlify/Owner Studio and is never exposed here.
   contact: {
     phoneE164: '+17726665472',
     phoneDisplay: '(772) 666-5472',
     phoneLabel: 'Call AI receptionist'
   },
   // Used only if both first-party lead-capture routes are unavailable.
-  // The primary pipeline remains the verified private lead repository.
   fallbackFormAction: 'https://formsubmit.co/fifynow@fifynowllc.com',
   analytics: {
     provider: 'google-analytics-4',
@@ -27,8 +26,6 @@ window.AIKOLLEGE_SITE_CONFIG = {
     enabled: true
   }
 };
-// Temporary compatibility alias for older cached scripts. New code uses AIKOLLEGE_SITE_CONFIG.
-window.FIFYNOW_SITE_CONFIG = window.AIKOLLEGE_SITE_CONFIG;
 
 // Keep the public phone consistent across public pages without duplicating it into every template.
 document.addEventListener('DOMContentLoaded',()=>{
