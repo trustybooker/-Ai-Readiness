@@ -11,235 +11,214 @@
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Permissions-Policy = "camera=(), microphone=(self), geolocation=()"
 
-# Block internal source, docs, tests, and config from being served as static
-# files (publish = "." exposes the repo root). Function bundles keep their own
-# copies of lib/, so the serverless endpoints are unaffected. These come first
-# so they take precedence over any other rule.
+[[headers]]
+  for = "/owner*"
+  [headers.values]
+    Cache-Control = "no-store, private"
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+
+# Block internal source, docs, tests, and config from being served as static files.
 [[redirects]]
   from = "/docs/*"
   to = "/404.html"
   status = 404
   force = true
-
 [[redirects]]
   from = "/course/*"
   to = "/404.html"
   status = 404
   force = true
-
 [[redirects]]
   from = "/lib/*"
   to = "/404.html"
   status = 404
   force = true
-
 [[redirects]]
   from = "/tests/*"
   to = "/404.html"
   status = 404
   force = true
-
 [[redirects]]
   from = "/scripts/*"
   to = "/404.html"
   status = 404
   force = true
-
 [[redirects]]
   from = "/netlify/*"
   to = "/404.html"
   status = 404
   force = true
 
-# Explicit public API aliases used by the site, launch smoke tests, and channels.
-# Keep these before the /api/* deny rule so only approved functions are exposed.
+# Approved serverless endpoints only.
 [[redirects]]
   from = "/api/capture-lead"
   to = "/.netlify/functions/capture-lead"
   status = 200
   force = true
-
 [[redirects]]
   from = "/api/secretary"
   to = "/.netlify/functions/secretary"
   status = 200
   force = true
-
 [[redirects]]
   from = "/api/assistant"
   to = "/.netlify/functions/assistant"
   status = 200
   force = true
-
 [[redirects]]
   from = "/api/whatsapp-webhook"
   to = "/.netlify/functions/whatsapp-webhook"
   status = 200
   force = true
-
 [[redirects]]
   from = "/api/twilio-voice"
   to = "/.netlify/functions/twilio-voice"
   status = 200
   force = true
-
 [[redirects]]
   from = "/api/*"
   to = "/404.html"
   status = 404
   force = true
 
+# Private owner cockpit: intentionally not linked from public navigation or sitemap.
+[[redirects]]
+  from = "/owner"
+  to = "/owner.html"
+  status = 200
+[[redirects]]
+  from = "/ai-readiness-pass/owner"
+  to = "/owner.html"
+  status = 200
+[[redirects]]
+  from = "/ai-readiness-pass/owner.html"
+  to = "/owner.html"
+  status = 200
+
 [[redirects]]
   from = "/package.json"
   to = "/404.html"
   status = 404
   force = true
-
 [[redirects]]
   from = "/package-lock.json"
   to = "/404.html"
   status = 404
   force = true
-
 [[redirects]]
   from = "/netlify.toml"
   to = "/404.html"
   status = 404
   force = true
-
 [[redirects]]
   from = "/vercel.json"
   to = "/404.html"
   status = 404
   force = true
 
+# Backward-compatible legacy path aliases.
 [[redirects]]
   from = "/ai-readiness-pass"
   to = "/index.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/index.html"
   to = "/index.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/booking"
   to = "/booking.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/booking.html"
   to = "/booking.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/answers"
   to = "/answers.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/answers.html"
   to = "/answers.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/checklist"
   to = "/checklist.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/checklist.html"
   to = "/checklist.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/checklist-start"
   to = "/checklist-start.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/checklist-start.html"
   to = "/checklist-start.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/lab"
   to = "/lab.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/lab.html"
   to = "/lab.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/courses"
   to = "/courses.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/courses.html"
   to = "/courses.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/badge"
   to = "/badge.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/badge.html"
   to = "/badge.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/thanks"
   to = "/thanks.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/thanks.html"
   to = "/thanks.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/purchase-success"
   to = "/purchase-success.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/purchase-success.html"
   to = "/purchase-success.html"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/answer/:slug"
   to = "/answer/:slug"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/assets/:splat"
   to = "/assets/:splat"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/sitemap.xml"
   to = "/sitemap.xml"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/robots.txt"
   to = "/robots.txt"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/favicon.svg"
   to = "/favicon.svg"
   status = 200
-
 [[redirects]]
   from = "/ai-readiness-pass/site.webmanifest"
   to = "/site.webmanifest"
