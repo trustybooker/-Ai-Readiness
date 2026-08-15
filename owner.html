@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>AI Kollege Owner Assistant</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    body{background:#09111f;color:#eef5ff;min-height:100vh}.owner-shell{max-width:1180px;margin:auto;padding:24px}.owner-top{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}.owner-brand{display:flex;align-items:center;gap:14px}.avatar{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 25%,#6fd3ff,#2757d8 46%,#121a31 72%);box-shadow:0 0 0 5px rgba(111,211,255,.08),0 16px 50px rgba(0,0,0,.35);position:relative}.avatar:after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(111,211,255,.35);animation:pulse 2.4s ease-in-out infinite}.avatar.listening:after{border-color:#8df5b2;animation-duration:.7s}.avatar.thinking:after{border-color:#ffd37a;animation-duration:1s}@keyframes pulse{50%{transform:scale(1.06);opacity:.45}}.avatar span{font-weight:800;font-size:1.2rem}.muted{opacity:.7}.owner-grid{display:grid;grid-template-columns:280px 1fr;gap:18px}.panel{background:#101a2e;border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:16px;box-shadow:0 20px 50px rgba(0,0,0,.2)}.quick{display:grid;gap:10px}.quick button,.owner-form button,.token-row button{border:0;border-radius:10px;padding:.75rem .9rem;background:#1f67d8;color:#fff;font-weight:700;cursor:pointer}.quick button.secondary{background:#182845}.token-row{display:flex;gap:8px}.token-row input,.owner-form textarea,.owner-form input{width:100%;background:#0b1425;color:#eef5ff;border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:.75rem}.owner-log{min-height:380px;max-height:62vh;overflow:auto;display:flex;flex-direction:column;gap:10px;padding-bottom:12px}.bubble{max-width:88%;padding:.8rem 1rem;border-radius:14px;white-space:pre-wrap;line-height:1.45}.bubble.me{align-self:flex-end;background:#1f67d8}.bubble.ai{align-self:flex-start;background:#17243d}.owner-form{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end}.owner-form textarea{min-height:64px;resize:vertical}.status{font-size:.8rem;padding:.35rem .6rem;border-radius:999px;background:#16243d;display:inline-flex;align-items:center;gap:.4rem}.status:before{content:"";width:8px;height:8px;border-radius:50%;background:#8df5b2}.danger{color:#ffb0b0}.safe-note{font-size:.8rem;opacity:.72;margin-top:10px}.draft-card{border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px;margin-top:8px;background:#0d1729}.draft-card button{margin-top:8px}.hidden{display:none!important}@media(max-width:800px){.owner-grid{grid-template-columns:1fr}.owner-form{grid-template-columns:1fr 1fr}.owner-form textarea{grid-column:1/-1}.avatar{width:58px;height:58px}}
+  </style>
+</head>
+<body>
+  <main class="owner-shell">
+    <header class="owner-top">
+      <div class="owner-brand">
+        <div class="avatar" data-avatar><span>AI</span></div>
+        <div><p class="eyebrow">Private owner workspace</p><h1 style="margin:.1rem 0">AI Kollege Owner Assistant</h1><p class="muted" style="margin:0">Leads, bookings, drafts and decision support — nothing consequential is sent automatically.</p></div>
+      </div>
+      <span class="status" data-status>Locked</span>
+    </header>
+
+    <section class="owner-grid">
+      <aside class="panel">
+        <h2 style="margin-top:0">Secure access</h2>
+        <p class="muted">Enter the private owner token. It is kept only for this browser tab/session and is never written into the page source.</p>
+        <div class="token-row"><input type="password" autocomplete="current-password" data-token placeholder="Owner token"><button type="button" data-unlock>Unlock</button></div>
+        <p class="safe-note">Closing the tab clears the session token. The server still validates every request.</p>
+        <hr style="border-color:rgba(255,255,255,.09);margin:18px 0">
+        <h2>Quick actions</h2>
+        <div class="quick">
+          <button type="button" data-action="leads_summary">Summarize open leads</button>
+          <button type="button" data-action="today" class="secondary">Show today</button>
+          <button type="button" data-action="priority" class="secondary">What needs my attention?</button>
+        </div>
+        <hr style="border-color:rgba(255,255,255,.09);margin:18px 0">
+        <label for="issue">Draft reply to lead #</label>
+        <div class="token-row" style="margin-top:7px"><input id="issue" inputmode="numeric" data-issue placeholder="Issue #"><button type="button" data-draft>Draft</button></div>
+        <p class="safe-note">Draft means draft. The assistant cannot send customer messages or approve refunds, discounts, legal promises, or payments.</p>
+      </aside>
+
+      <section class="panel">
+        <div class="owner-log" data-log aria-live="polite"><div class="bubble ai">Owner Assistant is locked. Enter your private token to begin.</div></div>
+        <form class="owner-form" data-form>
+          <textarea data-input maxlength="4000" placeholder="Ask: Who should I respond to first? Summarize today. Draft a response for lead #12…"></textarea>
+          <button type="button" data-mic aria-label="Speak to Owner Assistant">🎙 Speak</button>
+          <button type="submit">Ask</button>
+        </form>
+        <p class="safe-note">Voice uses your browser's speech recognition when available. Spoken replies are optional. Sensitive decisions remain yours.</p>
+      </section>
+    </section>
+  </main>
+  <script src="assets/owner-assistant.js"></script>
+</body>
+</html>
