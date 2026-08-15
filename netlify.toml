@@ -12,12 +12,25 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(self), geolocation=()"
+    Strict-Transport-Security = "max-age=31536000"
 
 [[headers]]
   for = "/owner*"
   [headers.values]
     Cache-Control = "no-store, private"
     X-Robots-Tag = "noindex, nofollow, noarchive"
+
+# One public canonical origin. These host redirects stack with rel=canonical and the sitemap.
+[[redirects]]
+  from = "https://aikollege.com/*"
+  to = "https://www.aikollege.com/:splat"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://ai-readiness-pass.netlify.app/*"
+  to = "https://www.aikollege.com/:splat"
+  status = 301
+  force = true
 
 [[redirects]]
   from = "/docs/*"
@@ -120,107 +133,134 @@
   status = 404
   force = true
 
+# Historical public routes redirect permanently to their canonical equivalents.
 [[redirects]]
   from = "/ai-readiness-pass"
-  to = "/index.html"
-  status = 200
+  to = "/"
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/index.html"
-  to = "/index.html"
-  status = 200
+  to = "/"
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/booking"
   to = "/booking.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/booking.html"
   to = "/booking.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/answers"
   to = "/answers.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/answers.html"
   to = "/answers.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/checklist"
   to = "/checklist.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/checklist.html"
   to = "/checklist.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/checklist-start"
   to = "/checklist-start.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/checklist-start.html"
   to = "/checklist-start.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/lab"
   to = "/lab.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/lab.html"
   to = "/lab.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/courses"
   to = "/courses.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/courses.html"
   to = "/courses.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/badge"
   to = "/badge.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/badge.html"
   to = "/badge.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/thanks"
   to = "/thanks.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/thanks.html"
   to = "/thanks.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/purchase-success"
   to = "/purchase-success.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/purchase-success.html"
   to = "/purchase-success.html"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/answer/:slug"
   to = "/answer/:slug"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/assets/:splat"
   to = "/assets/:splat"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/sitemap.xml"
   to = "/sitemap.xml"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/robots.txt"
   to = "/robots.txt"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/favicon.svg"
   to = "/favicon.svg"
-  status = 200
+  status = 301
+  force = true
 [[redirects]]
   from = "/ai-readiness-pass/site.webmanifest"
   to = "/site.webmanifest"
-  status = 200
+  status = 301
+  force = true

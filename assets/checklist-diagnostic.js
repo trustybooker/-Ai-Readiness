@@ -7,7 +7,7 @@
   const bar=root.querySelector('[data-diagnostic-bar]');
   const result=root.querySelector('[data-diagnostic-result]');
   const summary=root.querySelector('[data-diagnostic-summary]');
-  const config=window.FIFYNOW_SITE_CONFIG||{};
+  const config=window.AIKOLLEGE_SITE_CONFIG||window.FIFYNOW_SITE_CONFIG||{};
   const responses={};
   let started=false;
   const track=(name,params={})=>{if(typeof window.gtag==='function')window.gtag('event',name,params);if(typeof window.plausible==='function')window.plausible(name,{props:params});};
@@ -46,6 +46,6 @@
     try{sessionStorage.setItem('aik_readiness_result',JSON.stringify({score:diagnostic.overall,profile:diagnostic.profile,priority:diagnostic.priority.key,strongest:diagnostic.strongest.key,recommendation:rec.key,created_at:new Date().toISOString()}));}catch{}
     track('free_checklist_completed',{score:diagnostic.overall,profile:diagnostic.profile,priority_area:diagnostic.priority.key,strongest_area:diagnostic.strongest.key});
     track('recommendation_viewed',{recommendation:rec.key,kind:rec.kind,source:'free_checklist',score:diagnostic.overall});
-    result.scrollIntoView({behavior:'smooth',block:'start'});
+    result.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
   });
 })();
