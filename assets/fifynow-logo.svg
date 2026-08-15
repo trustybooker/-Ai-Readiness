@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-labelledby="title desc">
+  <title id="title">AI Kollege logo</title>
+  <desc id="desc">AI Kollege blue shield logo with AI letters, learning path, and gold spark.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e5bb5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <path d="M32 9l18 7v14c0 12.5-7.6 20.7-18 25-10.4-4.3-18-12.5-18-25V16l18-7z" fill="#0f172a" opacity=".32" stroke="#bfdbfe" stroke-width="1.6"/>
+  <text x="32" y="34" text-anchor="middle" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="900">AI</text>
+  <path d="M20 42c7-5 17-5 24 0" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+  <path d="M44 8 L48 16 L44 14 L40 16 Z" fill="#eab308" stroke="none"/>
+</svg>

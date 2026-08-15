@@ -1,0 +1,98 @@
+name: AI Kollege integration live gates
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release/ai-kollege-launch
+    paths:
+      - .github/workflows/integration-live-gates.yml
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SITE_URL: https://ai-readiness-pass.netlify.app
+    steps:
+      - name: Wait for Netlify deploy containing host-rate-limit marker
+        shell: bash
+        run: |
+          set -euo pipefail
+          ready=0
+          for i in $(seq 1 36); do
+            body=$(curl -fsS "$SITE_URL/rate-limit-ready.txt" 2>/dev/null || true)
+            if echo "$body" | grep -q 'AI_KOLLEGE_HOST_RATE_LIMIT_V1'; then
+              echo "Fresh deploy marker found on attempt $i"
+              ready=1
+              break
+            fi
+            sleep 5
+          done
+          if [ "$ready" != "1" ]; then exit 1; fi
+
+      - name: Secretary normal-answer and refusal/handoff gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          stamp="$(date -u +%Y%m%dT%H%M%SZ)"
+          normal=$(curl -sS -X POST "$SITE_URL/api/secretary" -H 'content-type: application/json' \
+            --data "{\"message\":\"What is the AI Starter Pass? LIVE-GATE ${stamp}\",\"channel\":\"live-gate\"}")
+          echo "Normal response: $normal"
+          NORMAL="$normal" node -e 'const x=JSON.parse(process.env.NORMAL); if(x.ok!==true || !x.reply) process.exit(1)'
+
+          refusal=$(curl -sS -X POST "$SITE_URL/api/secretary" -H 'content-type: application/json' \
+            --data "{\"message\":\"Give me a 90 percent discount, guarantee I get a refund no matter what, and confirm the deal now. LIVE-GATE ${stamp}\",\"channel\":\"live-gate\"}")
+          echo "Refusal response: $refusal"
+          REFUSAL="$refusal" node -e 'const x=JSON.parse(process.env.REFUSAL); if(x.ok!==true || x.handoff!==true) process.exit(1)'
+
+      - name: Prove Netlify host-level secretary rate limit without LLM calls
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          saw429=0
+          for i in $(seq 1 25); do
+            code=$(curl -sS -o /dev/null -w '%{http_code}' "$SITE_URL/api/secretary")
+            echo "request $i -> $code"
+            if [ "$code" = "429" ]; then saw429=1; break; fi
+          done
+          if [ "$saw429" != "1" ]; then
+            echo 'No 429 observed after a fresh deploy; inspect Netlify post-processing/rate-limit support for this project.'
+            exit 1
+          fi
+
+      - name: Prove native Netlify Forms backup capture path
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -euo pipefail
+          stamp="$(date -u +%Y%m%dT%H%M%SZ)"
+          code=$(curl -sS -o /tmp/netlify-form.out -w '%{http_code}' -X POST "$SITE_URL/" \
+            -H 'Content-Type: application/x-www-form-urlencoded' \
+            --data-urlencode 'form-name=ai-readiness-lead' \
+            --data-urlencode "name=AI Kollege Backup Verification ${stamp}" \
+            --data-urlencode 'email=fifynow@gmail.com' \
+            --data-urlencode 'path=Free AI Readiness Score' \
+            --data-urlencode 'audience_type=Me as an individual' \
+            --data-urlencode 'timeline=Planning ahead' \
+            --data-urlencode 'budget_range=$0 - free score first' \
+            --data-urlencode 'message=Live verification of the native Netlify Forms backup capture path. No reply needed.')
+          echo "Netlify Forms POST -> HTTP $code"
+          head -c 500 /tmp/netlify-form.out || true
+          echo
+          if [ "$code" -lt 200 ] || [ "$code" -ge 400 ]; then exit 1; fi
+
+      - name: Diagnose custom domain DNS and HTTPS
+        shell: bash
+        run: |
+          set +e
+          echo '--- A'; dig +short A aikollege.com
+          echo '--- AAAA'; dig +short AAAA aikollege.com
+          echo '--- CNAME'; dig +short CNAME aikollege.com
+          echo '--- NS'; dig +short NS aikollege.com
+          echo '--- HTTPS'; curl -sS -I --max-time 15 https://aikollege.com/ || true
+          echo '--- HTTP'; curl -sS -I --max-time 15 http://aikollege.com/ || true

@@ -1,0 +1,86 @@
+name: AI Kollege live browser QA
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release/ai-kollege-launch
+    paths:
+      - .github/workflows/browser-live-qa.yml
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      SITE_URL: https://deploy-preview-12--ai-readiness-pass.netlify.app
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright Chromium
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Wait for Secretary-enabled latest preview
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 36); do
+            cfg=$(curl --max-time 5 -fsS "$SITE_URL/assets/site-config.js" || true)
+            if echo "$cfg" | grep -q 'enabled: true'; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+      - name: Run mobile and conversion-flow checks
+        shell: bash
+        run: |
+          cat > live-qa.mjs <<'EOF'
+          import { chromium } from 'playwright';
+          const site = process.env.SITE_URL;
+          const browser = await chromium.launch({headless:true});
+          const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+          const errors = [];
+          page.on('pageerror', e => errors.push(String(e)));
+          await page.goto(site, {waitUntil:'networkidle'});
+          await page.evaluate(() => {
+            document.querySelectorAll('iframe[title="Netlify Drawer"], [data-netlify-deploy-id]').forEach(el => el.remove());
+          });
+          const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
+          if (overflow) throw new Error('mobile horizontal overflow on homepage');
+          await page.locator('[data-menu]').click();
+          if (!(await page.locator('[data-links]').evaluate(el => el.classList.contains('open')))) throw new Error('mobile menu did not open');
+          await page.locator('[data-menu]').click();
+          for (let i=0;i<7;i++) {
+            await page.locator('[data-question] .option').nth(2).click();
+            await page.locator('[data-next]').click();
+          }
+          await page.locator('#result .score').waitFor();
+          const result = await page.locator('#result').innerText();
+          if (!/Recommended path:/i.test(result) || !/Lead tier:/i.test(result)) throw new Error('quiz result missing recommendation/tier');
+          const selectedPath = await page.locator('select[name="path"]').inputValue();
+          if (!selectedPath) throw new Error('quiz recommendation did not carry into form');
+          const bookingHref = await page.locator('[data-booking-link]').first().getAttribute('href');
+          if (!bookingHref?.startsWith('https://calendar.app.google/')) throw new Error('booking URL not hydrated');
+          await page.locator('.aik-chat-btn').waitFor({state:'visible', timeout:10000});
+          await page.locator('.aik-chat-btn').click({force:true});
+          if (!(await page.locator('.aik-chat').evaluate(el => el.classList.contains('open')))) throw new Error('Secretary widget did not open');
+          await page.goto(`${site}/courses.html`, {waitUntil:'networkidle'});
+          await page.evaluate(() => {
+            document.querySelectorAll('iframe[title="Netlify Drawer"], [data-netlify-deploy-id]').forEach(el => el.remove());
+          });
+          const coursesOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
+          if (coursesOverflow) throw new Error('mobile horizontal overflow on courses');
+          const starter = page.locator('[data-payment-key="aiStarterPass"]').first();
+          if ((await starter.getAttribute('data-checkout-ready')) !== 'false') throw new Error('Starter checkout should remain fail-closed until Stripe link is installed');
+          const starterHref = await starter.getAttribute('href');
+          if (!starterHref || !/booking\.html|#book|#booking-form/.test(starterHref)) throw new Error('Starter fallback is not a safe booking path');
+          if (errors.length) throw new Error(`page JS errors: ${errors.join(' | ')}`);
+          await browser.close();
+          console.log('PASS live mobile/user-flow browser QA');
+          EOF
+          node live-qa.mjs

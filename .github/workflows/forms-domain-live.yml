@@ -1,0 +1,50 @@
+name: AI Kollege forms and domain live check
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release/ai-kollege-launch
+    paths:
+      - .github/workflows/forms-domain-live.yml
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      SITE_URL: https://ai-readiness-pass.netlify.app
+    steps:
+      - name: Prove native Netlify Forms backup capture path
+        shell: bash
+        run: |
+          set -euo pipefail
+          stamp="$(date -u +%Y%m%dT%H%M%SZ)"
+          code=$(curl --max-time 20 -sS -o /tmp/netlify-form.out -w '%{http_code}' -X POST "$SITE_URL/" \
+            -H 'Content-Type: application/x-www-form-urlencoded' \
+            --data-urlencode 'form-name=ai-readiness-lead' \
+            --data-urlencode "name=AI Kollege Backup Verification ${stamp}" \
+            --data-urlencode 'email=fifynow@gmail.com' \
+            --data-urlencode 'path=Free AI Readiness Score' \
+            --data-urlencode 'audience_type=Me as an individual' \
+            --data-urlencode 'timeline=Planning ahead' \
+            --data-urlencode 'budget_range=$0 - free score first' \
+            --data-urlencode 'message=Live verification of native Netlify Forms backup capture. No reply needed.')
+          echo "NETLIFY_FORMS_HTTP=${code}"
+          head -c 800 /tmp/netlify-form.out || true
+          echo
+          if [ "$code" -lt 200 ] || [ "$code" -ge 400 ]; then exit 1; fi
+
+      - name: Diagnose custom domain DNS and HTTPS
+        shell: bash
+        run: |
+          set +e
+          echo 'A_RECORDS:'; dig +short A aikollege.com
+          echo 'AAAA_RECORDS:'; dig +short AAAA aikollege.com
+          echo 'CNAME_RECORDS:'; dig +short CNAME aikollege.com
+          echo 'NS_RECORDS:'; dig +short NS aikollege.com
+          echo 'HTTPS_CHECK:'; curl -sS -I --max-time 15 https://aikollege.com/ || true
+          echo 'HTTP_CHECK:'; curl -sS -I --max-time 15 http://aikollege.com/ || true

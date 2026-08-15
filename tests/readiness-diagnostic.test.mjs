@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {CHECKS,calculateDiagnostic,percentComplete} from '../assets/readiness-engine.mjs';
+const all=v=>Object.fromEntries(CHECKS.map(([,id])=>[id,v]));
+test('diagnostic requires all 20 answers for 100 percent completion',()=>{const r=all('yes');assert.equal(CHECKS.length,20);assert.equal(percentComplete(r),100);delete r.l1;assert.equal(percentComplete(r),95);});
+test('strong users are not forced into a purchase',()=>{const d=calculateDiagnostic(all('yes'),{audience:'Me as an individual'});assert.equal(d.overall,100);assert.equal(d.recommendation.kind,'free');assert.match(d.recommendation.reason,/may not need to buy/i);});
+test('foundation gaps recommend Starter Pass for an individual',()=>{const r=all('yes');for(const id of ['l1','l2','l3','l4'])r[id]='not_yet';const d=calculateDiagnostic(r,{audience:'Me as an individual'});assert.equal(d.recommendation.key,'ai_starter_pass');assert.equal(d.priority.key,'literacy');});
+test('proof gap recommends Job and Productivity Pass',()=>{const r=all('yes');for(const id of ['r1','r2','r3','r4'])r[id]='not_yet';const d=calculateDiagnostic(r,{audience:'Me as a job seeker'});assert.equal(d.recommendation.key,'ai_job_productivity_pass');});
+test('business context routes to scoped review rather than automatic product sale',()=>{const d=calculateDiagnostic(all('needs_review'),{audience:'My small business'});assert.equal(d.recommendation.key,'business_audit');assert.equal(d.recommendation.kind,'review');});
+test('team context routes to team review',()=>{const d=calculateDiagnostic(all('needs_review'),{audience:'My team or organization'});assert.equal(d.recommendation.key,'team_training');assert.equal(d.recommendation.kind,'review');});

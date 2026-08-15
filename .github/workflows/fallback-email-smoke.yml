@@ -1,0 +1,41 @@
+name: AI Kollege fallback email smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release/ai-kollege-launch
+    paths:
+      - .github/workflows/fallback-email-smoke.yml
+
+permissions:
+  contents: read
+
+jobs:
+  fallback-email:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Submit marked fallback email through production fallback provider
+        run: |
+          stamp="$(date -u +%Y%m%dT%H%M%SZ)"
+          subject="AI Kollege FALLBACK-SMOKE ${stamp}"
+          echo "Fallback subject: ${subject}"
+          code=$(curl -sS -o /tmp/formsubmit.out -w '%{http_code}' -L \
+            -X POST 'https://formsubmit.co/fifynow@fifynowllc.com' \
+            -H 'Content-Type: application/x-www-form-urlencoded' \
+            --data-urlencode "_subject=${subject}" \
+            --data-urlencode '_cc=fifynow@gmail.com' \
+            --data-urlencode '_captcha=false' \
+            --data-urlencode '_template=table' \
+            --data-urlencode 'form-name=ai-readiness-fallback-smoke' \
+            --data-urlencode 'name=AI Kollege Fallback Smoke' \
+            --data-urlencode 'email=live-test@example.com' \
+            --data-urlencode 'path=Fallback delivery verification' \
+            --data-urlencode 'message=Automated marked fallback-email delivery test. No reply needed.')
+          echo "FormSubmit HTTP ${code}"
+          head -c 1000 /tmp/formsubmit.out || true
+          echo
+          if [ "${code}" -lt 200 ] || [ "${code}" -ge 400 ]; then
+            exit 1
+          fi

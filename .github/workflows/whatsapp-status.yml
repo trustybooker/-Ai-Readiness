@@ -1,0 +1,39 @@
+name: AI Kollege WhatsApp configuration status
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - release/ai-kollege-launch
+    paths:
+      - .github/workflows/whatsapp-status.yml
+
+permissions:
+  contents: read
+
+jobs:
+  status:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    env:
+      SITE_URL: https://ai-readiness-pass.netlify.app
+    steps:
+      - name: Probe fail-closed credential state
+        shell: bash
+        run: |
+          set -euo pipefail
+          code=$(curl --max-time 15 -sS -o /tmp/wa.out -w '%{http_code}' -X POST "$SITE_URL/api/whatsapp-webhook" \
+            -H 'content-type: application/json' --data '{"object":"whatsapp_business_account"}')
+          echo "WHATSAPP_UNSIGNED_POST_HTTP=${code}"
+          cat /tmp/wa.out
+          echo
+          if [ "$code" = "401" ]; then
+            echo 'STATUS=configured_signature_required'
+            exit 0
+          fi
+          if [ "$code" = "503" ]; then
+            echo 'STATUS=credentials_missing'
+            exit 0
+          fi
+          echo 'STATUS=unexpected'
+          exit 1
