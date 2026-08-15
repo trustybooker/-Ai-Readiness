@@ -1,28 +1,31 @@
 import fs from 'node:fs';
 
-const requiredFiles = ['index.html','booking.html','answers.html','checklist.html','lab.html','content-engine.html','courses.html','badge.html','refunds.html','thanks.html','assets/secretary.js','lib/secretary-core.mjs','lib/assistant-core.mjs','lib/whatsapp-core.mjs','netlify/functions/secretary.mjs','api/secretary.mjs','netlify/functions/assistant.mjs','api/assistant.mjs','netlify/functions/whatsapp-webhook.mjs','api/whatsapp-webhook.mjs','tests/capture-lead.test.mjs','tests/secretary.test.mjs','tests/assistant.test.mjs','tests/whatsapp.test.mjs','scripts/live-lead-test.mjs','docs/assistant-api-and-whatsapp-setup.md','favicon.svg','site.webmanifest','robots.txt','sitemap.xml','assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg','assets/ai-readiness-visual.svg','netlify/functions/capture-lead.mjs','api/capture-lead.mjs','vercel.json','docs/world-skill.md','docs/master-platform-skill.md','docs/skill-registry.md','docs/problem-first-jesus-solomon-operating-code.md','docs/skill-upgrade-protocol.md','docs/winning-skill.md','docs/app-audit-summary.txt','docs/course-certification-model.md','docs/certification-standards.md','docs/user-flow-skills-alignment.md','docs/final-skills-alignment-audit.md','404.html','privacy.html','docs/stripe-setup.md','docs/go-live-runbook.md','course/level-1-ai-readiness-foundations.md','course/level-2-ai-job-productivity-pass.md','course/level-3-business-ai-readiness.md','course/level-4-implementation-partner-track.md','course/ai-readiness-workbook.md'];
+const requiredFiles = ['index.html','booking.html','answers.html','checklist.html','checklist-start.html','lab.html','content-engine.html','courses.html','badge.html','refunds.html','thanks.html','purchase-success.html','assets/secretary.js','lib/secretary-core.mjs','lib/assistant-core.mjs','lib/whatsapp-core.mjs','netlify/functions/secretary.mjs','api/secretary.mjs','netlify/functions/assistant.mjs','api/assistant.mjs','netlify/functions/whatsapp-webhook.mjs','api/whatsapp-webhook.mjs','tests/capture-lead.test.mjs','tests/secretary.test.mjs','tests/assistant.test.mjs','tests/whatsapp.test.mjs','scripts/live-lead-test.mjs','docs/assistant-api-and-whatsapp-setup.md','favicon.svg','site.webmanifest','robots.txt','sitemap.xml','assets/styles.css','assets/impact.css','assets/app.js','assets/site-config.js','assets/fifynow-logo.svg','assets/og-ai-readiness-pass.svg','assets/completion-badge.svg','assets/ai-readiness-visual.svg','netlify/functions/capture-lead.mjs','api/capture-lead.mjs','vercel.json','docs/world-skill.md','docs/master-platform-skill.md','docs/skill-registry.md','docs/problem-first-jesus-solomon-operating-code.md','docs/skill-upgrade-protocol.md','docs/winning-skill.md','docs/app-audit-summary.txt','docs/course-certification-model.md','docs/certification-standards.md','docs/user-flow-skills-alignment.md','docs/final-skills-alignment-audit.md','404.html','privacy.html','docs/stripe-setup.md','docs/go-live-runbook.md','course/level-1-ai-readiness-foundations.md','course/level-2-ai-job-productivity-pass.md','course/level-3-business-ai-readiness.md','course/level-4-implementation-partner-track.md','course/ai-readiness-workbook.md'];
 
 const requiredText = {
-  'index.html': ['AI Kollege','What problem are you trying to solve?','Wisdom before automation','https://aikollege.com/','data-question','score_summary','lead_tier','data-payment-key','data-booking-link','How AI Kollege works','content-engine.html','checklist.html','lab.html','booking.html','courses.html','badge.html'],
-  'courses.html': ['AI Kollege Courses and Paths','paths and offers, not accredited degrees','AI Starter Pass','AI Job &amp; Productivity Pass','Business AI Readiness Audit','Team Training Sprint','AI Implementation Partner','AI Kollege Lab','not a licensed college, university, or degree-granting school','No job, income, or revenue outcome is guaranteed','badge.html','Operated by Fify Now LLC'],
+  'index.html': ['AI Kollege','What problem are you trying to solve?','Wisdom before automation','https://aikollege.com/','data-question','score_summary','lead_tier','data-payment-key','data-booking-link','How AI Kollege works','content-engine.html','checklist.html','lab.html','booking.html','courses.html','badge.html','tested Stripe links','recommended path is preselected automatically'],
+  'courses.html': ['AI Kollege Courses and Paths','paths and offers, not accredited degrees','AI Starter Pass','AI Job &amp; Productivity Pass','Business AI Readiness Audit','Team Training Sprint','AI Implementation Partner','AI Kollege Lab','not a licensed college, university, or degree-granting school','No job, income, or revenue outcome is guaranteed','badge.html','Operated by Fify Now LLC','data-payment-key'],
   'badge.html': ['AI Kollege Completion Badge','proof-of-work artifacts were submitted','human-reviewed only when a reviewer actually checked','Not accreditation','Not a job guarantee','Not an income or revenue guarantee','Not a legal or compliance certification','completion date and curriculum version','does not currently offer a public badge verification page','Operated by Fify Now LLC'],
-  'refunds.html': ['Refund and credit terms','No blanket refund guarantee','No job, income, or revenue outcome is guaranteed','case by case','written scope','Operated by Fify Now LLC'],
+  'refunds.html': ['Refund and credit terms','No blanket refund guarantee','No job, income, or revenue outcome is guaranteed','case by case','written scope','Operated by Fify Now LLC','self-serve','purchase-success.html','Stripe'],
+  'purchase-success.html': ['After checkout','Stripe is the payment record of truth','does not grant access by itself','ai-kollege-buyer-onboarding','AI Starter Pass','AI Job & Productivity Pass','verify the Stripe payment'],
+  'checklist-start.html': ['Your free checklist','AI readiness checklist','AI literacy','Privacy and safety','Proof of skill','Workflow readiness','Human approval'],
+  'thanks.html': ['Submission received','buyer-onboarding','Booking request received','Lab interest recorded','Signal received'],
   'lib/secretary-core.mjs': ['Never promise outcomes','Never improvise pricing, discounts, bundles, or refunds','Never take payment, send payment links, or confirm an appointment','set handoff to true','not accredited degrees','Human-approval boundary'],
   'lib/assistant-core.mjs': ['OWNER_ASSISTANT_TOKEN','timingSafeEqual','never send','DRAFT'],
   'lib/whatsapp-core.mjs': ['WHATSAPP_APP_SECRET','timingSafeEqual','hub.verify_token','OWNER_WHATSAPP_NUMBER','Nothing is sold, promised, or refunded'],
   'assets/secretary.js': ['secretaryConfig.enabled','a human reviews those'],
-  'content-engine.html': ['AI Kollege Daily Content Engine','Post useful value daily','Audience signal','ai-kollege-signal','What should AI Kollege help solve next?'],
-  'booking.html': ['AI Kollege','Problem-first AI review','What problem should we review before the call?','No fake availability','ai-readiness-booking','preferred_time_1','preferred_time_2','preferred_time_3'],
+  'content-engine.html': ['AI Kollege Daily Content Engine','Post useful value daily','Audience signal','ai-kollege-signal','What should AI Kollege help solve next?','thanks.html?type=signal'],
+  'booking.html': ['AI Kollege','Problem-first AI review','What problem should we review before the call?','No fake availability','ai-readiness-booking','preferred_time_1','preferred_time_2','preferred_time_3','thanks.html?type=booking'],
   'answers.html': ['AI Kollege Answers','Direct answers for AI problems','Move from reading into problem-solving','answer/what-is-ai-readiness.html'],
-  'checklist.html': ['AI Kollege Checklist','Free problem-first checklist','What problem do you need to solve first?'],
-  'lab.html': ['AI Kollege Lab','Keep solving AI problems','What problem should the Lab help you keep solving?'],
-  'assets/app.js': ['capture-lead','email fallback','data-payment-key','data-booking-link','selfServeKeys'],
+  'checklist.html': ['AI Kollege Checklist','Free problem-first checklist','What problem do you need to solve first?','checklist-start.html'],
+  'lab.html': ['AI Kollege Lab','Keep solving AI problems','What problem should the Lab help you keep solving?','thanks.html?type=lab'],
+  'assets/app.js': ['capture-lead','email fallback','data-payment-key','data-booking-link','selfServeKeys','applyPathDefaults','fetchWithTimeout','Sending…','privacy-notice'],
   'assets/site-config.js': ['bookingUrl','aiStarterPass','businessAiReadinessAudit'],
   'assets/fifynow-logo.svg': ['AI Kollege logo','AI'],
   'assets/og-ai-readiness-pass.svg': ['AI KOLLEGE','AI Readiness Pass'],
   'assets/completion-badge.svg': ['AI KOLLEGE','COMPLETION BADGE'],
   'assets/ai-readiness-visual.svg': ['AI Kollege Readiness View','Readiness Score'],
-  'sitemap.xml': ['https://aikollege.com/','content-engine.html','booking.html','courses.html','badge.html','refunds.html','answer/what-is-ai-readiness.html'],
+  'sitemap.xml': ['https://aikollege.com/','content-engine.html','booking.html','courses.html','badge.html','refunds.html','checklist-start.html','answer/what-is-ai-readiness.html'],
   'robots.txt': ['https://aikollege.com/sitemap.xml'],
   'docs/world-skill.md': ['The Jesus Pattern for business','Fruit','long-term mission'],
   'docs/master-platform-skill.md': ['Winning first','Daily value first','Creator consistency engine','First question before every build'],
@@ -52,11 +55,8 @@ for (const [file, snippets] of Object.entries(requiredText)) {
   for (const snippet of snippets) if (!text.includes(snippet)) failures.push(`${file} missing: ${snippet}`);
 }
 
-// Answer-hub pages are indexed at aikollege.com (sitemap), so their canonicals
-// and the FormSubmit fallback redirect must stay on-domain — never the legacy
-// fifynowllc.com URL or the old Netlify preview host.
 const answerPages = fs.existsSync('answer') ? fs.readdirSync('answer').filter((f) => f.endsWith('.html')).map((f) => `answer/${f}`) : [];
-for (const file of ['index.html','booking.html','answers.html','checklist.html','lab.html','content-engine.html','courses.html','badge.html','refunds.html','sitemap.xml','robots.txt', ...answerPages]) {
+for (const file of ['index.html','booking.html','answers.html','checklist.html','checklist-start.html','lab.html','content-engine.html','courses.html','badge.html','refunds.html','sitemap.xml','robots.txt', ...answerPages]) {
   if (!fs.existsSync(file)) continue;
   const text = fs.readFileSync(file, 'utf8');
   if (text.includes('fifynowllc.com/ai-readiness-pass')) failures.push(`${file} has legacy public URL`);
@@ -64,9 +64,6 @@ for (const file of ['index.html','booking.html','answers.html','checklist.html',
   if (text.includes('validation-note')) failures.push(`${file} has internal validation note`);
 }
 
-// AI Kollege is the public brand everywhere. Answer pages must lead with it,
-// not the legacy Fify Now LLC title or the old "F" logo chip (Fify Now LLC
-// stays only as the operator credit).
 for (const file of answerPages) {
   if (!fs.existsSync(file)) continue;
   const text = fs.readFileSync(file, 'utf8');
@@ -76,7 +73,16 @@ for (const file of answerPages) {
   if (!text.includes('Fify Now LLC')) failures.push(`${file} missing Fify Now LLC operator credit`);
 }
 
-// Secret hygiene: keys live in host dashboards, never in the repo.
+const purchaseSuccess = fs.existsSync('purchase-success.html') ? fs.readFileSync('purchase-success.html','utf8') : '';
+if (purchaseSuccess && !purchaseSuccess.includes('noindex')) failures.push('purchase-success.html must remain noindex');
+if (purchaseSuccess && /course\/level-|course\/ai-readiness-workbook/.test(purchaseSuccess)) failures.push('purchase-success.html must not expose paid course files');
+
+const netlifyConfig = fs.existsSync('netlify.toml') ? fs.readFileSync('netlify.toml','utf8') : '';
+for (const route of ['/api/capture-lead','/api/secretary','/api/assistant','/api/whatsapp-webhook']) {
+  if (netlifyConfig && !netlifyConfig.includes(`from = "${route}"`)) failures.push(`netlify.toml missing approved route ${route}`);
+}
+if (netlifyConfig && !netlifyConfig.includes('from = "/course/*"')) failures.push('netlify.toml must keep paid course source blocked');
+
 for (const file of ['assets/site-config.js','netlify.toml','vercel.json']) {
   if (!fs.existsSync(file)) continue;
   const text = fs.readFileSync(file, 'utf8');
