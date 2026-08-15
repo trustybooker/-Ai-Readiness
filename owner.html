@@ -16,7 +16,7 @@
     <header class="owner-top">
       <div class="owner-brand">
         <div class="avatar" data-avatar><span>AI</span></div>
-        <div><p class="eyebrow">Private owner workspace</p><h1 style="margin:.1rem 0">AI Kollege Owner Assistant</h1><p class="muted" style="margin:0">Leads, bookings, drafts and decision support — nothing consequential is sent automatically.</p></div>
+        <div><p class="eyebrow">Private owner workspace</p><h1 style="margin:.1rem 0">AI Kollege Owner Assistant</h1><p class="muted" style="margin:0">Leads, phone handoffs, bookings, drafts and decision support — nothing consequential is sent automatically.</p></div>
       </div>
       <span class="status" data-status>Locked</span>
     </header>
@@ -31,19 +31,20 @@
         <h2>Quick actions</h2>
         <div class="quick">
           <button type="button" data-action="leads_summary">Summarize open leads</button>
+          <button type="button" data-action="phone_handoffs" class="secondary">Review phone handoffs</button>
           <button type="button" data-action="today" class="secondary">Show today</button>
           <button type="button" data-action="priority" class="secondary">What needs my attention?</button>
         </div>
         <hr style="border-color:rgba(255,255,255,.09);margin:18px 0">
         <label for="issue">Draft reply to lead #</label>
         <div class="token-row" style="margin-top:7px"><input id="issue" inputmode="numeric" data-issue placeholder="Issue #"><button type="button" data-draft>Draft</button></div>
-        <p class="safe-note">Draft means draft. The assistant cannot send customer messages or approve refunds, discounts, legal promises, or payments.</p>
+        <p class="safe-note">Draft means draft. The assistant cannot send customer messages, place calls, change Twilio routing, approve refunds, discounts, legal promises, or payments.</p>
       </aside>
 
       <section class="panel">
         <div class="owner-log" data-log aria-live="polite"><div class="bubble ai">Owner Assistant is locked. Enter your private token to begin.</div></div>
         <form class="owner-form" data-form>
-          <textarea data-input maxlength="4000" placeholder="Ask: Who should I respond to first? Summarize today. Draft a response for lead #12…"></textarea>
+          <textarea data-input maxlength="4000" placeholder="Ask: Who should I respond to first? Review phone handoffs. Summarize today. Draft a response for lead #12…"></textarea>
           <button type="button" data-mic aria-label="Speak to Owner Assistant">🎙 Speak</button>
           <button type="submit">Ask</button>
         </form>
