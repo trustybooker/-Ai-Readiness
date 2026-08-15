@@ -1,32 +1,84 @@
 <!doctype html>
-<html lang='en'>
+<html lang="en">
 <head>
-  <meta charset='utf-8'>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <meta name='robots' content='noindex,follow'>
-  <title>Request Received | AI Kollege</title>
-  <link rel='stylesheet' href='assets/styles.css'>
-  <link rel='stylesheet' href='assets/impact.css'>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,follow">
+  <title>Submission Received | AI Kollege</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/impact.css">
 </head>
 <body>
-  <main class='section'>
-    <div class='shell lead-box'>
-      <div>
-        <p class='eyebrow'>Request received</p>
-        <h1>Good. Your AI Kollege readiness request is in motion.</h1>
-        <p class='lead'>Check your inbox for any confirmation step. AI Kollege will review the readiness path, score details, and message before recommending the next move.</p>
-        <div class='actions'><a class='btn primary' href='index.html#assessment'>Take the score again</a><a class='btn secondary' href='index.html#pricing'>Review offer paths</a></div>
-      </div>
-      <div class='panel'>
-        <h2>What happens next</h2>
-        <ul class='bullets'>
-          <li>Your request routes to the business for human review.</li>
-          <li>High-intent leads get priority for fit review and scheduling.</li>
-          <li>Paid links are sent only after the right path is clear.</li>
-          <li>No legal, job, or revenue guarantee is implied.</li>
-        </ul>
-      </div>
+<header class="topbar"><nav class="shell nav"><a class="brand" href="index.html"><span>AI</span><strong>AI Kollege</strong><small>operated by Fify Now LLC</small></a><div class="links open"><a href="index.html#assessment">Free score</a><a href="courses.html">Courses</a><a class="pill" href="booking.html">Request review</a></div></nav></header>
+<main class="section">
+  <div class="shell lead-box">
+    <div>
+      <p class="eyebrow" id="thanks-eyebrow">Submission received</p>
+      <h1 id="thanks-heading">Your AI Kollege request has been received.</h1>
+      <p class="lead" id="thanks-copy">We’ll use the details you submitted to route the request to the right next step. No action is considered booked, purchased, or approved unless the relevant scheduler, Stripe record, or human confirmation says so.</p>
+      <div class="actions"><a class="btn primary" id="thanks-primary" href="index.html#assessment">Take the free score</a><a class="btn secondary" id="thanks-secondary" href="courses.html">Review the paths</a></div>
     </div>
-  </main>
+    <div class="panel">
+      <h2 id="thanks-next-title">What happens next</h2>
+      <ul class="bullets" id="thanks-next-list">
+        <li>Your request routes to the business for review.</li>
+        <li>The next action depends on the path you selected.</li>
+        <li>Payment, appointment, and completion status are verified separately.</li>
+        <li>No legal, job, revenue, or accreditation guarantee is implied.</li>
+      </ul>
+    </div>
+  </div>
+</main>
+<footer class="footer"><div class="shell footer-grid"><div><strong>AI Kollege</strong><p>Problem-first AI readiness training and support. Operated by Fify Now LLC.</p></div><div><strong>Need help?</strong><p><a href="booking.html">Send a review request</a> or return to the <a href="index.html">AI Kollege homepage</a>.</p></div></div></footer>
+<script>
+(function(){
+  const type = new URLSearchParams(location.search).get('type') || 'review';
+  const eyebrow = document.getElementById('thanks-eyebrow');
+  const heading = document.getElementById('thanks-heading');
+  const copy = document.getElementById('thanks-copy');
+  const primary = document.getElementById('thanks-primary');
+  const secondary = document.getElementById('thanks-secondary');
+  const title = document.getElementById('thanks-next-title');
+  const list = document.getElementById('thanks-next-list');
+  const states = {
+    booking: {
+      eyebrow:'Booking request received', heading:'Your preferred times are in for review.',
+      copy:'This is not an automatic appointment confirmation. Use the live scheduler if you want to select an available slot immediately; otherwise a human will review fit and timing.',
+      primary:['Open booking options','booking.html'], secondary:['Review course paths','courses.html'], title:'Before the meeting is confirmed',
+      items:['Fit and requested service are reviewed.','Availability is confirmed through the scheduler or a calendar invite.','No appointment is promised until that confirmation exists.','Payment is handled separately from a booking request.']
+    },
+    lab: {
+      eyebrow:'Lab interest recorded', heading:'You’re on the AI Kollege Lab interest list.',
+      copy:'The Lab is not being presented as an active paid membership until scope, pricing, and fulfillment are confirmed. Your signal helps shape what should be offered first.',
+      primary:['Take the free score','index.html#assessment'], secondary:['Explore current paths','courses.html'], title:'What happens next',
+      items:['Your interest and problem signal are recorded.','Current training and review paths remain available now.','Any future Lab offer will state its real scope and price before payment.','No recurring charge has been created by this form.']
+    },
+    signal: {
+      eyebrow:'Signal received', heading:'Thanks — your problem signal is now part of what AI Kollege reviews next.',
+      copy:'Repeated real-world questions help decide which answers, checklists, templates, training, or support paths are worth building.',
+      primary:['Read AI answers','answers.html'], secondary:['Take the free score','index.html#assessment'], title:'How the signal is used',
+      items:['Repeated questions are prioritized over random feature building.','No purchase or appointment was created by this form.','You can still request a human review if the problem is urgent.','No outcome guarantee is implied.']
+    },
+    'buyer-onboarding': {
+      eyebrow:'Start details received', heading:'Your onboarding details are ready to be matched to the Stripe purchase.',
+      copy:'AI Kollege will verify the checkout record before paid access, completion status, or a badge is issued. Using the same email as checkout makes that match faster.',
+      primary:['Review onboarding policy','refunds.html#onboarding'], secondary:['Need manual help?','booking.html'], title:'What happens next',
+      items:['The Stripe payment record is checked.','The exact pass and buyer email are matched.','Welcome/start instructions are sent for the verified purchase.','Completion and human-review status are recorded only after the required work is done.']
+    },
+    review: {
+      eyebrow:'Review request received', heading:'Your AI Kollege request has been received.',
+      copy:'A human can use the path, score details, timeline, budget range, and message you submitted to identify the smallest useful next step.',
+      primary:['Review the paths','courses.html'], secondary:['Use the scheduler','booking.html'], title:'What happens next',
+      items:['Your request routes for human review.','High-intent or time-sensitive requests can be prioritized.','Low-ticket self-serve checkout is separate when enabled; higher-impact work stays fit-reviewed.','No legal, job, revenue, or accreditation guarantee is implied.']
+    }
+  };
+  const s = states[type] || states.review;
+  eyebrow.textContent=s.eyebrow; heading.textContent=s.heading; copy.textContent=s.copy;
+  primary.textContent=s.primary[0]; primary.href=s.primary[1]; secondary.textContent=s.secondary[0]; secondary.href=s.secondary[1];
+  title.textContent=s.title; list.innerHTML=s.items.map(item=>'<li>'+item+'</li>').join('');
+})();
+</script>
+<script src="assets/site-config.js" defer></script><script src="assets/app.js" defer></script>
 </body>
 </html>
