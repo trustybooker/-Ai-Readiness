@@ -45,10 +45,9 @@ jobs:
         run: |
           cat > live-qa.mjs <<'EOF'
           import { chromium } from 'playwright';
-          const site = process.env.SITE_URL;
-          const browser = await chromium.launch({headless:true});
-          const errors=[];
-          const gaRequests=[];
+          const site=process.env.SITE_URL;
+          const browser=await chromium.launch({headless:true});
+          const errors=[],gaRequests=[];
           const page=await browser.newPage({viewport:{width:1366,height:768}});
           page.on('pageerror',e=>errors.push(String(e)));
           page.on('request',r=>{if(/google-analytics\.com|googletagmanager\.com/.test(r.url()))gaRequests.push(r.url());});
@@ -56,17 +55,13 @@ jobs:
           if((await page.locator('script[data-aik-ga="G-P4TR060PFF"]').count())!==1)throw new Error('GA4 tag missing or duplicated');
           if(!gaRequests.some(u=>u.includes('googletagmanager.com/gtag/js')))throw new Error('GA4 loader request not observed');
           if((await page.locator('link[data-aik-production-polish]').count())!==1)throw new Error('production visual hardening stylesheet missing or duplicated');
-          const visual=page.locator('.impact-card').first();
-          const bg=await visual.evaluate(el=>getComputedStyle(el,'::after').backgroundImage);
-          if(!/workplace-ai-learning\.svg/.test(bg))throw new Error('homepage workplace-learning visual not active');
-          const publicPhone=await page.locator('[data-aik-public-phone]').innerText();
-          if(!publicPhone.includes('(772) 666-5472')||!/AI receptionist/i.test(publicPhone))throw new Error('public receptionist phone missing or mislabeled');
-          const jobs=page.locator('#jobs .panel').first();await jobs.scrollIntoViewIfNeeded();
-          const clipped=await jobs.evaluate(el=>{const r=el.getBoundingClientRect(),h=el.querySelector('h2'),e=el.querySelector('.eyebrow');const hr=h?.getBoundingClientRect(),er=e?.getBoundingClientRect();return !hr||!er||hr.left<r.left+12||er.left<r.left+12||hr.right>r.right-12;});
-          if(clipped)throw new Error('work/careers panel text is clipped by its rounded card');
+          const visual=page.locator('.impact-card').first();const bg=await visual.evaluate(el=>getComputedStyle(el,'::after').backgroundImage);if(!/workplace-ai-learning\.svg/.test(bg))throw new Error('homepage workplace-learning visual not active');
+          const publicPhone=await page.locator('[data-aik-public-phone]').innerText();if(!publicPhone.includes('(772) 666-5472')||!/AI receptionist/i.test(publicPhone))throw new Error('public receptionist phone missing or mislabeled');
+          const jobs=page.locator('#jobs .panel').first();await jobs.scrollIntoViewIfNeeded();const clipped=await jobs.evaluate(el=>{const r=el.getBoundingClientRect(),h=el.querySelector('h2'),e=el.querySelector('.eyebrow');const hr=h?.getBoundingClientRect(),er=e?.getBoundingClientRect();return !hr||!er||hr.left<r.left+12||er.left<r.left+12||hr.right>r.right-12;});if(clipped)throw new Error('work/careers panel text is clipped by its rounded card');
           if((await page.locator('.aik-icon').count())<6)throw new Error('local public icon system did not render enough context icons');
           const lead=page.locator('#book .lead-box');await lead.scrollIntoViewIfNeeded();
-          const leadHeight=await lead.evaluate(el=>el.getBoundingClientRect().height);if(leadHeight>900)throw new Error(`request panel has excessive empty height: ${leadHeight}`);
+          const leadLayout=await lead.evaluate(el=>{const left=el.firstElementChild,form=el.querySelector('form');return{parentBg:getComputedStyle(el).backgroundColor,leftBg:left?getComputedStyle(left).backgroundColor:'',formBg:form?getComputedStyle(form).backgroundColor:'',guide:!!left?.querySelector('.request-next')};});
+          if(!leadLayout.guide||leadLayout.parentBg!=='rgba(0, 0, 0, 0)'||leadLayout.leftBg==='rgba(0, 0, 0, 0)'||leadLayout.formBg==='rgba(0, 0, 0, 0)')throw new Error(`request area did not resolve into balanced independent cards: ${JSON.stringify(leadLayout)}`);
 
           const mobile=await browser.newPage({viewport:{width:390,height:844}});const mobileErrors=[];mobile.on('pageerror',e=>mobileErrors.push(String(e)));await mobile.goto(site,{waitUntil:'networkidle'});
           const overflow=await mobile.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth+2);if(overflow)throw new Error('mobile horizontal overflow on homepage');
