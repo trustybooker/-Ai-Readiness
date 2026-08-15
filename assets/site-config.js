@@ -1,4 +1,4 @@
-window.FIFYNOW_SITE_CONFIG = {
+window.AIKOLLEGE_SITE_CONFIG = {
   bookingUrl: 'https://calendar.app.google/wSVv9b3k5X5GiQqf6',
   // Used only if both first-party lead-capture routes are unavailable.
   // The primary pipeline remains the verified private lead repository.
@@ -20,3 +20,5 @@ window.FIFYNOW_SITE_CONFIG = {
     enabled: true
   }
 };
+// Temporary compatibility alias for older cached scripts. New code uses AIKOLLEGE_SITE_CONFIG.
+window.FIFYNOW_SITE_CONFIG = window.AIKOLLEGE_SITE_CONFIG;
