@@ -13,7 +13,7 @@
   function loadState(){let v=null;try{v=JSON.parse(localStorage.getItem(stateKey())||'null');}catch{}state=v&&typeof v==='object'?v:defaultState();state.profile=Object.assign(defaultState().profile,state.profile||{});state.artifacts=state.artifacts||{};state.rubrics=state.rubrics||{};}
   function saveState(){state.updated_at=new Date().toISOString();try{localStorage.setItem(stateKey(),JSON.stringify(state));}catch{}updateProgress();}
   async function fetchContent(profile={role:'job_seeker'}){
-    const r=await fetch('/api/learner-content',{method:'POST',headers:{'content-type':'application/json','accept':'application/json'},cache:'no-store',body:JSON.stringify({session_id:sessionId(),profile})});
+    const r=await fetch('/.netlify/functions/learner-content',{method:'POST',headers:{'content-type':'application/json','accept':'application/json'},cache:'no-store',body:JSON.stringify({session_id:sessionId(),profile})});
     const d=await r.json().catch(()=>({})); if(!r.ok||!d.verified)throw new Error(d.error||'access_not_verified'); return d;
   }
   const safe=(v)=>String(v??'').replace(/[<>]/g,'');
