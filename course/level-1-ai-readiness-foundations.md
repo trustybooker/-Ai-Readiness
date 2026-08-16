@@ -2,15 +2,37 @@
 
 Audience: beginners, workers, job seekers, and employees who need safe, practical AI basics before they claim AI skill or buy tools.
 
+## Product promise
+
+This is not paid access to generic AI facts. The learner is guided from a real problem to a reviewed, reusable work artifact and an **AI Readiness Proof Pack**. Examples, practice and project choices adapt to the learner's goal, role, experience and diagnostic gaps while the completion standard remains consistent.
+
 ## Problem-first outcome
 
-By the end, the learner can identify the AI problem they are trying to solve, use AI for simple work tasks, check outputs, avoid unsafe data sharing, and create one proof-of-work artifact.
+By the end, the learner can identify the AI problem they are trying to solve, use AI for simple work tasks, check outputs, avoid unsafe data sharing, explain where human judgment is required, and create one proof-of-work artifact.
 
 This level follows the Winning Skill: problem first, useful action, proof, human review, and next step.
 
+## Adaptive start
+
+Reuse the learner's readiness diagnostic when available. Otherwise ask only for goal, current/target role, AI experience and one repeated task/problem.
+
+Give the learner:
+
+- a concise readiness/skill-gap summary;
+- a recommended starting module;
+- role-relevant examples;
+- extra practice in weak areas;
+- the option to review familiar material quickly, without silently lowering the completion rubric.
+
+Do not make learners repeat information already collected.
+
 ## Core question
 
-What problem am I trying to solve with AI, what should AI help with, and what must a human still review?
+What problem am I trying to solve with AI, what should AI help with, how will I verify the result, and what must a human still review?
+
+## Module experience
+
+Every module follows: **Why it matters → See it → Try it → Check it → Use it → Save proof.** Show an example or scaffold before asking for blank-input work. Progress reflects completed work, not page views.
 
 ## Module 1: What AI can and cannot do
 
@@ -19,7 +41,11 @@ Teach:
 - AI predicts and generates based on patterns.
 - AI can help draft, summarize, brainstorm, organize, compare, and role-play.
 - AI can be wrong, outdated, biased, incomplete, or overconfident.
-- AI should not replace human judgment for people, money, safety, hiring, reputation, or other sensitive decisions.
+- AI should not replace human judgment for people, money, safety, hiring, reputation, clinical matters, regulated work, or other sensitive decisions.
+
+Adaptive practice:
+
+Present a realistic scenario from the learner's role family and ask them to separate **AI can assist**, **human must review**, and **do not delegate**.
 
 Exercise:
 
@@ -28,7 +54,7 @@ Exercise:
 
 Deliverable:
 
-- One paragraph explaining what AI can help with and what it should not decide alone.
+- AI boundary map for the learner's selected task.
 
 ## Module 2: Problem-first prompting
 
@@ -46,11 +72,11 @@ Teach the prompt formula:
 
 Exercise:
 
-Create one useful prompt for a daily task, starting with the problem rather than the tool.
+Create one useful prompt for a real repeated task, starting with the problem rather than the tool. Compare a weak prompt with the improved version.
 
 Deliverable:
 
-- Starter prompt template.
+- Reusable prompt card containing the problem, final prompt, expected output and review rule.
 
 ## Module 3: Fact-checking and review
 
@@ -60,15 +86,15 @@ Teach:
 - Check names, numbers, dates, claims, policies, and instructions.
 - Ask AI to list assumptions and uncertainty.
 - Compare against trusted sources when needed.
-- Record what you changed after review.
+- Record what changed after review.
 
 Exercise:
 
-- Review one AI answer and mark what must be checked.
+Review one AI answer, mark what must be checked, verify at least one material claim when the task contains factual claims, and record corrections.
 
 Deliverable:
 
-- Fact-check checklist.
+- Fact-check checklist plus a before/after correction record.
 
 ## Module 4: Privacy and sensitive data
 
@@ -85,64 +111,91 @@ Never paste sensitive information unless the tool, policy, consent, and business
 
 Exercise:
 
-Rewrite a prompt to remove sensitive details.
+Rewrite a role-relevant prompt to remove or minimize sensitive details. Healthcare-support examples must reinforce privacy and human-review boundaries; trade and business examples must avoid exposing customer credentials, payment data or confidential records.
 
 Deliverable:
 
-- Safe-use checklist.
+- Safe-use checklist and sanitized prompt example.
 
-## Module 5: Human judgment and wisdom
+## Module 5: Human judgment and approval
 
 Teach:
 
 - Truth, care for people, no manipulation, human dignity, and service before gain.
-- Wisdom before wealth, order before scale, counsel before isolation, character before gold.
-- AI can support work but should not own decisions involving people, money, safety, or reputation.
+- AI can support work but should not own decisions involving people, money, safety, reputation or regulated judgment.
+- Approval boundaries should be explicit before automation is introduced.
 
 Exercise:
 
-Choose a task and mark what AI can draft, what a human must approve, and what should not be automated.
+Choose a task and mark what AI can draft, what a human must approve, what requires a trusted source, and what should not be automated.
 
 Deliverable:
 
 - Human approval checkpoint map.
 
-## Module 6: Daily value and audience signal
+## Module 6: Daily value and communication
 
 Teach:
 
-Content is daily service at scale. Learners should be able to explain one useful AI lesson, mistake, checklist, or example without hype.
+Useful AI skill includes explaining work clearly without hype. Learners should be able to communicate one useful lesson, mistake, checklist or example to the audience relevant to their goal.
 
 Exercise:
 
-Write one simple post or message teaching a safe AI lesson to a coworker, job interviewer, or small business owner.
+Create one short teaching note, coworker explanation, interview example, customer-facing explanation or business note appropriate to the learner's context.
 
 Deliverable:
 
-- One daily value post or teaching note.
+- One practical communication artifact.
 
 ## Final proof project
 
-Create one AI-assisted work sample:
+The learner chooses or is recommended a project that matches their goal:
 
-- Email draft.
-- SOP draft.
-- Resume bullet improvement.
-- Customer FAQ answer.
-- Simple report summary.
-- Daily value post.
+- Email/follow-up workflow.
+- SOP or checklist draft.
+- Resume bullet improvement with evidence boundary.
+- Customer FAQ/reply workflow.
+- Simple report-summary workflow.
+- Trade estimate/explanation workflow that retains human verification.
+- Small-business administrative workflow.
+- Content/creative review workflow.
 
-Required reflection:
+The project must show:
 
-- What problem did this solve?
-- What did AI help with?
-- What did you review?
-- What did you change?
-- What should AI not decide alone?
-- What is the next skill or problem to work on?
+1. the real problem;
+2. the original/manual or weak approach where available;
+3. the AI-assisted approach;
+4. privacy/safety boundary;
+5. verification/human review;
+6. corrections made;
+7. final usable artifact;
+8. the next improvement to test.
+
+## AI Readiness Proof Pack
+
+Completion assembles a portable learner-owned pack containing:
+
+- readiness/goal summary;
+- AI boundary map;
+- reusable prompt card;
+- fact-check/correction evidence;
+- safe-use checklist;
+- approval checkpoint map;
+- final proof project;
+- learner reflection and next-step plan.
+
+Where the interface supports export/share, present the proof pack in a readable portable format. Do not expose private diagnostic information by default.
+
+## Feedback rubric
+
+For each major artifact, feedback identifies what is usable, what is unclear/missing, what requires verification, any privacy/safety concern, one concrete improvement and whether it meets the stated rubric. Automated feedback must not be represented as human review.
 
 ## Completion standard
 
-Complete all deliverables and submit the proof project for human review.
+Complete all required deliverables and the proof project. If the product promises human review, that review must actually occur before it is represented as completed human review.
 
-Completion badge language must say AI Kollege completion badge, operated by Fify Now LLC. It must not say accredited certification, official license, guaranteed job credential, guaranteed income, or compliance certification.
+Completion badge language must say **AI Kollege completion badge, operated by Fify Now LLC**. It must not say accredited certification, official license, guaranteed job credential, guaranteed income, compliance certification, or proof of professional licensure.
+
+## Ethical next step
+
+The learner should receive a paid upgrade recommendation only when their goal or demonstrated gap makes Level 2 relevant. The recommendation must state what Level 1 already accomplished and what additional outputs Level 2 adds. Strong learners who do not need the next level should receive useful free next actions rather than a forced upsell.
