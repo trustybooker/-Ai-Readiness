@@ -1,4 +1,5 @@
 import {verifyStripeSignature,handleStripeEvent} from '../../lib/stripe-fulfillment.mjs';
+import {sendPurchaseOnboarding} from '../../lib/transactional-email.mjs';
 
 const MAX_BODY=256000;
 const json=(status,body)=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
@@ -12,7 +13,11 @@ export default async(req)=>{
   const signature=req.headers.get('stripe-signature')||'';
   if(!verifyStripeSignature(raw,signature,secret))return json(400,{ok:false,error:'invalid_signature'});
   let event;try{event=JSON.parse(raw);}catch{return json(400,{ok:false,error:'invalid_json'});}
-  try{const result=await handleStripeEvent(event);if(!result.ok)return json(500,result);return json(200,result);}catch{return json(500,{ok:false,error:'fulfillment_failed'});}
+  try{
+    const result=await handleStripeEvent(event);if(!result.ok)return json(500,result);
+    if(result.purchase?.email){const email=await sendPurchaseOnboarding(result.purchase);if(!email.ok&&!email.skipped)return json(500,{...result,email_sent:false,email_error:email.error});return json(200,{...result,email_sent:Boolean(email.ok),email_error:email.ok?undefined:email.error});}
+    return json(200,result);
+  }catch{return json(500,{ok:false,error:'fulfillment_failed'});}
 };
 
 export const config={path:['/.netlify/functions/stripe-webhook','/api/stripe-webhook'],method:'POST'};
