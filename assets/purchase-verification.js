@@ -3,8 +3,7 @@
   const run=async()=>{
     const form=document.querySelector('form[name="ai-kollege-buyer-onboarding"]');
     if(!form)return;
-    const note=form.querySelector('[data-note]');
-    const params=new URLSearchParams(location.search),sessionId=params.get('session_id')||'',offerHint=params.get('offer')||'';
+    const params=new URLSearchParams(location.search),sessionId=params.get('session_id')||'';
     const status=document.createElement('div');status.className='purchase-verification';status.setAttribute('role','status');status.setAttribute('aria-live','polite');form.prepend(status);
     const set=(kind,text)=>{status.className=`purchase-verification ${kind}`;status.textContent=text;};
     if(!/^cs_(?:test_|live_)?[A-Za-z0-9]+$/.test(sessionId)){
@@ -17,6 +16,7 @@
       const d=await r.json().catch(()=>({}));
       if(!r.ok||!d.verified){set('neutral','We could not confirm this purchase automatically yet. Submit your start details and we will match the purchase before granting paid access.');return;}
       set('verified',`Purchase verified: ${d.offer}. No card details are stored by AI Kollege.`);
+      const start=document.createElement('a');start.className='btn primary learner-start';start.href=`learner.html?session_id=${encodeURIComponent(sessionId)}`;start.textContent='Start my verified pass';start.setAttribute('data-verified-learning-entry','true');status.appendChild(document.createElement('br'));status.appendChild(start);
       const select=form.querySelector('select[name="path"]');
       if(select){const wanted=d.offer_key==='ai_starter_pass'?'AI Starter Pass':d.offer_key==='ai_job_productivity_pass'?'AI Job & Productivity Pass':'';if(wanted){const opt=[...select.options].find(o=>o.textContent.trim()===wanted);if(opt)select.value=opt.value;}}
       const hidden=document.createElement('input');hidden.type='hidden';hidden.name='verified_checkout_session';hidden.value=sessionId;form.appendChild(hidden);
