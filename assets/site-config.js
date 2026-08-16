@@ -27,9 +27,12 @@ window.AIKOLLEGE_SITE_CONFIG = {
   }
 };
 
-// Load production UI hardening from the same origin. Keeping this separate makes
-// it easy to regression-test visual fixes without duplicating style blocks across pages.
+// Keep the current paid-offer value proposition synchronized across public pages.
+// This is public descriptive data only; prices/checkout authority remain in Stripe.
 (function(){
+  if(!document.querySelector('script[data-aik-offers-sync]')){
+    const o=document.createElement('script');o.src='assets/offers-sync.js';o.defer=true;o.dataset.aikOffersSync='true';document.head.appendChild(o);
+  }
   if(!document.querySelector('link[data-aik-production-polish]')){
     const l=document.createElement('link');l.rel='stylesheet';l.href='assets/production-polish.css';l.dataset.aikProductionPolish='true';document.head.appendChild(l);
   }
