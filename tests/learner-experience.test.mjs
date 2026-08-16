@@ -46,12 +46,13 @@ test('learner workspace is noindex and provides progress, export, reset and adap
   assert.match(html,/noindex,nofollow,noarchive/);
   for(const marker of ['data-progress','data-export','data-reset','data-personalize','data-profile-role','data-module-host','data-proof-pack'])assert.match(html,new RegExp(marker));
   assert.match(js,/localStorage\.setItem/);
-  assert.match(js,/Download proof pack|proof-pack\.txt/);
+  assert.match(js,/proof-pack\.txt/);
   assert.match(js,/Delete locally saved profile, progress and artifacts/);
 });
 
 test('completion requires actual artifact work plus all quality checks',()=>{
-  assert.match(js,/text\.length>=40/);
+  assert.match(js,/artifactText\(m\)\.length>=40/);
   assert.match(js,/track\.rubric\.every/);
-  assert.match(js,/Progress reflects saved work, not pages opened|moduleDone/);
+  assert.match(js,/moduleDone/);
+  assert.match(js,/Complete every evidence gate before final export/);
 });
