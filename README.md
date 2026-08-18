@@ -1,101 +1,43 @@
-# AI Readiness Pass
+# AI Kollege / AI Readiness Pass
 
-Standalone AI readiness, training, assessment, job-prep, business-audit, implementation, and first-party lead tracking system for **Fify Now LLC**.
+AI Kollege is Fify Now LLC's practical AI-readiness, training, job/productivity, business-audit and implementation-support platform.
 
-## Positioning
+## Commercial path
 
-**AI Readiness Pass** helps individuals, employees, job seekers, small businesses, teams, and organizations answer one urgent question:
+**traffic → readiness diagnostic / answer content → lead or offer → verified Stripe purchase → learner activation → evidence-based progress → completion → appropriate follow-up**
 
-> Are we ready to use AI safely, productively, and credibly?
+Commercial completion requires all six gates in `docs/commercial-completion-gates.md`; a green deployment alone is not enough.
 
-The project is built to be human-first and sales-ready. Visitors should receive useful direction before buying, while serious leads have a clear path into training, audits, team work, implementation review, or recurring support.
+## Current production architecture
 
-## Conversion path
+- Canonical public site at `https://www.aikollege.com` with responsive landing, product, booking, answer, privacy and support experiences.
+- SEO/AEO metadata, robots, sitemap, structured data and direct-answer content.
+- Interactive readiness diagnostic and first-party lead capture with qualification, UTM/source attribution, deduplication, spam controls and a verified-private operational store.
+- GA4 configuration and funnel events for readiness, leads, offers, checkout and verified learner activity.
+- Live Stripe Payment Links for the two self-serve paid passes, signed webhook handling, paid-session validation, private purchase records and server-side entitlement checks.
+- Abandoned-checkout recovery only from a verified Stripe `checkout.session.expired` event for supported AI Kollege offers.
+- Adaptive paid learner workspace with role-aware examples, locally persistent work, evidence/quality gates, progress, verified lifecycle events and portable proof-pack export.
+- Resend transactional email for lead/booking acknowledgement, human handoff, paid onboarding, progress reminders and course completion.
+- Secretary/receptionist with approved knowledge, human escalation and no authority to charge, discount, refund or make binding commitments.
+- Private Owner Studio for lead workflow, front-office settings, paid-access checks, learner lifecycle visibility and safe transactional follow-up controls.
+- Twilio receptionist/human-forward architecture, WhatsApp bridge, MoMo/social-control boundaries, rate limits and webhook replay protection.
+- GitHub Actions production validation for tests, application wiring, SEO/AEO, security/public boundaries and Stripe integrity.
 
-1. Free AI readiness score.
-2. Useful checklist or direct answer page.
-3. Recommended path.
-4. First-party lead capture and lead tiering.
-5. Human review request or scheduler click.
-6. Training, audit, sprint, implementation review, or lab membership.
-7. Follow-up using one clear next step.
+## Truth and privacy rules
 
-## First-party tracking system
+Paid value is guided work, adaptation, evidence checks and learner-created proof—not generic AI information. A module is not complete because it was viewed. Completion requires required learner evidence and quality checks.
 
-The site includes a no-extra-cost lead system:
+Card data remains with Stripe. Paid content is returned only after server-side Stripe verification. Learner artifact text stays in the browser unless intentionally exported/submitted; server lifecycle measurement stores operational event metadata rather than artifact content. Customer records/settings fail closed unless storage is verified private. Owner APIs require owner authentication and remain noindex/no-store.
 
-- Lead form tries the first-party Netlify function first.
-- Function creates a private GitHub Issue for each lead when host settings are configured.
-- GitHub Issue includes contact details, score, lead tier, selected path, timeline, budget, source, booking details, and follow-up checklist.
-- If the function is not configured yet, the form falls back to email routing.
+AI Kollege completion recognition must not be represented as accreditation, professional licensure, employer endorsement, regulatory certification, guaranteed employment or guaranteed income unless such a claim later becomes independently true and documented.
 
-Setup details are in `docs/first-party-lead-system.md` and `docs/lead-tracker-host-setup.md`.
+## External production proof
 
-## Course and badge system
-
-The course is organized into four levels:
-
-- Level 1: AI Readiness Foundations.
-- Level 2: AI Job and Productivity Pass.
-- Level 3: Business AI Readiness.
-- Level 4: Implementation Partner Track.
-
-Badge language is intentionally conservative:
-
-- Use “Fify Now LLC Completion Badge.”
-- Use “proof-of-work artifacts.”
-- Do not claim accreditation unless accreditation is actually obtained.
-
-## Operating system
-
-The repo includes business operations, lead tracking, host setup, human value standard, sales conversion system, response scripts, onboarding and handoff workflows, implementation playbooks, course materials, CRM capture plan, payment plan, SEO/AEO answer hub, visual assets, launch runbook, and live preview guide.
-
-## What is currently wired
-
-- Static landing page.
-- Responsive design.
-- Contextual visual and icon assets.
-- Interactive readiness quiz.
-- Score summary, recommended path, and lead tier hidden fields.
-- First-party tracker function with email fallback.
-- Lead form routed to business email with Gmail fallback copy.
-- First-party capture fields: audience type, timeline, budget range, referrer, landing page, and UTM fields.
-- Google Calendar scheduler URL in `assets/site-config.js`.
-- Internal booking request page.
-- Payment-link placeholders controlled from `assets/site-config.js`.
-- SEO metadata, Open Graph image, Twitter card, robots.txt, sitemap.xml, and JSON-LD schema.
-- Schema graph includes Organization, WebSite, ProfessionalService, WebPage, OfferCatalog, and FAQPage.
-- Seven direct-answer pages plus answer hub.
-- Thank-you page after submission.
-- Netlify deployment config with subpath redirects.
-- Validation script and GitHub Actions workflow.
-
-## What still needs external setup
-
-The repo cannot complete these steps without service access and credentials:
-
-- Deploy on Netlify or another host.
-- Configure private lead tracker environment values in the host.
-- Submit a live test lead and confirm GitHub Issue creation.
-- Confirm the email fallback sends correctly from the deployed site.
-- Create and test payment links.
-- Add tested payment links to `assets/site-config.js`.
-- Add analytics if selected.
-- Test Google Calendar from the deployed preview.
-- Run live mobile, desktop, and schema QA.
+Code can establish architecture, but release certification still requires live evidence that Netlify serves the exact validated commit, GA4 receives production events, Resend's sender domain accepts/delivers a controlled test, and live Stripe entitlement/webhook behavior works. Genuine revenue, conversion and retention numbers must come from real customer activity rather than test clicks.
 
 ## Validation
 
-Run:
-
 ```bash
+npm test
 npm run validate
 ```
-
-The validator checks required files, conversion copy, score/form wiring, lead tracker, config safety, local HTML references, sitemap targets, schema-related pages, visual assets, course materials, operating system docs, sales docs, launch docs, and removal of temporary test files.
-
-## Truth standard
-
-Do not add fake proof, fake client logos, unsupported credentials, unsupported legal claims, or unsupported outcome claims.
-
-The business should convert because the offer is clear, timely, practical, human-reviewed, and useful.
