@@ -28,10 +28,10 @@ test('learner payload is offer-scoped and role-adaptive',()=>{
   assert.equal(learnerPayload('other',{}),null);
 });
 
-test('paid content is server-gated by Stripe verification',()=>{
+test('paid content is server-gated by current Stripe entitlement',()=>{
   assert.match(fn,/STRIPE_SECRET_KEY/);
-  assert.match(fn,/classifyCheckoutSession/);
-  assert.match(fn,/paid_entitlement_not_verified/);
+  assert.match(fn,/verifyCheckoutEntitlement/);
+  assert.match(fn,/entitlement:'active'/);
   assert.doesNotMatch(js,/AI can draft, summarize, organize and compare/);
   assert.match(js,/\.netlify\/functions\/learner-content/);
 });
