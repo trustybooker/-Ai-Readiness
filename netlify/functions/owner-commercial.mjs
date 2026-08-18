@@ -15,7 +15,7 @@ export default async(req)=>{
   const action=String(body.action||'status');
   if(action==='status'){
     const snapshot=await lifecycleSnapshot();if(!snapshot.ok)return json(502,snapshot);
-    return json(200,{ok:true,action,counts:snapshot.counts,health:{stripe:Boolean(process.env.STRIPE_SECRET_KEY&&process.env.STRIPE_WEBHOOK_SECRET),resend:emailConfigured(),private_store:Boolean(process.env.LEADS_SECRET&&process.env.LEADS_REPO),owner_auth:Boolean(process.env.OWNER_ASSISTANT_TOKEN)},recent_events:snapshot.events.slice(0,20).map(e=>({event:e.event,offer:e.offer,module:e.module,progress:e.progress,occurred_at:e.occurred_at}))});
+    return json(200,{ok:true,action,counts:snapshot.counts,rates:snapshot.rates,revenue_by_currency:snapshot.revenue_by_currency,health:{stripe:Boolean(process.env.STRIPE_SECRET_KEY&&process.env.STRIPE_WEBHOOK_SECRET),resend:emailConfigured(),private_store:Boolean(process.env.LEADS_SECRET&&process.env.LEADS_REPO),owner_auth:Boolean(process.env.OWNER_ASSISTANT_TOKEN)},recent_purchases:snapshot.purchases.slice(0,10).map(p=>({offer:p.offer,amount:p.amount,currency:p.currency,verified_at:p.verified_at})),recent_events:snapshot.events.slice(0,20).map(e=>({event:e.event,offer:e.offer,module:e.module,progress:e.progress,occurred_at:e.occurred_at}))});
   }
   if(action==='verify_access'){
     const v=await verifiedPurchase(body.session_id);if(!v.ok)return json(400,v);return json(200,{ok:true,action,session_id:v.purchase.session_id,offer:v.purchase.offer,email:masked(v.purchase.email),amount_total:v.purchase.amount_total,currency:v.purchase.currency});
