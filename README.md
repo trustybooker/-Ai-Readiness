@@ -1,101 +1,69 @@
-# AI Readiness Pass
+# AI Kollege / AI Readiness Pass
 
-Standalone AI readiness, training, assessment, job-prep, business-audit, implementation, and first-party lead tracking system for **Fify Now LLC**.
+AI Kollege is Fify Now LLC's practical AI-readiness, training, job/productivity, business-audit and implementation-support platform.
 
-## Positioning
+## Commercial path
 
-**AI Readiness Pass** helps individuals, employees, job seekers, small businesses, teams, and organizations answer one urgent question:
+The production funnel is designed as:
 
-> Are we ready to use AI safely, productively, and credibly?
+**traffic → readiness diagnostic / answer content → lead or offer → verified Stripe purchase → learner activation → evidence-based progress → completion → appropriate follow-up**
 
-The project is built to be human-first and sales-ready. Visitors should receive useful direction before buying, while serious leads have a clear path into training, audits, team work, implementation review, or recurring support.
+The application must satisfy all six gates in `docs/commercial-completion-gates.md`; a green deployment alone is not commercial completion.
 
-## Conversion path
+## What is wired
 
-1. Free AI readiness score.
-2. Useful checklist or direct answer page.
-3. Recommended path.
-4. First-party lead capture and lead tiering.
-5. Human review request or scheduler click.
-6. Training, audit, sprint, implementation review, or lab membership.
-7. Follow-up using one clear next step.
+- Canonical public site at `https://www.aikollege.com` with responsive landing, product, booking, answer, privacy and support experiences.
+- SEO/AEO metadata, robots, sitemap, structured data and direct-answer content.
+- Interactive readiness diagnostic and first-party lead capture with qualification, UTM/source attribution, deduplication, spam controls and a verified-private operational store.
+- GA4 configuration and funnel events for readiness, lead, offer, checkout and verified learner activity.
+- Live Stripe Payment Links for the two self-serve paid passes.
+- Stripe webhook signature verification, paid-session validation, idempotent private purchase records and server-side entitlement checks.
+- Abandoned-checkout recovery only from a verified Stripe `checkout.session.expired` webhook for supported AI Kollege offers.
+- Paid adaptive learner workspace with role-aware examples, persistent local work, evidence/quality gates, progress, server-verified lifecycle events and portable proof-pack export.
+- Completion recognition language that does not claim accreditation, licensure, employment, income or regulatory status.
+- Resend transactional-email integration for lead/booking acknowledgement, human handoff, paid onboarding, course-progress reminders and course completion.
+- Secretary / receptionist with constrained approved knowledge, human escalation, private lead records and no authority to charge, discount, refund or make binding commitments.
+- Owner Studio with private authentication, lead workflow, front-office controls, verified access checks, learner lifecycle visibility and safe transactional follow-up controls.
+- Twilio receptionist and human-forwarding architecture, WhatsApp bridge, social-control/MoMo boundaries, rate limits and webhook replay protection.
+- GitHub Actions validation covering application wiring, tests, SEO, public/private boundaries, Stripe integrity and security regressions.
 
-## First-party tracking system
+## Paid-learning truth standard
 
-The site includes a no-extra-cost lead system:
+Paid value is not generic AI information. The self-serve passes are built around guided work, role/context adaptation, evidence checks, human-judgment boundaries and portable learner-created proof.
 
-- Lead form tries the first-party Netlify function first.
-- Function creates a private GitHub Issue for each lead when host settings are configured.
-- GitHub Issue includes contact details, score, lead tier, selected path, timeline, budget, source, booking details, and follow-up checklist.
-- If the function is not configured yet, the form falls back to email routing.
+A module is not complete merely because it was viewed. Completion requires the learner's saved artifact plus the required quality/evidence checks. Automated feedback or course completion must never be represented as accredited certification or human professional approval unless that actually occurred.
 
-Setup details are in `docs/first-party-lead-system.md` and `docs/lead-tracker-host-setup.md`.
+## Privacy and security boundary
 
-## Course and badge system
+- Card data remains with Stripe.
+- Paid content is returned only after server-side Stripe verification.
+- Learner artifact text stays in the learner's browser unless intentionally exported/submitted; the server lifecycle store records only operational event metadata.
+- Customer records and operational settings fail closed unless the configured repository is verified private.
+- Owner APIs require the owner token and remain noindex/no-store.
+- Webhooks use provider verification and replay/idempotency safeguards.
+- Secrets are server-side environment values and must never be copied into public files, issues or analytics.
 
-The course is organized into four levels:
+## External production proofs
 
-- Level 1: AI Readiness Foundations.
-- Level 2: AI Job and Productivity Pass.
-- Level 3: Business AI Readiness.
-- Level 4: Implementation Partner Track.
+Code can establish the architecture, but these items require live service evidence before a release is certified commercially complete:
 
-Badge language is intentionally conservative:
-
-- Use “Fify Now LLC Completion Badge.”
-- Use “proof-of-work artifacts.”
-- Do not claim accreditation unless accreditation is actually obtained.
-
-## Operating system
-
-The repo includes business operations, lead tracking, host setup, human value standard, sales conversion system, response scripts, onboarding and handoff workflows, implementation playbooks, course materials, CRM capture plan, payment plan, SEO/AEO answer hub, visual assets, launch runbook, and live preview guide.
-
-## What is currently wired
-
-- Static landing page.
-- Responsive design.
-- Contextual visual and icon assets.
-- Interactive readiness quiz.
-- Score summary, recommended path, and lead tier hidden fields.
-- First-party tracker function with email fallback.
-- Lead form routed to business email with Gmail fallback copy.
-- First-party capture fields: audience type, timeline, budget range, referrer, landing page, and UTM fields.
-- Google Calendar scheduler URL in `assets/site-config.js`.
-- Internal booking request page.
-- Payment-link placeholders controlled from `assets/site-config.js`.
-- SEO metadata, Open Graph image, Twitter card, robots.txt, sitemap.xml, and JSON-LD schema.
-- Schema graph includes Organization, WebSite, ProfessionalService, WebPage, OfferCatalog, and FAQPage.
-- Seven direct-answer pages plus answer hub.
-- Thank-you page after submission.
-- Netlify deployment config with subpath redirects.
-- Validation script and GitHub Actions workflow.
-
-## What still needs external setup
-
-The repo cannot complete these steps without service access and credentials:
-
-- Deploy on Netlify or another host.
-- Configure private lead tracker environment values in the host.
-- Submit a live test lead and confirm GitHub Issue creation.
-- Confirm the email fallback sends correctly from the deployed site.
-- Create and test payment links.
-- Add tested payment links to `assets/site-config.js`.
-- Add analytics if selected.
-- Test Google Calendar from the deployed preview.
-- Run live mobile, desktop, and schema QA.
+- Netlify serving the exact validated production commit.
+- GA4 Realtime/DebugView receiving the expected production events.
+- Resend sender domain verified and a controlled live delivery accepted/received.
+- Stripe live webhook and paid entitlement behavior verified without creating fake revenue.
+- Real customer acquisition/revenue/retention data will remain zero or unknown until genuine customers generate it; test clicks are not counted as business outcomes.
 
 ## Validation
 
 Run:
 
 ```bash
+npm test
 npm run validate
 ```
 
-The validator checks required files, conversion copy, score/form wiring, lead tracker, config safety, local HTML references, sitemap targets, schema-related pages, visual assets, course materials, operating system docs, sales docs, launch docs, and removal of temporary test files.
+The production gate covers tests, application wiring, SEO/AEO integrity, security/public-boundary rules and Stripe integrity.
 
-## Truth standard
+## Truth/value rule
 
-Do not add fake proof, fake client logos, unsupported credentials, unsupported legal claims, or unsupported outcome claims.
-
-The business should convert because the offer is clear, timely, practical, human-reviewed, and useful.
+Do not add fake proof, fake client logos, unsupported credentials, fabricated conversion/revenue, unsupported legal claims, guaranteed jobs/income, or capabilities that are not actually delivered.
