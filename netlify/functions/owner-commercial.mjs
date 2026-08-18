@@ -1,10 +1,11 @@
 import {checkOwnerToken} from '../../lib/assistant-core.mjs';
 import {lifecycleSnapshot} from '../../lib/lifecycle-events.mjs';
 import {classifyCheckoutSession} from '../../lib/stripe-fulfillment.mjs';
-import {emailConfigured,sendPurchaseOnboarding,sendProgressReminder} from '../../lib/transactional-email.mjs';
+import {emailConfigured,sendTransactionalEmail,sendPurchaseOnboarding,sendProgressReminder} from '../../lib/transactional-email.mjs';
 
 const json=(status,body)=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
 const SESSION_RE=/^cs_(?:test_|live_)?[A-Za-z0-9]+$/;
+const SMOKE_TO=()=>String(process.env.RESEND_SMOKE_TO||'fifynow@gmail.com').trim();
 async function verifiedPurchase(id){const sessionId=String(id||'');if(!SESSION_RE.test(sessionId))return{ok:false,error:'invalid_session_id'};const key=String(process.env.STRIPE_SECRET_KEY||'');if(!key)return{ok:false,error:'stripe_not_configured'};const r=await fetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`,{headers:{Authorization:`Bearer ${key}`}});if(!r.ok)return{ok:false,error:r.status===404?'session_not_found':'stripe_lookup_failed'};const c=classifyCheckoutSession(await r.json());return c.ok?{ok:true,purchase:c}:{ok:false,error:c.error};}
 function masked(email=''){const [a,b]=String(email).split('@');if(!a||!b)return'';return `${a.slice(0,2)}***@${b}`;}
 export default async(req)=>{
@@ -16,6 +17,9 @@ export default async(req)=>{
   if(action==='status'){
     const snapshot=await lifecycleSnapshot();if(!snapshot.ok)return json(502,snapshot);
     return json(200,{ok:true,action,counts:snapshot.counts,health:{stripe:Boolean(process.env.STRIPE_SECRET_KEY&&process.env.STRIPE_WEBHOOK_SECRET),resend:emailConfigured(),private_store:Boolean(process.env.LEADS_SECRET&&process.env.LEADS_REPO),owner_auth:Boolean(process.env.OWNER_ASSISTANT_TOKEN)},recent_events:snapshot.events.slice(0,20).map(e=>({event:e.event,offer:e.offer,module:e.module,progress:e.progress,occurred_at:e.occurred_at}))});
+  }
+  if(action==='test_email'){
+    const to=SMOKE_TO(),day=new Date().toISOString().slice(0,10);const email=await sendTransactionalEmail({to,subject:'AI Kollege Resend production test',text:`AI Kollege transactional email is connected to Resend. This owner-authorized smoke test was generated on ${day}. No customer action is required.`,html:`<p><strong>AI Kollege Resend production test</strong></p><p>Transactional email is connected to Resend. This owner-authorized smoke test was generated on ${day}.</p><p>No customer action is required.</p>`,idempotencyKey:`owner-smoke/${day}`});return json(email.ok?200:502,{ok:Boolean(email.ok),action,email_id:email.id||null,to:masked(to),error:email.ok?undefined:email.error});
   }
   if(action==='verify_access'){
     const v=await verifiedPurchase(body.session_id);if(!v.ok)return json(400,v);return json(200,{ok:true,action,session_id:v.purchase.session_id,offer:v.purchase.offer,email:masked(v.purchase.email),amount_total:v.purchase.amount_total,currency:v.purchase.currency});
