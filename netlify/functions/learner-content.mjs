@@ -1,5 +1,6 @@
 import {verifyCheckoutEntitlement} from '../../lib/stripe-fulfillment.mjs';
 import {learnerPayload} from '../../lib/learner-catalog.mjs';
+import {loadOwnerSettings} from '../../lib/owner-settings.mjs';
 
 const json=(status,body)=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store'}});
 const SESSION_RE=/^cs_(?:test_|live_)?[A-Za-z0-9]+$/;
@@ -15,7 +16,10 @@ export default async(req)=>{
   const r=await fetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`,{headers:{Authorization:`Bearer ${key}`}});
   if(r.status===404)return json(404,{ok:false,error:'session_not_found'});if(!r.ok)return json(502,{ok:false,error:'stripe_lookup_failed'});
   const entitlement=await verifyCheckoutEntitlement(await r.json(),key);if(!entitlement.ok)return json(403,{ok:false,error:entitlement.error||'paid_entitlement_not_verified'});
-  const payload=learnerPayload(entitlement.offer.key,profile);if(!payload)return json(403,{ok:false,error:'unsupported_offer'});
+  const base=learnerPayload(entitlement.offer.key,profile);if(!base)return json(403,{ok:false,error:'unsupported_offer'});
+  const payload=structuredClone(base),loaded=await loadOwnerSettings(),ops=loaded.settings?.courseOperations?.[entitlement.offer.key]||{},supplements=ops.supplements||{};
+  payload.course_operations={learnerNotice:String(ops.learnerNotice||'').slice(0,500),selfServeEnabled:ops.selfServeEnabled!==false};
+  payload.track.modules=payload.track.modules.map(module=>({...module,supplement:String(supplements[module.id]||'').slice(0,1200)}));
   return json(200,{ok:true,verified:true,entitlement:'active',...payload});
 };
 
