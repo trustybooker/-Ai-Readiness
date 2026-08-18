@@ -27,11 +27,14 @@ window.AIKOLLEGE_SITE_CONFIG = {
   }
 };
 
-// Keep the current paid-offer value proposition synchronized across public pages.
-// This is public descriptive data only; prices/checkout authority remain in Stripe.
+// Keep paid-offer value and current owner-controlled self-serve availability synchronized.
+// These are public descriptive/availability controls only; prices and payment authority remain in Stripe.
 (function(){
   if(!document.querySelector('script[data-aik-offers-sync]')){
     const o=document.createElement('script');o.src='assets/offers-sync.js';o.defer=true;o.dataset.aikOffersSync='true';document.head.appendChild(o);
+  }
+  if(!document.querySelector('script[data-aik-offer-availability]')){
+    const a=document.createElement('script');a.src='assets/offer-availability.js';a.defer=true;a.dataset.aikOfferAvailability='true';document.head.appendChild(a);
   }
   if(!document.querySelector('link[data-aik-production-polish]')){
     const l=document.createElement('link');l.rel='stylesheet';l.href='assets/production-polish.css';l.dataset.aikProductionPolish='true';document.head.appendChild(l);
