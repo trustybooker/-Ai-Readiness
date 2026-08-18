@@ -10,6 +10,12 @@ test('verified learner lifecycle is measured without storing artifact content',(
   assert.match(client,/\.netlify\/functions\/learner-event/);
 });
 
+test('commercial lifecycle collection paginates instead of silently capping at 100 records',()=>{
+  const core=text('lib/lifecycle-events.mjs');
+  assert.match(core,/MAX_PAGES/);assert.match(core,/page=\$\{page\}/);assert.match(core,/listIssues/);
+  for(const label of ['lifecycle-event','stripe-purchase','lead'])assert.ok(core.includes(`'${label}'`));
+});
+
 test('abandoned checkout recovery uses Stripe expired event and Resend idempotency',()=>{
   const webhook=text('netlify/functions/stripe-webhook.mjs'),email=text('lib/transactional-email.mjs');
   assert.match(webhook,/checkout\.session\.expired/);
@@ -26,10 +32,11 @@ test('course completion and safe scheduled progress reminders exist',()=>{
   assert.match(scheduled,/course_completed/);assert.match(scheduled,/now-lastAt<3\*DAY/);
 });
 
-test('Owner Studio commercial endpoint is owner-authenticated and operational',()=>{
+test('Owner Studio commercial endpoint is owner-authenticated, operational and can run a controlled Resend smoke test',()=>{
   const api=text('netlify/functions/owner-commercial.mjs'),ui=text('assets/owner-commercial.js'),loader=text('assets/owner-controls.js');
   assert.match(api,/checkOwnerToken/);assert.match(api,/verify_access/);assert.match(api,/resend_onboarding/);assert.match(api,/progress_reminder/);assert.match(api,/lifecycleSnapshot/);
-  assert.match(ui,/Commercial funnel/);assert.match(loader,/owner-commercial\.js/);
+  assert.match(api,/action==='test_email'/);assert.match(api,/owner-smoke\//);assert.match(api,/fifynow@gmail\.com/);
+  assert.match(ui,/Commercial funnel/);assert.match(ui,/Send Resend test/);assert.match(loader,/owner-commercial\.js/);
 });
 
 test('learner workspace loads analytics config and tracks proof export',()=>{
