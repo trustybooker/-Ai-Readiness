@@ -5,6 +5,7 @@ const required=[
   'lib/stripe-fulfillment.mjs',
   'netlify/functions/stripe-session.mjs',
   'netlify/functions/stripe-webhook.mjs',
+  'netlify/functions/learner-content.mjs',
   'assets/purchase-verification.js',
   'purchase-success.html',
   'netlify.toml'
@@ -24,7 +25,17 @@ must('netlify/functions/stripe-session.mjs',[
   'SESSION_RE',
   'encodeURIComponent(id)',
   "'cache-control':'no-store'",
-  'classifyCheckoutSession',
+  'verifyCheckoutEntitlement',
+  "entitlement:'active'",
+  'rateLimit:{windowLimit:30'
+]);
+
+must('netlify/functions/learner-content.mjs',[
+  "req.method!=='POST'",
+  'STRIPE_SECRET_KEY',
+  'verifyCheckoutEntitlement',
+  "entitlement:'active'",
+  'learnerPayload',
   'rateLimit:{windowLimit:30'
 ]);
 
@@ -49,6 +60,11 @@ must('lib/stripe-fulfillment.mjs',[
   "business!=='AI Kollege'",
   "session.mode!=='payment'",
   "session.payment_status!=='paid'",
+  'verifyCheckoutEntitlement',
+  "status!=='succeeded'",
+  'amount_refunded',
+  'access_revoked_refunded',
+  'access_paused_dispute',
   'privateStoreGate',
   'existingPurchase',
   'duplicate:true',
