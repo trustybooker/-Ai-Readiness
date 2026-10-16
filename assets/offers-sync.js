@@ -21,7 +21,7 @@
     if(paras[0])paras[0].textContent=offer.summary;
     if(!card.querySelector('[data-offer-value]')){
       const value=document.createElement('p');value.dataset.offerValue='true';value.className='offer-value';value.innerHTML=`<strong>You build:</strong> ${offer.value}`;
-      const cta=card.querySelector('.btn');if(cta)card.insertBefore(value,cta);else card.appendChild(value);
+      const cta=card.querySelector('.btn');if(cta)cta.before(value);else card.appendChild(value);
     }
   }
   function hydrate(){
