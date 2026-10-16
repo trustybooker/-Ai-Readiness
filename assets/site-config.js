@@ -31,16 +31,16 @@ window.AIKOLLEGE_SITE_CONFIG = {
 // This is public descriptive data only; prices/checkout authority remain in Stripe.
 (function(){
   if(!document.querySelector('script[data-aik-offers-sync]')){
-    const o=document.createElement('script');o.src='assets/offers-sync.js';o.defer=true;o.dataset.aikOffersSync='true';document.head.appendChild(o);
+    const o=document.createElement('script');o.src='assets/offers-sync.js?v=aa42aa';o.defer=true;o.dataset.aikOffersSync='true';document.head.appendChild(o);
   }
   if(!document.querySelector('link[data-aik-production-polish]')){
-    const l=document.createElement('link');l.rel='stylesheet';l.href='assets/production-polish.css';l.dataset.aikProductionPolish='true';document.head.appendChild(l);
+    const l=document.createElement('link');l.rel='stylesheet';l.href='assets/production-polish.css?v=aa42aa';l.dataset.aikProductionPolish='true';document.head.appendChild(l);
   }
   if(!document.querySelector('script[data-aik-public-ui]')){
-    const s=document.createElement('script');s.src='assets/public-ui.js';s.defer=true;s.dataset.aikPublicUi='true';document.head.appendChild(s);
+    const s=document.createElement('script');s.src='assets/public-ui.js?v=aa42aa';s.defer=true;s.dataset.aikPublicUi='true';document.head.appendChild(s);
   }
   if(/\/purchase-success\.html$/i.test(location.pathname)&&!document.querySelector('script[data-aik-purchase-verification]')){
-    const s=document.createElement('script');s.src='assets/purchase-verification.js';s.defer=true;s.dataset.aikPurchaseVerification='true';document.head.appendChild(s);
+    const s=document.createElement('script');s.src='assets/purchase-verification.js?v=aa42aa';s.defer=true;s.dataset.aikPurchaseVerification='true';document.head.appendChild(s);
   }
 })();
 
