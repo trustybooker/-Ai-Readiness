@@ -111,6 +111,17 @@
   status = 200
   force = true
 [[redirects]]
+  from = "/api/learner-content"
+  to = "/.netlify/functions/learner-content"
+  status = 200
+  force = true
+[[redirects]]
+  from = "/api/learner-event"
+  to = "/.netlify/functions/learner-event"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/api/stripe-session"
   to = "/.netlify/functions/stripe-session"
   status = 200
