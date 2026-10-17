@@ -10,7 +10,7 @@ export default async(req)=>{
   let body;try{body=await req.json();}catch{return json(400,{ok:false,error:'invalid_json'});}
   try{
     const result=await recordLifecycleEvent(body);
-    if(!result.ok)return json(result.error==='invalid_event'||result.error==='invalid_session_id'?400:result.error==='paid_entitlement_not_verified'?403:500,result);
+    if(!result.ok)return json(result.error==='invalid_event'||result.error==='invalid_session_id'?400:result.error==='paid_entitlement_not_verified'?403:result.error==='completion_evidence_incomplete'?409:500,result);
     let certificate;
     if(result.event==='course_completed'){
       const issued=await issueCertificate(result.purchase);
