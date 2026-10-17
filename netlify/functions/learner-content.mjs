@@ -19,4 +19,4 @@ export default async(req)=>{
   return json(200,{ok:true,verified:true,entitlement:'active',...payload});
 };
 
-export const config={path:['/.netlify/functions/learner-content','/api/learner-content'],method:'POST',rateLimit:{windowLimit:30,windowSize:60,aggregateBy:['ip','domain']}};
+export const config={path:['/.netlify/functions/learner-content','/api/learner-content'],rateLimit:{windowLimit:30,windowSize:60,aggregateBy:['ip','domain']}};
