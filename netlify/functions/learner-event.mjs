@@ -24,4 +24,4 @@ export default async(req)=>{
     return json(200,{...result,certificate});
   }catch{return json(500,{ok:false,error:'lifecycle_event_failed'});}
 };
-export const config={path:['/.netlify/functions/learner-event','/api/learner-event'],method:'POST',rateLimit:{windowLimit:30,windowSize:60,aggregateBy:['ip','domain']}};
+export const config={path:['/.netlify/functions/learner-event','/api/learner-event'],rateLimit:{windowLimit:30,windowSize:60,aggregateBy:['ip','domain']}};
